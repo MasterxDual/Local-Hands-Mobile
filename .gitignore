@@ -1,15 +1,73 @@
+# === Android & IntelliJ/Android Studio ===
+.gradle/
+.idea/
+.idea/*
+
+# Excepto archivos necesarios para sincronización de Gradle
+!.idea/codeStyles
+!.idea/compiler.xml
+!.idea/encodings.xml
+!.idea/misc.xml
+!.idea/modules.xml
+!.idea/vcs.xml
+
+# Ignorar configuraciones específicas del entorno
+.idea/AndroidProjectSystem.xml
+.idea/deploymentTargetSelector.xml
+.idea/gradle.xml
+.idea/kotlinc.xml
+.idea/migrations.xml
+.idea/runConfigurations.xml
+.idea/inspectionProfiles/
+
+# Archivos de compilación
+/build/
+**/build/
+captures/
+.externalNativeBuild/
+
+# Archivos generados por Android Studio
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+*.hprof
+*.log
+*.apk
+*.ap_
+*.db
+*.db-journal
+*.lock
+
+# Local properties (configuración del SDK en tu PC)
 local.properties
+
+# Archivos temporales de sistemas operativos
+.DS_Store
+Thumbs.db
+
+# Archivos de cache de Kotlin/Java
+*.class
+*.dex
+*.jar
+*.war
+*.ear
+
+# Archivos de backup temporales
+*.swp
+*.swo
+*~
+*.tmp
+
+# Node / JS (si usas herramientas con npm en el proyecto)
+node_modules/
+npm-debug.log
+
+# Archivos de test/reportes temporales
+test-results/
+outputs/
+
+# Gradle Wrapper y configuraciones
+.gradle/
+**/gradle-wrapper.jar
+**/gradle-wrapper.properties
+
+# Otros
+.cxx/
