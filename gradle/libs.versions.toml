@@ -30,6 +30,7 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "uiTooling" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
+compose-icons-extended = "androidx.compose.material:material-icons-extended:1.7.8" #Para utilizar visibilities en login screen
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

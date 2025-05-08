@@ -52,6 +52,8 @@ dependencies {
 
     // Agregar Dependencia de navegacion de Jetpack Compose
     implementation(libs.androidx.navigation.compose)
+    //Dependencia para utilizar Visibilities en login screen
+    implementation(libs.compose.icons.extended)
 
     implementation(libs.androidx.ui.tooling.preview) // Para @Preview
     debugImplementation(libs.androidx.ui.tooling)    // Para ver Previews en Android Studio
