@@ -6,6 +6,7 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,15 +39,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.undef.localhandsbrambillafunes.R
 
 //Para mostrar como quedaría nuestro login en una interfaz
 //Vista previa de la pantalla de login para diseño
-@Preview(showBackground = true, showSystemUi = true)
+
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavController) {
     val context = LocalContext.current
 
     //Variables que se utilizarán para ingresar los datos
@@ -100,6 +103,7 @@ fun LoginScreen() {
                         visiblePasswordChange = { visiblePassword = !visiblePassword }, //Funcion lambda, Esto se dispara al hacer clic en el ícono del ojo, lo que alterna entre mostrar y ocultar el texto.
                         isValidPassword = isValidPassword //Pasa el estado de validez de la contraseña (mínimo 6 caracteres) al campo para aplicar colores de validación visual (verde si es válida, rojo si no).
                     )
+                    RowForgottenPassword(navController = navController)
                     RowButtonLogin(
                         context = context,
                         isValidEmail = isValidEmail,
@@ -231,4 +235,20 @@ fun RowButtonLogin(
 // Función simulada para login
 fun login(context: Context) {
     Toast.makeText(context, "Login falso", Toast.LENGTH_SHORT).show()
+}
+
+@Composable
+fun RowForgottenPassword(navController: NavController) {
+    Row(Modifier.fillMaxWidth().padding(10.dp),
+        horizontalArrangement = Arrangement.End) {
+        Text(
+            text = "¿Olvidaste tu contraseña?",
+            color = Color.Blue,
+            textDecoration = TextDecoration.Underline,
+            modifier = Modifier.clickable {
+                navController.navigate("forgot_password_screen")
+            }
+                .padding(8.dp)
+        )
+    }
 }

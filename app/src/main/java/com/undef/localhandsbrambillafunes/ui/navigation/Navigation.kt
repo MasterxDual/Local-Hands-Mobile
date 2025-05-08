@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.undef.localhandsbrambillafunes.ui.screens.auth.ForgotPasswordScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.LoginScreen
 import com.undef.localhandsbrambillafunes.ui.screens.splash.SplashScreen
 
@@ -25,7 +26,11 @@ fun Navigation() {
         }
         composable(AppScreens.LoginScreen.route) {
             // composable que representa la LoginScreen
-            LoginScreen()
+            LoginScreen(navController)
+        }
+        composable(AppScreens.ForgotPasswordScreen.route) {
+            // composable que representa la ForgotPasswordScreen
+            ForgotPasswordScreen()
         }
     }
 }
