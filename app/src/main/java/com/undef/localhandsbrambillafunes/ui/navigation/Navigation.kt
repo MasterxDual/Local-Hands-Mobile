@@ -1,1 +1,31 @@
 package com.undef.localhandsbrambillafunes.ui.navigation
+
+import androidx.compose.runtime.Composable
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.undef.localhandsbrambillafunes.ui.screens.auth.LoginScreen
+import com.undef.localhandsbrambillafunes.ui.screens.splash.SplashScreen
+
+@Composable
+fun Navigation() {
+
+    // Crear NavController por defecto
+    val navController = rememberNavController()
+
+    NavHost(
+        navController = navController,
+        startDestination = AppScreens.SplashScreen.route // Primer destino de la navegacion, en este caso, la SplashScreen
+    ) {
+        // Aca van las capacidades de navegacion, es decir, las pantllas por donde navegara el NavHost
+
+        composable(AppScreens.SplashScreen.route) {
+            // composable que representa la SplashScreen
+            SplashScreen(navController)
+        }
+        composable(AppScreens.LoginScreen.route) {
+            // composable que representa la LoginScreen
+            LoginScreen()
+        }
+    }
+}
