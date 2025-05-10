@@ -57,7 +57,7 @@ fun LoginScreen(navController: NavController) {
     var isValidEmail by remember { mutableStateOf(false) }
 
     var password by remember { mutableStateOf("") }
-    var isValidPassword by remember { mutableStateOf(false) }
+    var isValidPassword = Regex("^(?=.*[A-Z])(?=.*\\d).{8,}$").matches(password)
 
     var visiblePassword by remember { mutableStateOf(false) }
 
