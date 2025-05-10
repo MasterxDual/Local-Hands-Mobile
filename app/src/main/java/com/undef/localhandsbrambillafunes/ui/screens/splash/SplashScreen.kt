@@ -53,7 +53,7 @@ fun SplashScreen(navController: NavHostController) { // Almacena toda la logica 
         navController.popBackStack()
 
         // Indicar a que pantalla quiero navegar desde el SplashScreen
-        navController.navigate(AppScreens.LoginScreen.route)
+        navController.navigate(route = AppScreens.LoginScreen.route)
     }
 
     Splash()
