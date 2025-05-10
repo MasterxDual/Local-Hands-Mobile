@@ -39,11 +39,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.undef.localhandsbrambillafunes.R
+import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
 //Para mostrar como quedaría nuestro login en una interfaz
 //Vista previa de la pantalla de login para diseño
@@ -66,7 +65,9 @@ fun LoginScreen(navController: NavController) {
     //Contenedor principal de la pantalla
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(Color(0xFFb5e48c))) {
+        .background(Color(0xFF242424))
+        ) {
+
         //Alineamos de forma vertical dentro de la caja, columnas centradas, y que tome todo el ancho posible
         Column(
             Modifier
@@ -109,6 +110,7 @@ fun LoginScreen(navController: NavController) {
                         isValidEmail = isValidEmail,
                         isValidPassword = isValidPassword
                     )
+                    RowRegister(navController = navController)
                 }
             }
         }
@@ -238,13 +240,29 @@ fun login(context: Context) {
 }
 
 @Composable
+fun RowRegister(navController: NavController) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(10.dp),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "¿No tienes Cuenta? Registrate",
+            color = Color.Blue,
+            modifier = Modifier.clickable() {
+                navController.navigate(route = AppScreens.RegisterScreen.route)
+            }
+        )
+    }
+}
+
+@Composable
 fun RowForgottenPassword(navController: NavController) {
     Row(Modifier.fillMaxWidth().padding(10.dp),
         horizontalArrangement = Arrangement.End) {
         Text(
             text = "¿Olvidaste tu contraseña?",
             color = Color.Blue,
-            textDecoration = TextDecoration.Underline,
+//            textDecoration = TextDecoration.Underline,
             modifier = Modifier.clickable {
                 navController.navigate("forgot_password_screen")
             }
@@ -252,3 +270,4 @@ fun RowForgottenPassword(navController: NavController) {
         )
     }
 }
+
