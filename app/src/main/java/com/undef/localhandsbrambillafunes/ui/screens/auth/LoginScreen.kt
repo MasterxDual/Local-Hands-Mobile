@@ -41,6 +41,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.undef.localhandsbrambillafunes.R
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
@@ -108,7 +109,8 @@ fun LoginScreen(navController: NavController) {
                     RowButtonLogin(
                         context = context,
                         isValidEmail = isValidEmail,
-                        isValidPassword = isValidPassword
+                        isValidPassword = isValidPassword,
+                        navController = navController
                     )
                     RowRegister(navController = navController)
                 }
@@ -219,15 +221,19 @@ fun RowPassword(
 fun RowButtonLogin(
     context: Context, //Para pasarle el valor al toast cuando hagamos el login correcto
     isValidEmail: Boolean,
-    isValidPassword: Boolean
+    isValidPassword: Boolean,
+    navController: NavController
 ) {
     Row(Modifier.fillMaxWidth().padding(10.dp),
         horizontalArrangement = Arrangement.Center) {
         // Botón habilitado solo cuando las validaciones son correctas
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { login(context) },
-            enabled = isValidEmail && isValidPassword //Cuando se cumplan las validaciones el boton debe validarse
+            onClick = {
+                navController.popBackStack() // Eliminamos la pantalla del stack de navegación
+                navController.navigate(route = AppScreens.LocalHandsApp.route)
+            },
+            enabled = isValidEmail && isValidPassword  //Cuando se cumplan las validaciones el boton debe validarse
         ) {
             Text(text = "Iniciar sesión")
         }
@@ -264,7 +270,7 @@ fun RowForgottenPassword(navController: NavController) {
             color = Color.Blue,
 //            textDecoration = TextDecoration.Underline,
             modifier = Modifier.clickable {
-                navController.navigate("forgot_password_screen")
+                navController.navigate(route = AppScreens.ForgotPasswordScreen.route)
             }
                 .padding(8.dp)
         )
