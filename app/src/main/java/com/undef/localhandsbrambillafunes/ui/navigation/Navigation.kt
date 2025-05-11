@@ -8,6 +8,7 @@ import com.undef.localhandsbrambillafunes.LocalHandsApp
 import com.undef.localhandsbrambillafunes.ui.screens.auth.ForgotPasswordScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.LoginScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.RegisterScreen
+import com.undef.localhandsbrambillafunes.ui.screens.settings.SettingsScreen
 import com.undef.localhandsbrambillafunes.ui.screens.splash.SplashScreen
 
 @Composable
@@ -40,7 +41,11 @@ fun Navigation() {
         }
         composable(AppScreens.LocalHandsApp.route) {
             // composable que representa la LocalHandsApp
-            LocalHandsApp()
+            LocalHandsApp(navController)
+        }
+        composable(AppScreens.SettingsScreen.route) {
+            // composable que representa la LocalHandsApp
+            SettingsScreen()
         }
     }
 }

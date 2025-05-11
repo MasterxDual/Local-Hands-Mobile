@@ -38,11 +38,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LocalHandsApp() {
+fun LocalHandsApp(navController: NavController) {
     Scaffold(
         // Barra Superior con título y acciones
         topBar = {
@@ -91,7 +93,7 @@ fun LocalHandsApp() {
                     }
 
                     // Botón para ir a Configuración
-                    IconButton(onClick = { /* TODO: Implementar navegación */ }) {
+                    IconButton(onClick = { navController.navigate(route = AppScreens.SettingsScreen.route) }) {
                         Icon(
                             Icons.Filled.Settings,
                             contentDescription = "Seccion de Settings"
@@ -195,11 +197,4 @@ fun LocalHandsApp() {
             }
         }
     }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun LocalHandsAppPreview() {
-    LocalHandsApp()
 }

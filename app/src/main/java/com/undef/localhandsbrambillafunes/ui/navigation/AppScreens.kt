@@ -8,4 +8,5 @@ sealed class AppScreens(val route: String) {
     object ForgotPasswordScreen: AppScreens("forgot_password_screen")
     object RegisterScreen: AppScreens("register_screen")
     object LocalHandsApp: AppScreens("local_hands_app")
+    object SettingsScreen: AppScreens("settings_screen")
 }
