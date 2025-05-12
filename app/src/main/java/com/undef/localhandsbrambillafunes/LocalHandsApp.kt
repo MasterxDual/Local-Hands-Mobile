@@ -2,49 +2,50 @@ package com.undef.localhandsbrambillafunes
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Shop
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Shop
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.undef.localhandsbrambillafunes.data.model.Product
+import com.undef.localhandsbrambillafunes.data.model.ProductProvider
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LocalHandsApp(navController: NavController) {
+
     Scaffold(
         // Barra Superior con título y acciones
         topBar = {
@@ -102,7 +103,6 @@ fun LocalHandsApp(navController: NavController) {
                 }
             )
         },
-
 
         // Implementacion para Material3:
         // Barra inferior con navegacion principal
@@ -172,28 +172,25 @@ fun LocalHandsApp(navController: NavController) {
 //            )
 //        }
     ) { paddingValues ->
+        // products se preserva entre recomposiciones (cuando la UI se redibuja por cambios de estado)
+        val products = remember { ProductProvider.products }
+
+
         // Contenido principal
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues), // Se aplica el padding del Scaffold
+            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp) // Padding interno para los items
         ) {
-
-            // Sección de productos destacados
-            Text(
-                text = "Productos Destacados",
-                modifier = Modifier.padding(8.dp),
-                fontSize = 25.sp,
-                fontWeight = FontWeight.Bold
-
-            )
-
-            // Lista de productos
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(vertical = 8.dp)
-            ) {
-                // Lista estática de productos para la interfaz
+            item {
+                Text(text = "Productos Destacados")
+            }
+            items(
+                items = products,
+                key = { it.id } // Key única para cada item
+            ) { product ->
+                ProductListItem(product = product)
             }
         }
     }
