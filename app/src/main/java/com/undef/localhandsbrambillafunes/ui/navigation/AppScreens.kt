@@ -1,6 +1,8 @@
 package com.undef.localhandsbrambillafunes.ui.navigation
 
-sealed class AppScreens(val route: String) {
+import com.undef.localhandsbrambillafunes.data.model.Product
+
+sealed class AppScreens(val route: String, val product: Product? = null) {
 
     // Objetos que representan las Pantallas de la app
     object SplashScreen: AppScreens("splash_screen")
@@ -9,4 +11,8 @@ sealed class AppScreens(val route: String) {
     object RegisterScreen: AppScreens("register_screen")
     object LocalHandsApp: AppScreens("local_hands_app")
     object SettingsScreen: AppScreens("settings_screen")
+    object ProductDetailScreen : AppScreens("product_detail_screen/{productId}") {
+        // Función auxiliar para construir la ruta con argumentos
+        fun createRoute(productId: Int) = "product_detail_screen/$productId"
+    }
 }

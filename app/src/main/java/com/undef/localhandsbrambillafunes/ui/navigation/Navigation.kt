@@ -1,13 +1,18 @@
 package com.undef.localhandsbrambillafunes.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.undef.localhandsbrambillafunes.LocalHandsApp
+import com.undef.localhandsbrambillafunes.ProductListItem
+import com.undef.localhandsbrambillafunes.data.model.ProductProvider
 import com.undef.localhandsbrambillafunes.ui.screens.auth.ForgotPasswordScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.LoginScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.RegisterScreen
+import com.undef.localhandsbrambillafunes.ui.screens.productdetail.ProductDetailScreen
 import com.undef.localhandsbrambillafunes.ui.screens.settings.SettingsScreen
 import com.undef.localhandsbrambillafunes.ui.screens.splash.SplashScreen
 
@@ -46,6 +51,26 @@ fun Navigation() {
         composable(AppScreens.SettingsScreen.route) {
             // composable que representa la LocalHandsApp
             SettingsScreen()
+        }
+
+        composable(
+            route = AppScreens.ProductDetailScreen.route,
+            arguments = listOf(
+                navArgument("productId") {
+                    type = NavType.IntType
+                }
+            )
+        ) { navBackStackEntry ->  // Recibimos NavBackStackEntry
+            // Extraemos el argumento productId como Int
+            val productId = navBackStackEntry.arguments?.getInt("productId") ?: return@composable
+
+            // Buscamos el producto en la lista
+            val product = ProductProvider.products.find { it.id == productId } ?: return@composable
+
+            ProductDetailScreen(
+                navController = navController,
+                product = product
+            )
         }
     }
 }
