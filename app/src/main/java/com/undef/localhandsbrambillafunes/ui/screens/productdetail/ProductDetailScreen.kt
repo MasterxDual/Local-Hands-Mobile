@@ -222,21 +222,24 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                     )
                 }
 
-                // Indicadores de página (puntos) EXPERIMENTAL
-                if (productImages.size > 1) {
+                // Indicadores de página (puntos)
+                if (productImages.size > 1) { // Solo se ejecuta si el producto tiene mas de una imagen
                     Row(
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
                             .padding(bottom = 16.dp),
                         horizontalArrangement = Arrangement.Center
                     ) {
+                        // Iterar por cada imagen en la lista 'productImages'
                         repeat(productImages.size) { index ->
+                            // Por cada imagen crear un Box: punto indicador
                             Box(
                                 modifier = Modifier
                                     .padding(horizontal = 4.dp)
                                     .size(8.dp)
                                     .clip(CircleShape)
                                     .background(
+                                        // Si el punto corresponde a la imagen actual lo pinta de blanco, de lo contrario, semitransparente
                                         if (pagerState.currentPage == index) Color.White
                                         else Color.White.copy(alpha = 0.5f)
                                     )
@@ -245,18 +248,6 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                     }
                 }
             }
-
-
-
-            // Imagen principal del producto
-//            Image(
-//                painter = painterResource(id = product.imageId),
-//                contentDescription = product.name,
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .heightIn(max = 300.dp),
-//                contentScale = ContentScale.Crop
-//            )
 
             // Contenido informativo
             Column(
@@ -365,22 +356,7 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                             modifier = Modifier.size(32.dp)
                         )
                     }
-//                    Column(
-//                        horizontalAlignment = Alignment.CenterHorizontally
-//                    ) {
-//                        // Botón de favorito
-//                        IconButton(
-//                            onClick = { isFavorite = !isFavorite },
-//                            modifier = Modifier.align(Alignment.CenterHorizontally)
-//                        ) {
-//                            Icon(
-//                                if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-//                                contentDescription = "Marcar como favorito",
-//                                modifier = Modifier.size(32.dp),
-//                                tint = if (isFavorite) Color(0xFF9370DB) else Color.Black
-//                            )
-//                        }
-//                    }
+
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))

@@ -54,19 +54,22 @@ fun Navigation() {
         }
 
         composable(
+            // Define una pantalla que corresponde a la ruta ProducDetailsScreen
             route = AppScreens.ProductDetailScreen.route,
+            // Espera un argumento llamado '´productId' de tipo entero
             arguments = listOf(
                 navArgument("productId") {
                     type = NavType.IntType
                 }
             )
-        ) { navBackStackEntry ->  // Recibimos NavBackStackEntry
-            // Extraemos el argumento productId como Int
+        ) { navBackStackEntry ->  // Recibimos NavBackStackEntry que contiene los argumentos de navegacion
+            // Extraemos el argumento productId como Int, si no existe, sale del composable con 'return@composable'
             val productId = navBackStackEntry.arguments?.getInt("productId") ?: return@composable
 
-            // Buscamos el producto en la lista
+            // Buscamos el producto en la lista, si no encuentra nada sale del composable
             val product = ProductProvider.products.find { it.id == productId } ?: return@composable
 
+            // composable que representa la pantalla de ProductDetailScreen
             ProductDetailScreen(
                 navController = navController,
                 product = product
