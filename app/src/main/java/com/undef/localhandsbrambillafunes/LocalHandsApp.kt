@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -46,6 +47,10 @@ import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 @Composable
 fun LocalHandsApp(navController: NavController) {
 
+    // Estado para la lista
+    val lazyListState = rememberLazyListState()
+
+
     Scaffold(
         // Barra Superior con título y acciones
         topBar = {
@@ -57,7 +62,7 @@ fun LocalHandsApp(navController: NavController) {
                         modifier = Modifier.clickable() { /* TODO: Implementar navegacion */ }
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.localhandslogo), // Logo de la app
+                            painter = painterResource(id = R.drawable.localhandslogo), // Logo de la appimport androidx.compose.foundation.Image
                             contentDescription = "Logo principal de la aplicación",  // Texto para accesibilidad
                             modifier = Modifier
                                 .size(50.dp)
@@ -158,19 +163,6 @@ fun LocalHandsApp(navController: NavController) {
 
         }
 
-        // Implementacion para Material2 (Descartada):
-//        // Barra inferior con navegación principal
-//        bottomBar = {
-//            BottomAppBar(
-//                // Navegación inferior con íconos
-//                Row(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    horizontalArrangement = Arrangement.SpaceAround
-//                ) {
-//                    IconButton(onClick = { /* TODO: Implementar navegacion */ }) { }
-//                }
-//            )
-//        }
     ) { paddingValues ->
         // products se preserva entre recomposiciones (cuando la UI se redibuja por cambios de estado)
         val products = remember { ProductProvider.products }
@@ -178,19 +170,26 @@ fun LocalHandsApp(navController: NavController) {
 
         // Contenido principal
         LazyColumn(
+            state = rememberLazyListState(),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues), // Se aplica el padding del Scaffold
-            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp) // Padding interno para los items
+//            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp) // Padding interno para los items
         ) {
             item {
-                Text(text = "Productos Destacados")
+                Text(
+                    text = "Productos Destacados",
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                )
             }
+//            items(items = products) {
+//                item -> ProductListItem(product = item, navController = navController)
+//            }
             items(
                 items = products,
                 key = { it.id } // Key única para cada item
             ) { product ->
-                ProductListItem(product = product)
+                ProductListItem(product = product, navController = navController)
             }
         }
     }
