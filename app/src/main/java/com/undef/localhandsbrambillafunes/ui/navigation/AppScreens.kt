@@ -9,4 +9,5 @@ sealed class AppScreens(val route: String) {
     object RegisterScreen: AppScreens("register_screen")
     object LocalHandsApp: AppScreens("local_hands_app")
     object SettingsScreen: AppScreens("settings_screen")
+    object ProfileScreen: AppScreens("profile_screen")
 }
