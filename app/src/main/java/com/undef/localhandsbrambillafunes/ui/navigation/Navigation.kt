@@ -76,4 +76,5 @@ fun Navigation() {
                 product = product
             )
         }
+    }
 }
