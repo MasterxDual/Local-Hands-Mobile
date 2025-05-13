@@ -57,6 +57,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     //Dependencia para utilizar Visibilities en login screen
     implementation(libs.compose.icons.extended)
+    //Dependencia para utilizar rememberAsyncImagePainter
+    implementation(libs.coil.compose)
 
     implementation(libs.androidx.ui.tooling.preview) // Para @Preview
     debugImplementation(libs.androidx.ui.tooling)    // Para ver Previews en Android Studio

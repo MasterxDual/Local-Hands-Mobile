@@ -11,6 +11,7 @@ sealed class AppScreens(val route: String, val product: Product? = null) {
     object RegisterScreen: AppScreens("register_screen")
     object LocalHandsApp: AppScreens("local_hands_app")
     object SettingsScreen: AppScreens("settings_screen")
+    object ProfileScreen: AppScreens("profile_screen")
     object ProductDetailScreen : AppScreens("product_detail_screen/{productId}") {
         // Función auxiliar para construir la ruta con argumentos
         fun createRoute(productId: Int) = "product_detail_screen/$productId"
