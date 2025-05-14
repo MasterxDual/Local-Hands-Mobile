@@ -12,6 +12,7 @@ import com.undef.localhandsbrambillafunes.data.model.ProductProvider
 import com.undef.localhandsbrambillafunes.ui.screens.auth.ForgotPasswordScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.LoginScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.RegisterScreen
+import com.undef.localhandsbrambillafunes.ui.screens.favorites.FavoritesScreen
 import com.undef.localhandsbrambillafunes.ui.screens.productdetail.ProductDetailScreen
 import com.undef.localhandsbrambillafunes.ui.screens.settings.SettingsScreen
 import com.undef.localhandsbrambillafunes.ui.screens.splash.SplashScreen
@@ -74,6 +75,10 @@ fun Navigation() {
                 navController = navController,
                 product = product
             )
+        }
+
+        composable(AppScreens.FavoritesScreen.route) {
+            FavoritesScreen(navController)
         }
     }
 }

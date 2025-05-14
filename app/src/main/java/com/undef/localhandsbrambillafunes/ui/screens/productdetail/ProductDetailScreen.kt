@@ -44,10 +44,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -60,6 +58,7 @@ import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.undef.localhandsbrambillafunes.data.model.Product
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
+import com.undef.localhandsbrambillafunes.data.model.FavoriteProducts
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,7 +71,11 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
     val pagerState = rememberPagerState(pageCount = { productImages.size })
 
     // Estado para manejar si el producto está marcado como favorito
-    var isFavorite by remember { mutableStateOf(false) }
+//    var isFavorite by remember { mutableStateOf(false) }
+
+    // Estado local que se actualiza al cambiar favoritos
+    val isFavorite = remember { mutableStateOf(FavoriteProducts.isFavorite(product.id)) }
+
 
 
     Scaffold(
@@ -98,7 +101,7 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                 ),
                 actions = {
                     // Botón para ir a Favoritos
-                    IconButton(onClick = { /* TODO: Implementar navegación */ }) {
+                    IconButton(onClick = { navController.navigate(route = AppScreens.FavoritesScreen.route) }) {
                         Icon(
                             Icons.Filled.Favorite,
                             contentDescription = "Seccion de Favoritos"
@@ -205,7 +208,15 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
 
                 // Botón de favorito
                 IconButton(
-                    onClick = { isFavorite = !isFavorite },
+                    onClick = {
+                        if (isFavorite.value) {
+                            FavoriteProducts.removeToFavorite(product.id)
+                        } else {
+                            FavoriteProducts.addToFavorite(product)
+                        }
+                        // Actualizar el estado para recomponer el Icono
+                        isFavorite.value = FavoriteProducts.isFavorite(product.id)
+                    },
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(16.dp)
@@ -213,11 +224,14 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                         .background(Color.White.copy(alpha = 0.7f), CircleShape)
                 ) {
                     Icon(
-                        if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                        contentDescription = "Marcar como favorito",
-                        modifier = Modifier
-                            .size(42.dp),
-                        tint = if (isFavorite) Color(0xFF9370DB) else Color.Gray
+                        imageVector = if (isFavorite.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                        contentDescription = if (isFavorite.value) "Quitar de favoritos" else "Añadir a favoritos",
+                        tint = if (isFavorite.value) Color.Red else Color.Gray
+//                        if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+//                        contentDescription = "Marcar como favorito",
+//                        modifier = Modifier
+//                            .size(42.dp),
+//                        tint = if (isFavorite) Color(0xFF9370DB) else Color.Gray
 
                     )
                 }

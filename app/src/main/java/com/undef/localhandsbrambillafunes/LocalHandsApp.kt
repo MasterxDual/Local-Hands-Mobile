@@ -2,7 +2,6 @@ package com.undef.localhandsbrambillafunes
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -38,7 +37,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.undef.localhandsbrambillafunes.data.model.Product
 import com.undef.localhandsbrambillafunes.data.model.ProductProvider
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
@@ -46,10 +44,6 @@ import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LocalHandsApp(navController: NavController) {
-
-    // Estado para la lista
-    val lazyListState = rememberLazyListState()
-
 
     Scaffold(
         // Barra Superior con título y acciones
@@ -67,7 +61,6 @@ fun LocalHandsApp(navController: NavController) {
                             modifier = Modifier
                                 .size(50.dp)
                                 .padding(end = 8.dp),
-
                         )
                         Text(
                             text = stringResource(R.string.app_name),
@@ -83,7 +76,7 @@ fun LocalHandsApp(navController: NavController) {
                 ),
                 actions = {
                     // Botón para ir a Favoritos
-                    IconButton(onClick = { /* TODO: Implementar navegación */ }) {
+                    IconButton(onClick = { navController.navigate(route = AppScreens.FavoritesScreen.route) }) {
                         Icon(
                             Icons.Filled.Favorite,
                             contentDescription = "Seccion de Favoritos"
