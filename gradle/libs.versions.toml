@@ -35,7 +35,6 @@ ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", versio
 compose-icons-extended = "androidx.compose.material:material-icons-extended:1.7.8" #Para utilizar visibilities en login screen
 
 
-
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
