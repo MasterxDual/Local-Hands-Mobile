@@ -17,4 +17,5 @@ sealed class AppScreens(val route: String, val product: Product? = null) {
         fun createRoute(productId: Int) = "product_detail_screen/$productId"
     }
     object FavoritesScreen: AppScreens("favorite_screens")
+    object SearchBarScreen: AppScreens("search_bar_screen")
 }

@@ -136,7 +136,7 @@ fun LocalHandsApp(navController: NavController) {
                     label = { Text("Buscar")},
                     colors = navBarItemColors,
                     selected = true,
-                    onClick = { /* Implementar Busqueda */ }
+                    onClick = { navController.navigate(route = AppScreens.SearchBarScreen.route) }
                 )
                 // Boton para vender
                 NavigationBarItem(
