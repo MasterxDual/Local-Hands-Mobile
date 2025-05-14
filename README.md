@@ -1,7 +1,8 @@
 # Manos Locales
 
-![Manos Locales Logo](app/src/main/res/drawable/localhandslogo.png)
-
+|                # Local Hands ***("Manos Locales")***                |
+|:-------------------------------------------------------------------:|
+| ![Manos Locales Logo](app/src/main/res/drawable/localhandslogo.png) |
 ## Descripción del Proyecto
 
 **Manos Locales** es una aplicación móvil Android desarrollada para la materia de Tecnologías Móviles de la carrera de Ingeniería en Informática. La aplicación está creada íntegramente utilizando **Jetpack Compose** y tiene como objetivo principal conectar a los usuarios con productores y emprendedores locales, fomentando el consumo regional, el contacto directo y la promoción de productos auténticos.
@@ -70,7 +71,7 @@ Actualmente, la aplicación está en su **primera entrega**, que incluye:
 
 ## Compilación APK
 
-El archivo APK compilado se encuentra disponible en el repositorio: [Descargar APK](app/build/outputs/apk/debug/app-debug.apk) <!-- Reemplazar con el enlace real -->
+El archivo APK compilado se encuentra disponible en el repositorio: [Descargar APK](app/build/outputs/apk/debug/app-debug.apk) 
 
 ## Demo
 
