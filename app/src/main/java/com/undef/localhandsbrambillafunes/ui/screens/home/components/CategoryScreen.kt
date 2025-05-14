@@ -1,8 +1,8 @@
-package com.undef.localhandsbrambillafunes
+package com.undef.localhandsbrambillafunes.ui.screens.home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,15 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Shop
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,26 +37,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.undef.localhandsbrambillafunes.data.model.Product
+import com.undef.localhandsbrambillafunes.CategoryListItem
+import com.undef.localhandsbrambillafunes.ProductListItem
+import com.undef.localhandsbrambillafunes.R
+import com.undef.localhandsbrambillafunes.data.model.CategoryProvider
 import com.undef.localhandsbrambillafunes.data.model.ProductProvider
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LocalHandsApp(navController: NavController) {
-
-    // Estado para la lista
-    val lazyListState = rememberLazyListState()
-
-
+fun CategoryScreen(navController: NavController) {
     Scaffold(
         // Barra Superior con título y acciones
         topBar = {
             TopAppBar(
                 // Logo de la Marca
                 title = {
-                    Row (
+                    Row(
                         verticalAlignment = Alignment.CenterVertically, // Centrar el logo con el texto verticalmente
                         modifier = Modifier.clickable() { /* TODO: Implementar navegacion */ }
                     ) {
@@ -70,7 +64,7 @@ fun LocalHandsApp(navController: NavController) {
                                 .size(50.dp)
                                 .padding(end = 8.dp),
 
-                        )
+                            )
                         Text(
                             text = stringResource(R.string.app_name),
                             fontWeight = FontWeight.Bold
@@ -132,67 +126,49 @@ fun LocalHandsApp(navController: NavController) {
                 // Boton de Home o inicio (actual)
                 NavigationBarItem(
                     icon = { Icon(Icons.Filled.Home, contentDescription = "Inicio") },
-                    label = { Text("Inicio")},
+                    label = { Text("Inicio") },
                     colors = navBarItemColors,
                     selected = true,
-                    onClick = { /* Implementar navegar a Home aunque estamos en Home */ }
+                    onClick = { navController.navigate(route = AppScreens.LocalHandsApp.route) }
                 )
                 // Boton de explorar o buscar
                 NavigationBarItem(
                     icon = { Icon(Icons.Filled.Search, contentDescription = "Buscar") },
-                    label = { Text("Buscar")},
+                    label = { Text("Buscar") },
                     colors = navBarItemColors,
                     selected = true,
                     onClick = { /* Implementar Busqueda */ }
-                )
-                // Boton para vender
-                NavigationBarItem(
-                    icon = { Icon(Icons.Filled.Shop, contentDescription = "Vender") },
-                    label = { Text("Vender")},
-                    colors = navBarItemColors,
-                    selected = true,
-                    onClick = { /* TODO: Implementar navegacion */ }
-                )
-                // Boton de Categorias
-                NavigationBarItem(
-                    icon = { Icon(Icons.Filled.Menu, contentDescription = "Categorias") },
-                    label = { Text("Categorias")},
-                    colors = navBarItemColors,
-                    selected = true,
-                    onClick = { navController.navigate(route = AppScreens.CategoryScreen.route) }
                 )
             }
 
         }
 
     ) { paddingValues ->
-        // products se preserva entre recomposiciones (cuando la UI se redibuja por cambios de estado)
-        val products = remember { ProductProvider.products }
+        val categories = remember { CategoryProvider.categories }
 
-
-        // Contenido principal
         LazyColumn(
-            state = rememberLazyListState(),
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues), // Se aplica el padding del Scaffold
-//            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp) // Padding interno para los items
+                .padding(paddingValues)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             item {
                 Text(
-                    text = "Productos Destacados",
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    text = "Categorías actuales",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
             }
-//            items(items = products) {
-//                item -> ProductListItem(product = item, navController = navController)
-//            }
-            items(
-                items = products,
-                key = { it.id } // Key única para cada item
-            ) { product ->
-                ProductListItem(product = product, navController = navController)
+
+            items(categories, key = { it.id }) { category ->
+                CategoryListItem(
+                    category = category,
+                    navController = navController,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
     }
 }
+

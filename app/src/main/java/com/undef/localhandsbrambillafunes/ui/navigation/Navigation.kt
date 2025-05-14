@@ -12,6 +12,7 @@ import com.undef.localhandsbrambillafunes.data.model.ProductProvider
 import com.undef.localhandsbrambillafunes.ui.screens.auth.ForgotPasswordScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.LoginScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.RegisterScreen
+import com.undef.localhandsbrambillafunes.ui.screens.home.components.CategoryScreen
 import com.undef.localhandsbrambillafunes.ui.screens.profile.ProfileScreen
 import com.undef.localhandsbrambillafunes.ui.screens.productdetail.ProductDetailScreen
 import com.undef.localhandsbrambillafunes.ui.screens.settings.SettingsScreen
@@ -76,5 +77,9 @@ fun Navigation() {
                 product = product
             )
         }
+        composable(AppScreens.CategoryScreen.route) {
+            CategoryScreen(navController)
+        }
+
     }
 }
