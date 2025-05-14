@@ -6,13 +6,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.undef.localhandsbrambillafunes.LocalHandsApp
-import com.undef.localhandsbrambillafunes.ProductListItem
 import com.undef.localhandsbrambillafunes.data.model.ProductProvider
 import com.undef.localhandsbrambillafunes.ui.screens.auth.ForgotPasswordScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.LoginScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.RegisterScreen
 import com.undef.localhandsbrambillafunes.ui.screens.favorites.FavoritesScreen
+import com.undef.localhandsbrambillafunes.ui.screens.home.LocalHandsApp
 import com.undef.localhandsbrambillafunes.ui.screens.home.components.CategoryScreen
 import com.undef.localhandsbrambillafunes.ui.screens.profile.ProfileScreen
 import com.undef.localhandsbrambillafunes.ui.screens.productdetail.ProductDetailScreen
@@ -41,7 +40,7 @@ fun Navigation() {
         }
         composable(AppScreens.ForgotPasswordScreen.route) {
             // composable que representa la ForgotPasswordScreen
-            ForgotPasswordScreen()
+            ForgotPasswordScreen(navController)
         }
         composable(AppScreens.RegisterScreen.route) {
             // composable que representa la RegisterScreen
