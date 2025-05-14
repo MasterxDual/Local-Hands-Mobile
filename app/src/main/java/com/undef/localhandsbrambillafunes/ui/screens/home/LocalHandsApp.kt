@@ -86,7 +86,7 @@ fun LocalHandsApp(navController: NavController) {
                     }
 
                     // Botón para ir a Perfil
-                    IconButton(onClick = { /* TODO: Implementar navegación */ }) {
+                    IconButton(onClick = { navController.navigate(route = AppScreens.ProfileScreen.route) }) {
                         Icon(
                             Icons.Filled.Person,
                             contentDescription = "Seccion de Perfil"
