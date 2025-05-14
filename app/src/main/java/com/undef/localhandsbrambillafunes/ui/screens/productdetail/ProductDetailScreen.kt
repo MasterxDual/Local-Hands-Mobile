@@ -44,10 +44,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -60,6 +58,7 @@ import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.undef.localhandsbrambillafunes.data.model.Product
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
+import com.undef.localhandsbrambillafunes.data.model.FavoriteProducts
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,7 +71,11 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
     val pagerState = rememberPagerState(pageCount = { productImages.size })
 
     // Estado para manejar si el producto está marcado como favorito
-    var isFavorite by remember { mutableStateOf(false) }
+//    var isFavorite by remember { mutableStateOf(false) }
+
+    // Estado local que se actualiza al cambiar favoritos
+    val isFavorite = remember { mutableStateOf(FavoriteProducts.isFavorite(product.id)) }
+
 
 
     Scaffold(
@@ -98,7 +101,7 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                 ),
                 actions = {
                     // Botón para ir a Favoritos
-                    IconButton(onClick = { /* TODO: Implementar navegación */ }) {
+                    IconButton(onClick = { navController.navigate(route = AppScreens.FavoritesScreen.route) }) {
                         Icon(
                             Icons.Filled.Favorite,
                             contentDescription = "Seccion de Favoritos"
@@ -205,7 +208,15 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
 
                 // Botón de favorito
                 IconButton(
-                    onClick = { isFavorite = !isFavorite },
+                    onClick = {
+                        if (isFavorite.value) {
+                            FavoriteProducts.removeToFavorite(product.id)
+                        } else {
+                            FavoriteProducts.addToFavorite(product)
+                        }
+                        // Actualizar el estado para recomponer el Icono
+                        isFavorite.value = FavoriteProducts.isFavorite(product.id)
+                    },
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(16.dp)
@@ -213,30 +224,36 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                         .background(Color.White.copy(alpha = 0.7f), CircleShape)
                 ) {
                     Icon(
-                        if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                        contentDescription = "Marcar como favorito",
-                        modifier = Modifier
-                            .size(42.dp),
-                        tint = if (isFavorite) Color(0xFF9370DB) else Color.Gray
+                        imageVector = if (isFavorite.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                        contentDescription = if (isFavorite.value) "Quitar de favoritos" else "Añadir a favoritos",
+                        tint = if (isFavorite.value) Color.Red else Color.Gray
+//                        if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+//                        contentDescription = "Marcar como favorito",
+//                        modifier = Modifier
+//                            .size(42.dp),
+//                        tint = if (isFavorite) Color(0xFF9370DB) else Color.Gray
 
                     )
                 }
 
-                // Indicadores de página (puntos) EXPERIMENTAL
-                if (productImages.size > 1) {
+                // Indicadores de página (puntos)
+                if (productImages.size > 1) { // Solo se ejecuta si el producto tiene mas de una imagen
                     Row(
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
                             .padding(bottom = 16.dp),
                         horizontalArrangement = Arrangement.Center
                     ) {
+                        // Iterar por cada imagen en la lista 'productImages'
                         repeat(productImages.size) { index ->
+                            // Por cada imagen crear un Box: punto indicador
                             Box(
                                 modifier = Modifier
                                     .padding(horizontal = 4.dp)
                                     .size(8.dp)
                                     .clip(CircleShape)
                                     .background(
+                                        // Si el punto corresponde a la imagen actual lo pinta de blanco, de lo contrario, semitransparente
                                         if (pagerState.currentPage == index) Color.White
                                         else Color.White.copy(alpha = 0.5f)
                                     )
@@ -245,18 +262,6 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                     }
                 }
             }
-
-
-
-            // Imagen principal del producto
-//            Image(
-//                painter = painterResource(id = product.imageId),
-//                contentDescription = product.name,
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .heightIn(max = 300.dp),
-//                contentScale = ContentScale.Crop
-//            )
 
             // Contenido informativo
             Column(
@@ -365,22 +370,7 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                             modifier = Modifier.size(32.dp)
                         )
                     }
-//                    Column(
-//                        horizontalAlignment = Alignment.CenterHorizontally
-//                    ) {
-//                        // Botón de favorito
-//                        IconButton(
-//                            onClick = { isFavorite = !isFavorite },
-//                            modifier = Modifier.align(Alignment.CenterHorizontally)
-//                        ) {
-//                            Icon(
-//                                if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-//                                contentDescription = "Marcar como favorito",
-//                                modifier = Modifier.size(32.dp),
-//                                tint = if (isFavorite) Color(0xFF9370DB) else Color.Black
-//                            )
-//                        }
-//                    }
+
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
