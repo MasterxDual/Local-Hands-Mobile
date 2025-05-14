@@ -1,12 +1,24 @@
-# Manos Locales - Local Hands App
+# ✨ Manos Locales - Local Hands App ✨
 
 <div align="center">
-  <img src="app/src/main/res/drawable/localhandslogo.png" alt="Logo" width="200"/>
+  <img src="app/src/main/res/drawable/localhandslogo.png" alt="Logo" width="200" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"/>
+
+  <p align="center">
+    <em>Conectando comunidades con productores locales</em> 🌱🛍️
+  </p>
+
+[![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://www.android.com/)
+[![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)](https://kotlinlang.org/)
+[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=jetpack-compose&logoColor=white)](https://developer.android.com/jetpack/compose)
 </div>
 
-## Descripción del Proyecto
+---
+
+## 🚀 Descripción del Proyecto
 
 **Manos Locales** es una aplicación móvil Android desarrollada para la materia de Tecnologías Móviles de la carrera de Ingeniería en Informática. La aplicación está creada íntegramente utilizando **Jetpack Compose** y tiene como objetivo principal conectar a los usuarios con productores y emprendedores locales, fomentando el consumo regional, el contacto directo y la promoción de productos auténticos.
+
+---
 
 ## Características Principales
 
@@ -53,54 +65,9 @@ Desarrollar una aplicación Android funcional que permita:
 - **Hilos y servicios**: Operaciones de red en segundo plano con hilos o corutinas.
 - **Arquitectura**: Uso de Activities, Fragments y Compose según necesidad.
 
-## Estado del Proyecto
+___
 
-Actualmente, la aplicación está en su **primera entrega**, que incluye:
-- Navegación entre pantallas básicas: Login, Registro, Pantalla Principal y Settings.
-- Información estática para estas pantallas.
-- Prototipo funcional disponible como APK.
-
-## Cómo Ejecutar el Proyecto
-
-1. Clonar el repositorio:
-   ```bash
-   git clone https://github.com/MasterxDual/Local-Hands-Mobile.git
-   ```
-2. Abrir el proyecto en **Android Studio**.
-3. Sincronizar las dependencias del proyecto.
-4. Ejecutar la aplicación en un emulador o dispositivo físico.
-
-## Compilación APK
-
-El archivo APK compilado se encuentra disponible en el repositorio: [Descargar APK](app/build/outputs/apk/debug/app-debug.apk) 
-
-## Demo
-
-A continuación, un GIF que muestra el funcionamiento actual de la aplicación:
-
-![Demo de la Aplicación](path/to/demo.gif) <!-- Reemplazar con el enlace real -->
-
-## Estructura del Proyecto
-
-La estructura del proyecto sigue la convención estándar de Android con módulos organizados de la siguiente manera:
-```
-app/
-└── src/
-    └── main/
-        └── java/
-            └── com/
-                └── undef/
-                    └── localhandsbrambillafunes/
-                        ├── data/            # Gestión de datos y modelos
-                        ├── ui/              # Componentes y pantallas
-                        │   ├── common/      # Elementos reutilizables (botones, diálogos, etc.)
-                        │   ├── navigation/  # Configuración de la navegación
-                        │   ├── screens/     # Pantallas individuales (Login, Registro, etc.)
-                        │   └── theme/       # Configuración de temas y estilos
-                        └── MainActivity.kt  # Punto de entrada de la aplicación
-```
-
-## Tecnologías Utilizadas
+## 🛠️ Tecnologías Utilizadas
 
 - **Lenguaje de Programación**: Kotlin
 - **Framework UI**: Jetpack Compose
@@ -113,19 +80,62 @@ app/
     - Coroutines para manejo de hilos (futuro)
     - Room para base de datos local (futuro)
 
-## Próximos Pasos
+---
 
-En futuras iteraciones, se agregarán:
-- Conexión a la API para datos dinámicos.
-- Funcionalidades completas de favoritos y notificaciones.
-- Mejoras en la interfaz gráfica y experiencia de usuario.
+## 📱 Demo de la Aplicación
 
-## Contacto
-
-Para consultas o soporte, envía un correo a: 
-- [tobiasfunes@hotmail.com](mailto:tobiasfunes@hotmail.com.ar)
-- [agustinbram@gmail.com](mailto:agustinbram@gmail.com)
+<div align="center">
+  <img src="" width="300" alt="Demo GIF"/>
+</div>
 
 ---
 
-**Manos Locales** - Proyecto desarrollado para la materia de Tecnologías Móviles.
+## 📂 Estructura del Proyecto
+
+```bash
+app/
+└── src/
+    └── main/
+        ├── java/
+        │   └── com/undef/localhandsbrambillafunes/
+        │       ├── data/            # Modelos y repositorios
+        │       ├── ui/              # Interfaz de usuario
+        │       │   ├── components/  # Componentes reutilizables
+        │       │   ├── screens/     # Pantallas (Login, Home, etc.)
+        │       │   └── theme/       # Sistema de diseño
+        │       └── MainActivity.kt  # Punto de entrada
+        └── res/                     # Recursos (imágenes, strings)
+```
+
+---
+
+## 📥 Instalación
+
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/MasterxDual/Local-Hands-Mobile.git
+   ```  
+2. Abre el proyecto en **Android Studio**
+3. Ejecuta en emulador o dispositivo físico
+
+📦 **APK disponible**: [Descargar versión debug](app/build/outputs/apk/debug/app-debug.apk)
+
+---
+
+## 📅 Roadmap
+
+| Versión | Estado       | Novedades                                                                 |
+|---------|--------------|---------------------------------------------------------------------------|
+| v1.0    | ✅ Completado | Navegación básica y pantallas estáticas                                   |
+| v2.0    | 🚧 En progreso| Conexión a API real + persistencia local                                  |
+| v3.0    | ⏳ Planeado   | Sistema completo de favoritos con notificaciones push                     |
+
+---
+
+## ✉️ Contacto
+
+¿Tienes preguntas o sugerencias?
+
+📧 **Equipo de desarrollo**:
+- Tobias Funes: [tobiasfunes@hotmail.com](mailto:tobiasfunes@hotmail.com.ar)
+- Agustín Brambilla: [agustinbram@gmail.com](mailto:agustinbram@gmail.com)
