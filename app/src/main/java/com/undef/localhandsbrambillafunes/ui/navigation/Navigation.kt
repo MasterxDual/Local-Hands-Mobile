@@ -79,7 +79,6 @@ fun Navigation() {
                 product = product
             )
         }
-
         composable(AppScreens.FavoritesScreen.route) {
             FavoritesScreen(navController)
         }
