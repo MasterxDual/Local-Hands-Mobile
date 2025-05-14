@@ -18,5 +18,5 @@ sealed class AppScreens(val route: String, val product: Product? = null) {
     }
     object CategoryScreen: AppScreens("category_screen")
     object FavoritesScreen: AppScreens("favorite_screens")
-
+    object SearchBarScreen: AppScreens("search_bar_screen")
 }
