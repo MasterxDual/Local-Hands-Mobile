@@ -12,6 +12,7 @@ import com.undef.localhandsbrambillafunes.data.model.ProductProvider
 import com.undef.localhandsbrambillafunes.ui.screens.auth.ForgotPasswordScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.LoginScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.RegisterScreen
+import com.undef.localhandsbrambillafunes.ui.screens.favorites.FavoritesScreen
 import com.undef.localhandsbrambillafunes.ui.screens.home.components.CategoryScreen
 import com.undef.localhandsbrambillafunes.ui.screens.profile.ProfileScreen
 import com.undef.localhandsbrambillafunes.ui.screens.productdetail.ProductDetailScreen
@@ -59,7 +60,9 @@ fun Navigation() {
             ProfileScreen(navController)
         }
         composable(
+            // Define una pantalla que corresponde a la ruta ProducDetailsScreen
             route = AppScreens.ProductDetailScreen.route,
+            // Espera un argumento llamado '´productId' de tipo entero
             arguments = listOf(
                 navArgument("productId") {
                     type = NavType.IntType
@@ -72,14 +75,17 @@ fun Navigation() {
             // Buscamos el producto en la lista
             val product = ProductProvider.products.find { it.id == productId } ?: return@composable
 
+            // composable que representa la pantalla de ProductDetailScreen
             ProductDetailScreen(
                 navController = navController,
                 product = product
             )
         }
+        composable(AppScreens.FavoritesScreen.route) {
+            FavoritesScreen(navController)
+        }
         composable(AppScreens.CategoryScreen.route) {
             CategoryScreen(navController)
         }
-
     }
 }

@@ -1,4 +1,4 @@
-package com.undef.localhandsbrambillafunes
+package com.undef.localhandsbrambillafunes.data.model
 
 //import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -21,7 +21,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
-import com.undef.localhandsbrambillafunes.data.model.Product
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
 /**
@@ -68,20 +67,6 @@ fun ProductImage(product: Product) {
             .clip(RoundedCornerShape(corner = CornerSize(16.dp)))
     )
 }
-
-//@Composable
-//fun ProductImage(product: Product) {
-//    Image(
-//        painter = painterResource(id = product.imageId),
-//        contentDescription = null,
-//        contentScale = ContentScale.Crop,
-//        modifier = Modifier
-//            .padding(8.dp)
-//            .size(84.dp)
-//            .clip(RoundedCornerShape(corner = CornerSize(16.dp)))
-//
-//    )
-//}
 
 
 
