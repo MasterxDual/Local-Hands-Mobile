@@ -6,8 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.undef.localhandsbrambillafunes.LocalHandsApp
-import com.undef.localhandsbrambillafunes.ProductListItem
+import com.undef.localhandsbrambillafunes.ui.screens.home.LocalHandsApp
 import com.undef.localhandsbrambillafunes.data.model.ProductProvider
 import com.undef.localhandsbrambillafunes.ui.screens.auth.ForgotPasswordScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.LoginScreen

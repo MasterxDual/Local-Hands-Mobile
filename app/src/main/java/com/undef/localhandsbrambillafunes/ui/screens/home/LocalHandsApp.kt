@@ -1,4 +1,4 @@
-package com.undef.localhandsbrambillafunes
+package com.undef.localhandsbrambillafunes.ui.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -37,6 +37,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.undef.localhandsbrambillafunes.R
+import com.undef.localhandsbrambillafunes.data.model.ProductListItem
 import com.undef.localhandsbrambillafunes.data.model.ProductProvider
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
