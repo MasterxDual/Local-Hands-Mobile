@@ -6,12 +6,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.undef.localhandsbrambillafunes.ui.screens.home.LocalHandsApp
 import com.undef.localhandsbrambillafunes.data.model.ProductProvider
 import com.undef.localhandsbrambillafunes.ui.screens.auth.ForgotPasswordScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.LoginScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.RegisterScreen
 import com.undef.localhandsbrambillafunes.ui.screens.favorites.FavoritesScreen
+import com.undef.localhandsbrambillafunes.ui.screens.home.LocalHandsApp
+import com.undef.localhandsbrambillafunes.ui.screens.home.components.CategoryScreen
 import com.undef.localhandsbrambillafunes.ui.screens.profile.ProfileScreen
 import com.undef.localhandsbrambillafunes.ui.screens.productdetail.ProductDetailScreen
 import com.undef.localhandsbrambillafunes.ui.screens.settings.SettingsScreen
@@ -66,11 +67,11 @@ fun Navigation() {
                     type = NavType.IntType
                 }
             )
-        ) { navBackStackEntry ->  // Recibimos NavBackStackEntry que contiene los argumentos de navegacion
-            // Extraemos el argumento productId como Int, si no existe, sale del composable con 'return@composable'
+        ) { navBackStackEntry ->  // Recibimos NavBackStackEntry
+            // Extraemos el argumento productId como Int
             val productId = navBackStackEntry.arguments?.getInt("productId") ?: return@composable
 
-            // Buscamos el producto en la lista, si no encuentra nada sale del composable
+            // Buscamos el producto en la lista
             val product = ProductProvider.products.find { it.id == productId } ?: return@composable
 
             // composable que representa la pantalla de ProductDetailScreen
@@ -81,6 +82,9 @@ fun Navigation() {
         }
         composable(AppScreens.FavoritesScreen.route) {
             FavoritesScreen(navController)
+        }
+        composable(AppScreens.CategoryScreen.route) {
+            CategoryScreen(navController)
         }
     }
 }
