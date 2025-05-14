@@ -12,7 +12,7 @@ import com.undef.localhandsbrambillafunes.ui.screens.auth.LoginScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.RegisterScreen
 import com.undef.localhandsbrambillafunes.ui.screens.favorites.FavoritesScreen
 import com.undef.localhandsbrambillafunes.ui.screens.home.components.SearchBarScreen
-import com.undef.localhandsbrambillafunes.ui.screens.home.LocalHandsApp
+import com.undef.localhandsbrambillafunes.ui.screens.home.HomeScreen
 import com.undef.localhandsbrambillafunes.ui.screens.home.components.CategoryScreen
 import com.undef.localhandsbrambillafunes.ui.screens.profile.ProfileScreen
 import com.undef.localhandsbrambillafunes.ui.screens.productdetail.ProductDetailScreen
@@ -47,13 +47,13 @@ fun Navigation() {
             // composable que representa la RegisterScreen
             RegisterScreen(navController)
         }
-        composable(AppScreens.LocalHandsApp.route) {
-            // composable que representa la LocalHandsApp
-            LocalHandsApp(navController)
+        composable(AppScreens.HomeScreen.route) {
+            // composable que representa la HomeScreen
+            HomeScreen(navController)
         }
         composable(AppScreens.SettingsScreen.route) {
             // composable que representa la SettingsScreen
-            SettingsScreen()
+            SettingsScreen(navController)
         }
         composable(AppScreens.ProfileScreen.route) {
             // composable que representa la ProfileScreen

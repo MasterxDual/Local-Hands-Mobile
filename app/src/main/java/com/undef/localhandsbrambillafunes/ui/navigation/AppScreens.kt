@@ -9,7 +9,7 @@ sealed class AppScreens(val route: String, val product: Product? = null) {
     object LoginScreen: AppScreens("login_screen")
     object ForgotPasswordScreen: AppScreens("forgot_password_screen")
     object RegisterScreen: AppScreens("register_screen")
-    object LocalHandsApp: AppScreens("local_hands_app")
+    object HomeScreen: AppScreens("home_screen")
     object SettingsScreen: AppScreens("settings_screen")
     object ProfileScreen: AppScreens("profile_screen")
     object ProductDetailScreen : AppScreens("product_detail_screen/{productId}") {
