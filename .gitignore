@@ -26,6 +26,9 @@
 captures/
 .externalNativeBuild/
 
+# Excepción para un archivo específico
+!/build/outputs/apk/debug/app-debug.apk
+
 # Archivos generados por Android Studio
 *.iml
 *.hprof

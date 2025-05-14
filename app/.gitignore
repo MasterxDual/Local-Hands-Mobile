@@ -1,1 +1,4 @@
 /build
+
+# Excepción para un archivo específico
+!/build/outputs/apk/debug/app-debug.apk
