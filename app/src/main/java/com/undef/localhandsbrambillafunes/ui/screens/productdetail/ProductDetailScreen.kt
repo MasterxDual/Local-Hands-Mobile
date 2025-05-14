@@ -60,6 +60,10 @@ import com.undef.localhandsbrambillafunes.data.model.Product
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 import com.undef.localhandsbrambillafunes.data.model.FavoriteProducts
 
+/**
+ * Pantalla de detalles del producto que muestra información completa del producto
+ * seleccionado, incluyendo imágenes, descripción y opciones de contacto.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductDetailScreen(navController: NavController, product: Product) {
@@ -67,19 +71,14 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
     // Estado para manejar la lista de imágenes del producto
     val productImages = remember { product.images }
 
-    // Manejar el estado del pager para las imágenes
+    // Control del visor de imágenes
     val pagerState = rememberPagerState(pageCount = { productImages.size })
 
-    // Estado para manejar si el producto está marcado como favorito
-//    var isFavorite by remember { mutableStateOf(false) }
-
-    // Estado local que se actualiza al cambiar favoritos
+    // Estado para el favorito (actualizado desde FavoriteProducts)
     val isFavorite = remember { mutableStateOf(FavoriteProducts.isFavorite(product.id)) }
 
-
-
     Scaffold(
-        // Barra Superior con título y acciones
+        // Barra superior con botón de retroceso
         topBar = {
             TopAppBar(
                 // Boton para volver a la pantalla anterior
@@ -191,6 +190,7 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                     .fillMaxWidth()
                     .fillMaxHeight()
             ) {
+                // Visor de imágenes con paginación horizontal
                 HorizontalPager(
                     state = pagerState,
                     modifier = Modifier.fillMaxWidth()
@@ -206,7 +206,7 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                     )
                 }
 
-                // Botón de favorito
+                // Botón flotante de favorito
                 IconButton(
                     onClick = {
                         if (isFavorite.value) {

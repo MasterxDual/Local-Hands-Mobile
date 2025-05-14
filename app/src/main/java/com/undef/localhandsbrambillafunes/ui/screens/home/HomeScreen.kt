@@ -41,94 +41,118 @@ import com.undef.localhandsbrambillafunes.data.model.ProductListItem
 import com.undef.localhandsbrambillafunes.data.model.ProductProvider
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
-
+/**
+ * Pantalla principal de la aplicación que muestra una interfaz completa con barra superior,
+ * contenido principal y barra de navegación inferior.
+ *
+ * Esta pantalla implementa el patrón Material Design 3 usando Scaffold como contenedor principal.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController) {
-
+    /**
+     * Scaffold es el componente base que proporciona la estructura básica de la pantalla
+     * con áreas para barra superior, contenido principal y barra inferior.
+     */
     Scaffold(
         // Barra Superior con título y acciones
         topBar = {
+            /**
+             * TopAppBar proporciona la barra superior con título y acciones.
+             * En este caso incluye el logo de la marca y botones de acción.
+             */
             TopAppBar(
                 // Logo de la Marca
                 title = {
-                    Row (
-                        verticalAlignment = Alignment.CenterVertically, // Centrar el logo con el texto verticalmente
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
+                        /**
+                         * Logo de la aplicación con descripción para accesibilidad
+                         */
                         Image(
-                            painter = painterResource(id = R.drawable.localhandslogo), // Logo de la appimport androidx.compose.foundation.Image
-                            contentDescription = "Logo principal de la aplicación",  // Texto para accesibilidad
+                            painter = painterResource(id = R.drawable.localhandslogo),
+                            contentDescription = "Logo principal de la aplicación",
                             modifier = Modifier
                                 .size(50.dp)
                                 .padding(end = 8.dp),
                         )
+                        /**
+                         * Título de la aplicación con estilo en negrita
+                         */
                         Text(
                             text = stringResource(R.string.app_name),
                             fontWeight = FontWeight.Bold
                         )
                     }
                 },
-                // Colores para la barra superior
+                // Colores personalizados para la barra superior
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF242424),  // Color de fondo
-                    titleContentColor = Color.White,      // Color del texto
-                    actionIconContentColor = Color.White  // Color de los iconos de acción
+                    containerColor = Color(0xFF242424),  // Color oscuro para fondo
+                    titleContentColor = Color.White,      // Texto blanco
+                    actionIconContentColor = Color.White  // Iconos blancos
                 ),
+                // Acciones disponibles en la barra superior
                 actions = {
-                    // Botón para explorar o buscar
+                    /**
+                     * Botón de búsqueda que navega a la pantalla de búsqueda
+                     */
                     IconButton(onClick = { navController.navigate(route = AppScreens.SearchBarScreen.route) }) {
-                        Icon(
-                            Icons.Filled.Search,
-                            contentDescription = "Buscar"
-                        )
+                        Icon(Icons.Filled.Search, contentDescription = "Buscar")
                     }
 
-                    // Botón para ir a Perfil
+                    /**
+                     * Botón de perfil que navega a la pantalla de perfil
+                     */
                     IconButton(onClick = { navController.navigate(route = AppScreens.ProfileScreen.route) }) {
-                        Icon(
-                            Icons.Filled.Person,
-                            contentDescription = "Seccion de Perfil"
-                        )
+                        Icon(Icons.Filled.Person, contentDescription = "Sección de Perfil")
                     }
 
-                    // Botón para ir a Configuración
+                    /**
+                     * Botón de configuración que navega a la pantalla de ajustes
+                     */
                     IconButton(onClick = { navController.navigate(route = AppScreens.SettingsScreen.route) }) {
-                        Icon(
-                            Icons.Filled.Settings,
-                            contentDescription = "Seccion de Settings"
-                        )
+                        Icon(Icons.Filled.Settings, contentDescription = "Sección de Settings")
                     }
                 }
             )
         },
 
-        // Implementacion para Material3:
-        // Barra inferior con navegacion principal
+        // Barra inferior de navegación
         bottomBar = {
-            // Navegacion inferior con iconos
+            /**
+             * NavigationBar proporciona la barra de navegación inferior con iconos y etiquetas
+             */
             NavigationBar(
-                containerColor = Color(0xFF242424),
-                contentColor = Color.White
+                containerColor = Color(0xFF242424),  // Fondo oscuro
+                contentColor = Color.White           // Texto blanco
             ) {
-
-                // Esquema de color para los diferentes estados de los botones
+                /**
+                 * Configuración de colores para los elementos de navegación
+                 */
                 val navBarItemColors = NavigationBarItemDefaults.colors(
                     selectedIconColor = Color.White,      // Ícono seleccionado
                     unselectedIconColor = Color.White,     // Ícono no seleccionado
                     selectedTextColor = Color.White,      // Texto seleccionado
-                    unselectedTextColor = Color.White,      // Texto no seleccionado
-                    indicatorColor = Color.Transparent     // Quitar el recuadro
+                    unselectedTextColor = Color.White,    // Texto no seleccionado
+                    indicatorColor = Color.Transparent     // Sin indicador visual
                 )
 
-                // Boton de Home o inicio (actual)
+                /**
+                 * Elementos de navegación disponibles:
+                 * - Inicio (actualmente seleccionado)
+                 * - Favoritos
+                 * - Vender
+                 * - Categorías
+                 */
                 NavigationBarItem(
                     icon = { Icon(Icons.Filled.Home, contentDescription = "Inicio") },
                     label = { Text("Inicio")},
                     colors = navBarItemColors,
                     selected = true,
-                    onClick = { /* Implementar navegar a Home aunque estamos en Home */ }
+                    onClick = { /* Implementar navegación a Home */ }
                 )
-                // Boton de favoritos
+
                 NavigationBarItem(
                     icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favoritos") },
                     label = { Text("Favoritos")},
@@ -136,50 +160,48 @@ fun HomeScreen(navController: NavController) {
                     selected = true,
                     onClick = { navController.navigate(route = AppScreens.FavoritesScreen.route) }
                 )
-                // Boton para vender
+
                 NavigationBarItem(
                     icon = { Icon(Icons.Filled.Shop, contentDescription = "Vender") },
                     label = { Text("Vender")},
                     colors = navBarItemColors,
                     selected = true,
-                    onClick = { /* TODO: Implementar navegacion */ }
+                    onClick = { /* TODO: Implementar navegación */ }
                 )
-                // Boton de Categorias
+
                 NavigationBarItem(
                     icon = { Icon(Icons.Filled.Menu, contentDescription = "Categorias") },
-                    label = { Text("Categorias")},
+                    label = { Text("Categorías")},
                     colors = navBarItemColors,
                     selected = true,
                     onClick = { navController.navigate(route = AppScreens.CategoryScreen.route) }
                 )
             }
-
         }
-
     ) { paddingValues ->
-        // products se preserva entre recomposiciones (cuando la UI se redibuja por cambios de estado)
+        /**
+         * Contenido principal de la pantalla usando LazyColumn para mejor rendimiento
+         */
         val products = remember { ProductProvider.products }
 
-
-        // Contenido principal
         LazyColumn(
             state = rememberLazyListState(),
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues), // Se aplica el padding del Scaffold
+                .padding(paddingValues),
         ) {
+            // Encabezado de sección
             item {
                 Text(
                     text = "Productos Destacados",
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                 )
             }
-//            items(items = products) {
-//                item -> ProductListItem(product = item, navController = navController)
-//            }
+
+            // Lista de productos
             items(
                 items = products,
-                key = { it.id } // Key única para cada item
+                key = { it.id } // Clave única para cada producto
             ) { product ->
                 ProductListItem(product = product, navController = navController)
             }
