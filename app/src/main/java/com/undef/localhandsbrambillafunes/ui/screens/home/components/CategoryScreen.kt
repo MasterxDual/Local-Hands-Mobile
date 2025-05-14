@@ -1,16 +1,13 @@
 package com.undef.localhandsbrambillafunes.ui.screens.home.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
@@ -32,15 +29,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.undef.localhandsbrambillafunes.CategoryListItem
-import com.undef.localhandsbrambillafunes.R
+import com.undef.localhandsbrambillafunes.data.model.CategoryListItem
 import com.undef.localhandsbrambillafunes.data.model.CategoryProvider
-import com.undef.localhandsbrambillafunes.data.model.ProductProvider
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,24 +42,15 @@ fun CategoryScreen(navController: NavController) {
         // Barra Superior con título y acciones
         topBar = {
             TopAppBar(
-                // Logo de la Marca
+                // Boton para volver a la pantalla anterior
                 title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically, // Centrar el logo con el texto verticalmente
-                        modifier = Modifier.clickable() { /* TODO: Implementar navegacion */ }
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.localhandslogo), // Logo de la appimport androidx.compose.foundation.Image
-                            contentDescription = "Logo principal de la aplicación",  // Texto para accesibilidad
-                            modifier = Modifier
-                                .size(50.dp)
-                                .padding(end = 8.dp),
-
+                    Row (verticalAlignment = Alignment.CenterVertically) {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
+                                Icons.Filled.ArrowBackIosNew,
+                                contentDescription = "Volver Atras"
                             )
-                        Text(
-                            text = stringResource(R.string.app_name),
-                            fontWeight = FontWeight.Bold
-                        )
+                        }
                     }
                 },
                 // Colores para la barra superior
@@ -77,11 +60,11 @@ fun CategoryScreen(navController: NavController) {
                     actionIconContentColor = Color.White  // Color de los iconos de acción
                 ),
                 actions = {
-                    // Botón para ir a Favoritos
-                    IconButton(onClick = { /* TODO: Implementar navegación */ }) {
+                    // Botón para Buscar
+                    IconButton(onClick = { navController.navigate(AppScreens.SearchBarScreen.route)}) {
                         Icon(
-                            Icons.Filled.Favorite,
-                            contentDescription = "Seccion de Favoritos"
+                            Icons.Filled.Search,
+                            contentDescription = "Buscar"
                         )
                     }
 
@@ -122,21 +105,21 @@ fun CategoryScreen(navController: NavController) {
                     indicatorColor = Color.Transparent     // Quitar el recuadro
                 )
 
-                // Boton de Home o inicio (actual)
+                // Boton de Home o inicio
                 NavigationBarItem(
                     icon = { Icon(Icons.Filled.Home, contentDescription = "Inicio") },
                     label = { Text("Inicio") },
                     colors = navBarItemColors,
                     selected = true,
-                    onClick = { navController.navigate(route = AppScreens.LocalHandsApp.route) }
+                    onClick = { navController.navigate(route = AppScreens.HomeScreen.route) }
                 )
                 // Boton de explorar o buscar
                 NavigationBarItem(
-                    icon = { Icon(Icons.Filled.Search, contentDescription = "Buscar") },
-                    label = { Text("Buscar") },
+                    icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favoritos") },
+                    label = { Text("Favoritos") },
                     colors = navBarItemColors,
                     selected = true,
-                    onClick = { /* Implementar Busqueda */ }
+                    onClick = { navController.navigate(AppScreens.FavoritesScreen.route) }
                 )
             }
 
@@ -163,8 +146,7 @@ fun CategoryScreen(navController: NavController) {
             items(categories, key = { it.id }) { category ->
                 CategoryListItem(
                     category = category,
-                    navController = navController,
-                    modifier = Modifier.fillMaxWidth()
+                    navController = navController
                 )
             }
         }

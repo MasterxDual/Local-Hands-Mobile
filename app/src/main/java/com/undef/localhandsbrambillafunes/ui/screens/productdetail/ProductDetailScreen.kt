@@ -60,6 +60,10 @@ import com.undef.localhandsbrambillafunes.data.model.Product
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 import com.undef.localhandsbrambillafunes.data.model.FavoriteProducts
 
+/**
+ * Pantalla de detalles del producto que muestra información completa del producto
+ * seleccionado, incluyendo imágenes, descripción y opciones de contacto.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductDetailScreen(navController: NavController, product: Product) {
@@ -67,19 +71,14 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
     // Estado para manejar la lista de imágenes del producto
     val productImages = remember { product.images }
 
-    // Manejar el estado del pager para las imágenes
+    // Control del visor de imágenes
     val pagerState = rememberPagerState(pageCount = { productImages.size })
 
-    // Estado para manejar si el producto está marcado como favorito
-//    var isFavorite by remember { mutableStateOf(false) }
-
-    // Estado local que se actualiza al cambiar favoritos
+    // Estado para el favorito (actualizado desde FavoriteProducts)
     val isFavorite = remember { mutableStateOf(FavoriteProducts.isFavorite(product.id)) }
 
-
-
     Scaffold(
-        // Barra Superior con título y acciones
+        // Barra superior con botón de retroceso
         topBar = {
             TopAppBar(
                 // Boton para volver a la pantalla anterior
@@ -101,15 +100,15 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                 ),
                 actions = {
                     // Botón para ir a Favoritos
-                    IconButton(onClick = { navController.navigate(route = AppScreens.FavoritesScreen.route) }) {
+                    IconButton(onClick = { navController.navigate(route = AppScreens.SearchBarScreen.route) }) {
                         Icon(
-                            Icons.Filled.Favorite,
-                            contentDescription = "Seccion de Favoritos"
+                            Icons.Filled.Search,
+                            contentDescription = "Buscar"
                         )
                     }
 
                     // Botón para ir a Perfil
-                    IconButton(onClick = { /* TODO: Implementar navegación */ }) {
+                    IconButton(onClick = { navController.navigate(AppScreens.ProfileScreen.route) }) {
                         Icon(
                             Icons.Filled.Person,
                             contentDescription = "Seccion de Perfil"
@@ -151,15 +150,15 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                     label = { Text("Inicio")},
                     colors = navBarItemColors,
                     selected = true,
-                    onClick = { navController.navigate(route = AppScreens.LocalHandsApp.route) }
+                    onClick = { navController.navigate(route = AppScreens.HomeScreen.route) }
                 )
-                // Boton de explorar o buscar
+                // Boton de Favoritos
                 NavigationBarItem(
-                    icon = { Icon(Icons.Filled.Search, contentDescription = "Buscar") },
-                    label = { Text("Buscar")},
+                    icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favoritos") },
+                    label = { Text("Favoritos")},
                     colors = navBarItemColors,
                     selected = true,
-                    onClick = { /* TODO: Implementar Busqueda */ }
+                    onClick = { navController.navigate(AppScreens.FavoritesScreen.route)}
                 )
                 // Boton para vender
                 NavigationBarItem(
@@ -175,7 +174,7 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                     label = { Text("Categorias")},
                     colors = navBarItemColors,
                     selected = true,
-                    onClick = { /* TODO: Implementar navegacion */ }
+                    onClick = { navController.navigate(AppScreens.CategoryScreen.route) }
                 )
             }
         }
@@ -191,6 +190,7 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                     .fillMaxWidth()
                     .fillMaxHeight()
             ) {
+                // Visor de imágenes con paginación horizontal
                 HorizontalPager(
                     state = pagerState,
                     modifier = Modifier.fillMaxWidth()
@@ -206,7 +206,7 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                     )
                 }
 
-                // Botón de favorito
+                // Botón flotante de favorito
                 IconButton(
                     onClick = {
                         if (isFavorite.value) {

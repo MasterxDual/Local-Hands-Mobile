@@ -59,7 +59,13 @@ fun FavoritesScreen(navController: NavController) {
                     actionIconContentColor = Color.White  // Color de los iconos de acción
                 ),
                 actions = {
-
+                    // Botón para explorar o buscar
+                    IconButton(onClick = { navController.navigate(route = AppScreens.SearchBarScreen.route) }) {
+                        Icon(
+                            Icons.Filled.Search,
+                            contentDescription = "Buscar"
+                        )
+                    }
                     // Botón para ir a Perfil
                     IconButton(onClick = { navController.navigate(route = AppScreens.ProfileScreen.route) }) {
                         Icon(
@@ -103,15 +109,7 @@ fun FavoritesScreen(navController: NavController) {
                     label = { Text("Inicio")},
                     colors = navBarItemColors,
                     selected = true,
-                    onClick = { navController.navigate(route = AppScreens.LocalHandsApp.route) }
-                )
-                // Boton de explorar o buscar
-                NavigationBarItem(
-                    icon = { Icon(Icons.Filled.Search, contentDescription = "Buscar") },
-                    label = { Text("Buscar")},
-                    colors = navBarItemColors,
-                    selected = true,
-                    onClick = { /* TODO: Implementar Busqueda */ }
+                    onClick = { navController.navigate(route = AppScreens.HomeScreen.route) }
                 )
                 // Boton para vender
                 NavigationBarItem(
@@ -127,7 +125,7 @@ fun FavoritesScreen(navController: NavController) {
                     label = { Text("Categorias")},
                     colors = navBarItemColors,
                     selected = true,
-                    onClick = { /* TODO: Implementar navegacion */ }
+                    onClick = { navController.navigate(AppScreens.CategoryScreen.route) }
                 )
             }
         }

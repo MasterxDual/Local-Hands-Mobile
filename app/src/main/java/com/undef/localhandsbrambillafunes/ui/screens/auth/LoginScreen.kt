@@ -231,7 +231,7 @@ fun RowButtonLogin(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
                 navController.popBackStack() // Eliminamos la pantalla del stack de navegación
-                navController.navigate(route = AppScreens.LocalHandsApp.route)
+                navController.navigate(route = AppScreens.HomeScreen.route)
             },
             enabled = isValidEmail && isValidPassword  //Cuando se cumplan las validaciones el boton debe validarse
         ) {

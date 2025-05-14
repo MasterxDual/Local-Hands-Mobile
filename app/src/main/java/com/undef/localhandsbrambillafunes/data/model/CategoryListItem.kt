@@ -1,4 +1,4 @@
-package com.undef.localhandsbrambillafunes
+package com.undef.localhandsbrambillafunes.data.model
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -19,7 +19,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
-import com.undef.localhandsbrambillafunes.data.model.Category
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
 /**
@@ -27,12 +26,12 @@ import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
  * y reduce las recomposiciones innecesarias
  */
 @Composable
-fun CategoryListItem(category: Category, navController: NavController, modifier: Modifier) {
+fun CategoryListItem(category: Category, navController: NavController) {
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
             .fillMaxWidth()
-            .clickable() {
+            .clickable {
                 navController.navigate(route = AppScreens.ProductDetailScreen.createRoute(category.id))
             },
         shape = RoundedCornerShape(corner = CornerSize(16.dp))

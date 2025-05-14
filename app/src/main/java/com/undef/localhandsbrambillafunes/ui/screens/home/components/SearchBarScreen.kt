@@ -85,7 +85,7 @@ fun SearchBarScreen(navController: NavController) {
                     label = { Text("Inicio")},
                     colors = navBarItemColors,
                     selected = true,
-                    onClick = { navController.navigate(route = AppScreens.LocalHandsApp.route) }
+                    onClick = { navController.navigate(route = AppScreens.HomeScreen.route) }
                 )
 
                 // Botón de Favoritos

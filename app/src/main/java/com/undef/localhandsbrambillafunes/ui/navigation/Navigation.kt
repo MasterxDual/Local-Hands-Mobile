@@ -12,83 +12,121 @@ import com.undef.localhandsbrambillafunes.ui.screens.auth.LoginScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.RegisterScreen
 import com.undef.localhandsbrambillafunes.ui.screens.favorites.FavoritesScreen
 import com.undef.localhandsbrambillafunes.ui.screens.home.components.SearchBarScreen
-import com.undef.localhandsbrambillafunes.ui.screens.home.LocalHandsApp
+import com.undef.localhandsbrambillafunes.ui.screens.home.HomeScreen
 import com.undef.localhandsbrambillafunes.ui.screens.home.components.CategoryScreen
 import com.undef.localhandsbrambillafunes.ui.screens.profile.ProfileScreen
 import com.undef.localhandsbrambillafunes.ui.screens.productdetail.ProductDetailScreen
 import com.undef.localhandsbrambillafunes.ui.screens.settings.SettingsScreen
 import com.undef.localhandsbrambillafunes.ui.screens.splash.SplashScreen
 
+/**
+ * Composable principal que configura y gestiona la navegación entre pantallas de la aplicación.
+ * Define el NavHost con todas las rutas disponibles y sus respectivos composables.
+ */
 @Composable
 fun Navigation() {
 
-    // Crear NavController por defecto
+    // Crear NavController que recordará el estado de navegación
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
-        startDestination = AppScreens.SplashScreen.route // Primer destino de la navegacion, en este caso, la SplashScreen
+        startDestination = AppScreens.SplashScreen.route // Primer destino de la navegación será la pantalla de splash
     ) {
-        // Aca van las capacidades de navegacion, es decir, las pantllas por donde navegara el NavHost
+        // Definición de todas las rutas de navegación y sus composables asociados
 
+        /**
+         * Pantalla de splash (inicial) que se muestra al arrancar la aplicación.
+         */
         composable(AppScreens.SplashScreen.route) {
-            // composable que representa la SplashScreen
             SplashScreen(navController)
         }
+
+        /**
+         * Pantalla de inicio de sesión donde los usuarios pueden autenticarse.
+         */
         composable(AppScreens.LoginScreen.route) {
-            // composable que representa la LoginScreen
             LoginScreen(navController)
         }
+
+        /**
+         * Pantalla para la recuperación de contraseña olvidada.
+         */
         composable(AppScreens.ForgotPasswordScreen.route) {
-            // composable que representa la ForgotPasswordScreen
             ForgotPasswordScreen(navController)
         }
+
+        /**
+         * Pantalla de registro para nuevos usuarios.
+         */
         composable(AppScreens.RegisterScreen.route) {
-            // composable que representa la RegisterScreen
             RegisterScreen(navController)
         }
-        composable(AppScreens.LocalHandsApp.route) {
-            // composable que representa la LocalHandsApp
-            LocalHandsApp(navController)
+
+        /**
+         * Pantalla principal de la aplicación que se muestra después de la autenticación.
+         */
+        composable(AppScreens.HomeScreen.route) {
+            HomeScreen(navController)
         }
+
+        /**
+         * Pantalla de configuración de la aplicación.
+         */
         composable(AppScreens.SettingsScreen.route) {
-            // composable que representa la SettingsScreen
-            SettingsScreen()
+            SettingsScreen(navController)
         }
+
+        /**
+         * Pantalla de perfil del usuario donde se muestra y puede editar su información.
+         */
         composable(AppScreens.ProfileScreen.route) {
-            // composable que representa la ProfileScreen
             ProfileScreen(navController)
         }
+
+        /**
+         * Pantalla de detalle de producto que recibe un ID como parámetro.
+         * Define un argumento 'productId' de tipo entero que se extrae de la URL.
+         */
         composable(
-            // Define una pantalla que corresponde a la ruta ProducDetailsScreen
             route = AppScreens.ProductDetailScreen.route,
             // Espera un argumento llamado '´productId' de tipo entero
             arguments = listOf(
                 navArgument("productId") {
-                    type = NavType.IntType
+                    type = NavType.IntType // Define el tipo del argumento como entero
                 }
             )
-        ) { navBackStackEntry ->  // Recibimos NavBackStackEntry
-            // Extraemos el argumento productId como Int
+        ) { navBackStackEntry ->  // Recibe la entrada de navegación
+            // Extrae el argumento productId del backstack, si no existe retorna sin hacer nada
             val productId = navBackStackEntry.arguments?.getInt("productId") ?: return@composable
 
-            // Buscamos el producto en la lista
+            // Busca el producto correspondiente en el proveedor de datos
             val product = ProductProvider.products.find { it.id == productId } ?: return@composable
 
-            // composable que representa la pantalla de ProductDetailScreen
+            // Muestra la pantalla de detalle con el producto encontrado
             ProductDetailScreen(
                 navController = navController,
                 product = product
             )
         }
+
+        /**
+         * Pantalla que muestra los productos marcados como favoritos por el usuario.
+         */
         composable(AppScreens.FavoritesScreen.route) {
             FavoritesScreen(navController)
         }
 
+        /**
+         * Pantalla de búsqueda que permite al usuario buscar productos.
+         */
         composable(AppScreens.SearchBarScreen.route) {
             SearchBarScreen(navController)
         }
-        
+
+        /**
+         * Pantalla que muestra las categorías de productos disponibles.
+         */
         composable(AppScreens.CategoryScreen.route) {
             CategoryScreen(navController)
         }

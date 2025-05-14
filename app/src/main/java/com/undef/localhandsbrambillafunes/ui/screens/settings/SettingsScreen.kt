@@ -1,7 +1,6 @@
 package com.undef.localhandsbrambillafunes.ui.screens.settings
 
-import android.view.Surface
-import android.widget.Switch
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,16 +14,29 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Shop
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,39 +46,139 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(navController: NavController) {
+
     var selectedCity by remember { mutableStateOf("Rosario, Santa Fe") }
     var selectedFrequency by remember { mutableStateOf("Una vez al día") }
 
-    Column (modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp)) {
+    Scaffold(
+        // Barra Superior con título y acciones
+        topBar = {
+            TopAppBar(
+                // Boton para volver a la pantalla anterior
+                title = {
+                    Row (verticalAlignment = Alignment.CenterVertically) {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
+                                Icons.Filled.ArrowBackIosNew,
+                                contentDescription = "Volver Atras"
+                            )
+                        }
+                    }
+                },
+                // Colores para la barra superior
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFF242424),  // Color de fondo
+                    titleContentColor = Color.White,      // Color del texto
+                    actionIconContentColor = Color.White  // Color de los iconos de acción
+                ),
+                actions = {
+                    // Botón para ir a Perfil
+                    IconButton(onClick = { navController.navigate(route = AppScreens.ProfileScreen.route) }) {
+                        Icon(
+                            Icons.Filled.Person,
+                            contentDescription = "Seccion de Perfil"
+                        )
+                    }
+                }
+            )
+        },
 
-        Text("Preferencias de búsqueda", style = MaterialTheme.typography.titleMedium)
-        FavoriteCategoriesSection()
+        // Implementacion para Material3:
+        // Barra inferior con navegacion principal
+        bottomBar = {
+            // Navegacion inferior con iconos
+            NavigationBar(
+                containerColor = Color(0xFF242424),
+                contentColor = Color.White
+            ) {
 
-        /*Desplegable para seleccionar la ubicacion por defecto*/
-        DropdownUbication (
-            selectedCity = selectedCity,
-            onCitySelected = { selectedCity = it }
-        )
+                // Esquema de color para los diferentes estados de los botones
+                val navBarItemColors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = Color.White,      // Ícono seleccionado
+                    unselectedIconColor = Color.White,     // Ícono no seleccionado
+                    selectedTextColor = Color.White,      // Texto seleccionado
+                    unselectedTextColor = Color.White,      // Texto no seleccionado
+                    indicatorColor = Color.Transparent     // Quitar el recuadro
+                )
 
-        Spacer(Modifier.height(16.dp))
+                // Boton de Home o inicio
+                NavigationBarItem(
+                    icon = { Icon(Icons.Filled.Home, contentDescription = "Inicio") },
+                    label = { Text("Inicio")},
+                    colors = navBarItemColors,
+                    selected = true,
+                    onClick = { navController.navigate(route = AppScreens.HomeScreen.route) }
+                )
+                // Boton de Favoritos
+                NavigationBarItem(
+                    icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favoritos") },
+                    label = { Text("Favoritos")},
+                    colors = navBarItemColors,
+                    selected = true,
+                    onClick = { navController.navigate(AppScreens.FavoritesScreen.route)}
+                )
+                // Boton para vender
+                NavigationBarItem(
+                    icon = { Icon(Icons.Filled.Shop, contentDescription = "Vender") },
+                    label = { Text("Vender")},
+                    colors = navBarItemColors,
+                    selected = true,
+                    onClick = { /* TODO: Implementar navegacion */ }
+                )
+                // Boton de Categorias
+                NavigationBarItem(
+                    icon = { Icon(Icons.Filled.Menu, contentDescription = "Categorias") },
+                    label = { Text("Categorias")},
+                    colors = navBarItemColors,
+                    selected = true,
+                    onClick = { navController.navigate(AppScreens.CategoryScreen.route) }
+                )
+            }
+        }
+    ) { paddingValues ->
+        Column (
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
 
-        DropdownNotificationFrequency(selectedFrequency = selectedFrequency,
-            onFrequencySelected = { selectedFrequency = it }
-        )
+                Text("Preferencias de búsqueda", style = MaterialTheme.typography.titleMedium)
 
-        Text("Alertas de favoritos:")
-        AlertsSwitchFavorites()
+                FavoriteCategoriesSection()
 
-        Spacer(Modifier.height(16.dp))
+                /*Desplegable para seleccionar la ubicacion por defecto*/
+                DropdownUbication (
+                    selectedCity = selectedCity,
+                    onCitySelected = { selectedCity = it }
+                )
 
-        Text("Soporte", style = MaterialTheme.typography.titleMedium)
-        Text("¿Consultas? Envíanos un email:")
-        Text("soporte@manoslocales.app", color = Color.Blue)
+                Spacer(Modifier.height(16.dp))
+
+                DropdownNotificationFrequency(selectedFrequency = selectedFrequency,
+                    onFrequencySelected = { selectedFrequency = it }
+                )
+
+                Text("Alertas de favoritos:")
+                AlertsSwitchFavorites()
+
+                Spacer(Modifier.height(16.dp))
+
+                Text("Soporte", style = MaterialTheme.typography.titleMedium)
+                Text("¿Consultas? Envíanos un email:")
+                Text("soporte@manoslocales.app", color = Color.Blue)
+            }
+        }
     }
 }
 
