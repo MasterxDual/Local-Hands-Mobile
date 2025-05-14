@@ -38,7 +38,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.undef.localhandsbrambillafunes.CategoryListItem
-import com.undef.localhandsbrambillafunes.ProductListItem
 import com.undef.localhandsbrambillafunes.R
 import com.undef.localhandsbrambillafunes.data.model.CategoryProvider
 import com.undef.localhandsbrambillafunes.data.model.ProductProvider
