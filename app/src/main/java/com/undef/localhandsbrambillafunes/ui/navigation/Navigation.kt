@@ -38,7 +38,7 @@ fun Navigation() {
         }
         composable(AppScreens.ForgotPasswordScreen.route) {
             // composable que representa la ForgotPasswordScreen
-            ForgotPasswordScreen()
+            ForgotPasswordScreen(navController)
         }
         composable(AppScreens.RegisterScreen.route) {
             // composable que representa la RegisterScreen
