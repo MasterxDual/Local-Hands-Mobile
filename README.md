@@ -20,7 +20,7 @@
 
 ---
 
-## Características Principales
+## 📌 Características Principales
 
 - **Registro e inicio de sesión**: Los usuarios pueden registrarse, iniciar sesión y cambiar su contraseña.
 - **Exploración de emprendimientos**: Ver un listado de productos.
@@ -31,14 +31,14 @@
 - **Configuraciones**: Ajustar preferencias de búsqueda y notificaciones.
 - **Soporte**: Enviar consultas por correo electrónico a los desarrolladores.
 
-## Objetivo del Proyecto
+## 🎯 Objetivo del Proyecto
 
 Desarrollar una aplicación Android funcional que permita:
 1. Explorar una red de productos de emprendedores locales.
 2. Conectarse a un servidor externo para descargar y actualizar información.
 3. Interactuar de manera organizada y fluida con productos y los perfiles de sus productores.
 
-## Requisitos Técnicos
+## 🔧 Requisitos Técnicos
 
 ### Requerimientos Funcionales
 
@@ -85,7 +85,7 @@ ___
 ## 📱 Demo de la Aplicación
 
 <div align="center">
-  <img src="" width="300" alt="Demo GIF"/>
+  <img src="localhandsappvideo.gif" width="300" alt="Demo GIF"/>
 </div>
 
 ---
@@ -96,15 +96,17 @@ ___
 app/
 └── src/
     └── main/
-        ├── java/
-        │   └── com/undef/localhandsbrambillafunes/
-        │       ├── data/            # Modelos y repositorios
-        │       ├── ui/              # Interfaz de usuario
-        │       │   ├── components/  # Componentes reutilizables
-        │       │   ├── screens/     # Pantallas (Login, Home, etc.)
-        │       │   └── theme/       # Sistema de diseño
-        │       └── MainActivity.kt  # Punto de entrada
-        └── res/                     # Recursos (imágenes, strings)
+        └── java/
+            └── com/
+                └── undef/
+                    └── localhandsbrambillafunes/
+                        ├── data/                         # Gestión de datos y modelos
+                        ├── ui/                           # Componentes y pantallas
+                        │   ├── common/                   # Elementos reutilizables (botones, diálogos, etc.)
+                        │   ├── navigation/               # Configuración de la navegación
+                        │   ├── screens/                  # Pantallas individuales (Login, Registro, etc.)
+                        │   └── theme/                    # Configuración de temas y estilos
+                        └── MainActivity.kt               # Punto de entrada de la aplicación
 ```
 
 ---
@@ -133,8 +135,6 @@ app/
 ---
 
 ## ✉️ Contacto
-
-¿Tienes preguntas o sugerencias?
 
 📧 **Equipo de desarrollo**:
 - Tobias Funes: [tobiasfunes@hotmail.com](mailto:tobiasfunes@hotmail.com.ar)
