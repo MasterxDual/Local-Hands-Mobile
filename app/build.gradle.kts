@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     //For plugin KSP for Room
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -46,10 +46,10 @@ dependencies {
 
     //For Room library for database
     implementation("androidx.room:room-runtime:$room_version")
-    //Plugin for Room
-    ksp("androidx.room:room-compiler:$room_version")
     //Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
+    //Plugin for Room
+    ksp("androidx.room:room-compiler:$room_version")
     //Paging 3 Integration
     implementation("androidx.room:room-paging:$room_version")
 
