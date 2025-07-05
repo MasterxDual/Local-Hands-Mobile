@@ -51,4 +51,7 @@ sealed class AppScreens(val route: String) {
 
     // Pantalla de búsqueda de productos.
     object SearchBarScreen: AppScreens("search_bar_screen")
+
+    // Pantalla para emprender productos.
+    object SellScreen : AppScreens("sell_screen")
 }

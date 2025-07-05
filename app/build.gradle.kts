@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0") // o la última versión
 
     // Agregar Dependencia de navegacion de Jetpack Compose
     implementation(libs.androidx.navigation.compose)

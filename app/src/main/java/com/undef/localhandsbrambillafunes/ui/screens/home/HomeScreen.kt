@@ -166,7 +166,7 @@ fun HomeScreen(navController: NavController) {
                     label = { Text("Vender")},
                     colors = navBarItemColors,
                     selected = true,
-                    onClick = { /* TODO: Implementar navegación */ }
+                    onClick = { navController.navigate(route = AppScreens.SellScreen.route) }
                 )
 
                 NavigationBarItem(

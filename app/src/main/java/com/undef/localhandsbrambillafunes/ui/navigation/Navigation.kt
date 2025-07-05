@@ -18,6 +18,9 @@ import com.undef.localhandsbrambillafunes.ui.screens.profile.ProfileScreen
 import com.undef.localhandsbrambillafunes.ui.screens.productdetail.ProductDetailScreen
 import com.undef.localhandsbrambillafunes.ui.screens.settings.SettingsScreen
 import com.undef.localhandsbrambillafunes.ui.screens.splash.SplashScreen
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.undef.localhandsbrambillafunes.ui.screens.entrepreneur.SellScreen
+
 
 /**
  * Composable principal que configura y gestiona la navegación entre pantallas de la aplicación.
@@ -129,6 +132,14 @@ fun Navigation() {
          */
         composable(AppScreens.CategoryScreen.route) {
             CategoryScreen(navController)
+        }
+
+        composable(AppScreens.SellScreen.route) {
+            SellScreen(
+                navController,
+                viewModel = hiltViewModel(), // O tu método de obtención de VM
+                onEditProduct = { /* navegar a pantalla de edición */ }
+            )
         }
     }
 }

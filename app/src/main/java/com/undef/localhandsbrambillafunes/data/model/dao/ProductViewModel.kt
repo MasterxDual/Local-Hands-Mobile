@@ -7,9 +7,14 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.undef.localhandsbrambillafunes.data.model.Product
+import com.undef.localhandsbrambillafunes.data.model.ProductProviderMigration
 import com.undef.localhandsbrambillafunes.data.model.db.ProductApplication
 import com.undef.localhandsbrambillafunes.data.repository.ProductRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 /*Responsabilidad principal: Proporcionar datos a la UI y sobrevivir a cambios de configuración
@@ -22,19 +27,35 @@ import kotlinx.coroutines.launch
 class ProductViewModel(repository: ProductRepository) : ViewModel() {
     private val repository = ProductRepository(ProductApplication.database)
 
-    var productList by mutableStateOf<List<Product>>(emptyList())
-        private set
-
-    fun loadAllProducts() {
-        viewModelScope.launch(Dispatchers.IO) {
-            productList = repository.getAllProducts()
+    //Inicializamos la BD con los productos migrados
+    init {
+        viewModelScope.launch {
+            // Verificamos si la BD ya tiene productos
+            val hasProducts = repository.getAllProducts().first().isNotEmpty() //First se utiliza porque tenemos un Flow en la lista de productos que traemos
+            if(!hasProducts) {
+                //Si no tiene productos, se insertan los productos migrados
+                val migratedProducts = ProductProviderMigration.getAllAsEntities()
+                repository.insertAll(migratedProducts)
+            }
         }
     }
 
-    fun addProduct(product: Product) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.insertProduct(product)
-            loadAllProducts()
-        }
+    val products: StateFlow<List<Product>> = repository.getAllProducts()
+        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+
+    fun addProduct(product: Product) = viewModelScope.launch {
+        repository.insertProduct(product)
+    }
+
+    fun updateProduct(product: Product) = viewModelScope.launch {
+        repository.updateProduct(product)
+    }
+
+    fun deleteProduct(product: Product) = viewModelScope.launch {
+        repository.deleteProduct(product)
+    }
+
+    fun insertAll(products: List<Product>) = viewModelScope.launch {
+        repository.insertAll(products)
     }
 }

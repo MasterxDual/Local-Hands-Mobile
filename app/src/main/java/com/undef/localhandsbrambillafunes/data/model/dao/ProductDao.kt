@@ -7,12 +7,13 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.undef.localhandsbrambillafunes.data.model.Product
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProductDao {
     // Consulta SQL para obtener todos los productos de la tabla
     @Query("SELECT * FROM ProductEntity")
-    fun getAllProducts(): List<Product>
+    fun getAllProducts(): Flow<List<Product>>
 
     // Consulta SQL para insertar un producto en la tabla
     @Insert

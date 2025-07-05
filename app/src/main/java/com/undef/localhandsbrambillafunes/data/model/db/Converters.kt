@@ -6,9 +6,9 @@ import androidx.room.TypeConverter
 class Converters {
     @TypeConverter
     fun fromImageList(images: List<String>): String =
-        images.joinToString(",")
+        images.joinToString("|")
 
     @TypeConverter
     fun toImageList(data: String): List<String> =
-        if (data.isEmpty()) emptyList() else data.split(",")
+        if (data.isEmpty()) emptyList() else data.split("|")
 }

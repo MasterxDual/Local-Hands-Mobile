@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 // Modelo de datos para un producto
 @Entity(tableName = "ProductEntity")
 data class Product(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 1,
     val name: String,
     val description: String,
     val producer: String,
