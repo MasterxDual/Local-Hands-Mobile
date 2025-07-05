@@ -53,5 +53,10 @@ sealed class AppScreens(val route: String) {
     object SearchBarScreen: AppScreens("search_bar_screen")
 
     // Pantalla para emprender productos.
-    object SellScreen : AppScreens("sell_screen")
+    object SellScreen: AppScreens("sell_screen")
+
+    // Pantalla para editar productos
+    object EditProductScreen: AppScreens("edit_product_screen/{productId}") {
+        fun createRoute(productId: Int) = "edit_product_screen/$productId"
+    }
 }

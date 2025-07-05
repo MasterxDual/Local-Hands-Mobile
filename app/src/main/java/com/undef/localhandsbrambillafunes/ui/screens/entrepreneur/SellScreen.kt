@@ -9,32 +9,22 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.undef.localhandsbrambillafunes.data.model.Product
 import com.undef.localhandsbrambillafunes.ui.viewmodel.ProductViewModel
+import androidx.compose.foundation.lazy.items
+import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
+
 
 @Composable
 fun SellScreen(
     navController: NavController,
-    viewModel: ProductViewModel,
-    onEditProduct: (Product) -> Unit
+    viewModel: ProductViewModel
 ) {
     val products by viewModel.products.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Text("Mis productos en venta", style = MaterialTheme.typography.headlineMedium)
         Spacer(Modifier.height(16.dp))
-        Button(onClick = {
-            // Abre diálogo o navega a pantalla de agregar producto
-            onEditProduct(Product(
-                name = "",
-                description = "",
-                producer = "",
-                category = "",
-                images = "",
-                price = 0.0,
-                location = ""
-            ))
-        }) {
+        Button(onClick = { navController.navigate(AppScreens.EditProductScreen.createRoute(0)) }) {
             Text("Agregar nuevo producto")
         }
         Spacer(Modifier.height(16.dp))
@@ -42,7 +32,7 @@ fun SellScreen(
             items(products) { product ->
                 Card(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                    onClick = { onEditProduct(product) }
+                    onClick = { navController.navigate(AppScreens.EditProductScreen.createRoute(product.id)) }
                 ) {
                     Row(modifier = Modifier.padding(8.dp)) {
                         Column(modifier = Modifier.weight(1f)) {

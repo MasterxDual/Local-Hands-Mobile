@@ -20,6 +20,7 @@ import com.undef.localhandsbrambillafunes.ui.screens.settings.SettingsScreen
 import com.undef.localhandsbrambillafunes.ui.screens.splash.SplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.undef.localhandsbrambillafunes.ui.screens.entrepreneur.SellScreen
+import com.undef.localhandsbrambillafunes.ui.screens.entrepreneur.EditProductScreen
 
 
 /**
@@ -134,11 +135,25 @@ fun Navigation() {
             CategoryScreen(navController)
         }
 
+        /**
+         * Pantalla para vender productos.
+         */
         composable(AppScreens.SellScreen.route) {
             SellScreen(
                 navController,
-                viewModel = hiltViewModel(), // O tu método de obtención de VM
-                onEditProduct = { /* navegar a pantalla de edición */ }
+                viewModel = hiltViewModel() // O tu método de obtención de VM
+            )
+        }
+
+        composable(
+            route = AppScreens.EditProductScreen.route,
+            arguments = listOf(navArgument("productId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getInt("productId") ?: 0
+            EditProductScreen(
+                navController = navController,
+                productId = productId,
+                viewModel = hiltViewModel() // o tu método
             )
         }
     }
