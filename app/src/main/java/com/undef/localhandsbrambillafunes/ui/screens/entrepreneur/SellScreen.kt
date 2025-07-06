@@ -9,7 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.undef.localhandsbrambillafunes.ui.viewmodel.ProductViewModel
+import com.undef.localhandsbrambillafunes.data.model.viewmodel.ProductViewModel
 import androidx.compose.foundation.lazy.items
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 

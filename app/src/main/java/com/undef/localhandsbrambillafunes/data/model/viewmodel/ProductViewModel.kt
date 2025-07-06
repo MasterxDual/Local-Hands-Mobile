@@ -1,4 +1,4 @@
-package com.undef.localhandsbrambillafunes.ui.viewmodel
+package com.undef.localhandsbrambillafunes.data.model.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 --> Contiene la lógica de presentación (no la lógica de negocio o de acceso a datos).
 --> Permite separar la lógica de UI del código de acceso a datos, haciendo que la UI sea más sencilla y declarativa.*/
 class ProductViewModel(repository: ProductRepository) : ViewModel() {
-    private val repository = ProductRepository(ProductApplication.database)
+    private val repository = ProductRepository(ProductApplication.Companion.database)
 
     //Inicializamos la BD con los productos migrados
     init {
@@ -36,7 +36,7 @@ class ProductViewModel(repository: ProductRepository) : ViewModel() {
     }
 
     val products: StateFlow<List<Product>> = repository.getAllProducts()
-        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+        .stateIn(viewModelScope, SharingStarted.Companion.Lazily, emptyList())
 
     fun addProduct(product: Product) = viewModelScope.launch {
         repository.insertProduct(product)

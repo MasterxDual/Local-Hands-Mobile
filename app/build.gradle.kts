@@ -42,21 +42,18 @@ android {
 }
 
 dependencies {
-    val room_version = "2.7.2"
+    val roomVersion = "2.7.2"
 
     //For Room library for database
-    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-runtime:$roomVersion")
     //Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:$room_version")
+    implementation("androidx.room:room-ktx:$roomVersion")
     //Plugin for Room
-    ksp("androidx.room:room-compiler:$room_version")
+    ksp("androidx.room:room-compiler:$roomVersion")
     //Paging 3 Integration
-    implementation("androidx.room:room-paging:$room_version")
-
-
+    implementation("androidx.room:room-paging:$roomVersion")
     implementation("io.coil-kt.coil3:coil-compose:3.2.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.2.0")
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -65,7 +62,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0") // o la última versión
 
     // Agregar Dependencia de navegacion de Jetpack Compose
     implementation(libs.androidx.navigation.compose)

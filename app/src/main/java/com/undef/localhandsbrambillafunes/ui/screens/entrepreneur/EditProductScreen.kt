@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.undef.localhandsbrambillafunes.data.model.Product
 import com.undef.localhandsbrambillafunes.ui.common.components.EditImageList
-import com.undef.localhandsbrambillafunes.ui.viewmodel.ProductViewModel
+import com.undef.localhandsbrambillafunes.data.model.viewmodel.ProductViewModel
 
 @Composable
 fun EditProductScreen(

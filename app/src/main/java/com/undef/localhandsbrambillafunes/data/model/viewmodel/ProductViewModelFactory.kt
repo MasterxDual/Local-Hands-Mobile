@@ -1,5 +1,4 @@
-// ProductViewModelFactory.kt
-package com.undef.localhandsbrambillafunes.ui.viewmodel
+package com.undef.localhandsbrambillafunes.data.model.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
