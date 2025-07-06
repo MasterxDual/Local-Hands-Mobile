@@ -18,7 +18,6 @@ import com.undef.localhandsbrambillafunes.ui.screens.profile.ProfileScreen
 import com.undef.localhandsbrambillafunes.ui.screens.productdetail.ProductDetailScreen
 import com.undef.localhandsbrambillafunes.ui.screens.settings.SettingsScreen
 import com.undef.localhandsbrambillafunes.ui.screens.splash.SplashScreen
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.undef.localhandsbrambillafunes.ui.screens.entrepreneur.SellScreen
 import com.undef.localhandsbrambillafunes.ui.screens.entrepreneur.EditProductScreen
 
@@ -139,10 +138,7 @@ fun Navigation() {
          * Pantalla para vender productos.
          */
         composable(AppScreens.SellScreen.route) {
-            SellScreen(
-                navController,
-                viewModel = hiltViewModel() // O tu método de obtención de VM
-            )
+            SellScreen(navController)
         }
 
         composable(
@@ -152,8 +148,7 @@ fun Navigation() {
             val productId = backStackEntry.arguments?.getInt("productId") ?: 0
             EditProductScreen(
                 navController = navController,
-                productId = productId,
-                viewModel = hiltViewModel() // o tu método
+                productId = productId
             )
         }
     }

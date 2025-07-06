@@ -11,14 +11,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.undef.localhandsbrambillafunes.data.model.viewmodel.ProductViewModel
 import androidx.compose.foundation.lazy.items
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
 
 @Composable
 fun SellScreen(
-    navController: NavController,
-    viewModel: ProductViewModel
+    navController: NavController
 ) {
+    val viewModel: ProductViewModel = viewModel()
     val products by viewModel.products.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {

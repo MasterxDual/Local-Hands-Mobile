@@ -5,6 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.undef.localhandsbrambillafunes.data.model.Product
 import com.undef.localhandsbrambillafunes.ui.common.components.EditImageList
@@ -13,9 +14,9 @@ import com.undef.localhandsbrambillafunes.data.model.viewmodel.ProductViewModel
 @Composable
 fun EditProductScreen(
     navController: NavController,
-    productId: Int,
-    viewModel: ProductViewModel
+    productId: Int
 ) {
+    val viewModel: ProductViewModel = viewModel()
     val allProducts by viewModel.products.collectAsState()
     val originalProduct = allProducts.find { it.id == productId }
 
