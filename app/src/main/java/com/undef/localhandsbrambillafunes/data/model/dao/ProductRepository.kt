@@ -18,8 +18,8 @@ cache, etc.) y proporcionar una API limpia al resto de la aplicación.
 --> Facilita pruebas unitarias porque se puede simular fácilmente.
 --> Mejora la escalabilidad y mantenibilidad del código.*/
 class ProductRepository(private val db: ProductDatabase) {
-    suspend fun getAllProducts(): Flow<List<Product>> = withContext(Dispatchers.IO) {
-        db.productDao().getAllProducts()
+    fun getAllProducts(): Flow<List<Product>> {
+        return db.productDao().getAllProducts()
     }
 
     suspend fun getProductsByCategory(category: String): List<Product> = withContext(Dispatchers.IO) {

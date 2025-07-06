@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 interface ProductDao {
     // Consulta SQL para obtener todos los productos de la tabla
     @Query("SELECT * FROM ProductEntity")
-    suspend fun getAllProducts(): Flow<List<Product>>
+    fun getAllProducts(): Flow<List<Product>>
 
     // Consulta SQL para insertar un producto en la tabla
     @Insert
