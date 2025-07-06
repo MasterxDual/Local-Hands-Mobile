@@ -2,11 +2,9 @@ package com.undef.localhandsbrambillafunes.data.model.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.undef.localhandsbrambillafunes.data.model.Product
 import com.undef.localhandsbrambillafunes.data.model.ProductProviderMigration
-import com.undef.localhandsbrambillafunes.data.model.db.ProductApplication
 import com.undef.localhandsbrambillafunes.data.model.db.ProductDatabase
 import com.undef.localhandsbrambillafunes.data.repository.ProductRepository
 import kotlinx.coroutines.flow.SharingStarted

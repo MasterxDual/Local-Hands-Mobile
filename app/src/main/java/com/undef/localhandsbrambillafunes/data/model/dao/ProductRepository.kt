@@ -2,7 +2,9 @@ package com.undef.localhandsbrambillafunes.data.repository
 
 import com.undef.localhandsbrambillafunes.data.model.Product
 import com.undef.localhandsbrambillafunes.data.model.db.ProductDatabase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
 //El flujo recomendado es el siguiente: DAO → Repository → ViewModel → UI (Compose)
 //Utilizamos la arquitectura MVVM: Model-View-ViewModel
@@ -16,20 +18,35 @@ cache, etc.) y proporcionar una API limpia al resto de la aplicación.
 --> Facilita pruebas unitarias porque se puede simular fácilmente.
 --> Mejora la escalabilidad y mantenibilidad del código.*/
 class ProductRepository(private val db: ProductDatabase) {
-    fun getAllProducts(): Flow<List<Product>> = db.productDao().getAllProducts()
+    suspend fun getAllProducts(): Flow<List<Product>> = withContext(Dispatchers.IO) {
+        db.productDao().getAllProducts()
+    }
 
-    fun getProductsByCategory(category: String): List<Product> =
+    suspend fun getProductsByCategory(category: String): List<Product> = withContext(Dispatchers.IO) {
         db.productDao().getProductsByCategory(category)
+    }
 
-    fun insertProduct(product: Product): Long = db.productDao().addProduct(product)
+    suspend fun insertProduct(product: Product): Long = withContext(Dispatchers.IO) {
+        db.productDao().addProduct(product)
+    }
 
-    fun getProductsByCity(location: String): List<Product> = db.productDao().getProductsByCity(location)
+    suspend fun getProductsByCity(location: String): List<Product> = withContext(Dispatchers.IO) {
+        db.productDao().getProductsByCity(location)
+    }
 
-    fun searchProductsBySeller(name: String): List<Product> = db.productDao().searchProductsBySeller(name)
+    suspend fun searchProductsBySeller(name: String): List<Product> = withContext(Dispatchers.IO) {
+        db.productDao().searchProductsBySeller(name)
+    }
 
-    fun updateProduct(product: Product) = db.productDao().updateProduct(product)
+    suspend fun updateProduct(product: Product) = withContext(Dispatchers.IO) {
+        db.productDao().updateProduct(product)
+    }
 
-    fun deleteProduct(product: Product) = db.productDao().deleteProduct(product)
+    suspend fun deleteProduct(product: Product) = withContext(Dispatchers.IO) {
+        db.productDao().deleteProduct(product)
+    }
 
-    fun insertAll(products: List<Product>) = db.productDao().insertAll(products)
+    suspend fun insertAll(products: List<Product>) = withContext(Dispatchers.IO) {
+        db.productDao().insertAll(products)
+    }
 }
