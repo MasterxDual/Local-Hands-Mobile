@@ -18,6 +18,9 @@ import com.undef.localhandsbrambillafunes.ui.screens.profile.ProfileScreen
 import com.undef.localhandsbrambillafunes.ui.screens.productdetail.ProductDetailScreen
 import com.undef.localhandsbrambillafunes.ui.screens.settings.SettingsScreen
 import com.undef.localhandsbrambillafunes.ui.screens.splash.SplashScreen
+import com.undef.localhandsbrambillafunes.ui.screens.entrepreneur.SellScreen
+import com.undef.localhandsbrambillafunes.ui.screens.entrepreneur.EditProductScreen
+
 
 /**
  * Composable principal que configura y gestiona la navegación entre pantallas de la aplicación.
@@ -129,6 +132,24 @@ fun Navigation() {
          */
         composable(AppScreens.CategoryScreen.route) {
             CategoryScreen(navController)
+        }
+
+        /**
+         * Pantalla para vender productos.
+         */
+        composable(AppScreens.SellScreen.route) {
+            SellScreen(navController)
+        }
+
+        composable(
+            route = AppScreens.EditProductScreen.route,
+            arguments = listOf(navArgument("productId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getInt("productId") ?: 0
+            EditProductScreen(
+                navController = navController,
+                productId = productId
+            )
         }
     }
 }

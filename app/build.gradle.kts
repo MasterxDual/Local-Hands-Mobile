@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    //For plugin KSP for Room
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -40,10 +42,18 @@ android {
 }
 
 dependencies {
+    val roomVersion = "2.7.2"
 
+    //For Room library for database
+    implementation("androidx.room:room-runtime:$roomVersion")
+    //Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$roomVersion")
+    //Plugin for Room
+    ksp("androidx.room:room-compiler:$roomVersion")
+    //Paging 3 Integration
+    implementation("androidx.room:room-paging:$roomVersion")
     implementation("io.coil-kt.coil3:coil-compose:3.2.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.2.0")
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
