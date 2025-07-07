@@ -1,12 +1,15 @@
 package com.undef.localhandsbrambillafunes.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.undef.localhandsbrambillafunes.data.model.ProductProvider
+import com.undef.localhandsbrambillafunes.data.model.viewmodel.ProductViewModel
 import com.undef.localhandsbrambillafunes.ui.screens.auth.ForgotPasswordScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.LoginScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.RegisterScreen
@@ -20,6 +23,7 @@ import com.undef.localhandsbrambillafunes.ui.screens.settings.SettingsScreen
 import com.undef.localhandsbrambillafunes.ui.screens.splash.SplashScreen
 import com.undef.localhandsbrambillafunes.ui.screens.entrepreneur.SellScreen
 import com.undef.localhandsbrambillafunes.ui.screens.entrepreneur.EditProductScreen
+import com.undef.localhandsbrambillafunes.ui.screens.entrepreneur.ProductOwnerDetailScreen
 
 
 /**
@@ -141,6 +145,9 @@ fun Navigation() {
             SellScreen(navController)
         }
 
+        /**
+         * Pantalla para modificar productos
+         * */
         composable(
             route = AppScreens.EditProductScreen.route,
             arguments = listOf(navArgument("productId") { type = NavType.IntType })
@@ -151,5 +158,29 @@ fun Navigation() {
                 productId = productId
             )
         }
+
+        /**
+         * Pantalla para ver los detalles de un producto en venta
+         * */
+        composable(
+            route = AppScreens.ProductOwnerDetailScreen.route + "/{productId}",
+            arguments = listOf(navArgument("productId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getInt("productId") ?: 0
+            val viewModel: ProductViewModel = viewModel()
+            val product = viewModel.products.collectAsState().value.find { it.id == productId }
+            product?.let {
+                ProductOwnerDetailScreen(
+                    navController = navController,
+                    product = it,
+                    onEdit = { navController.navigate(AppScreens.EditProductScreen.createRoute(it.id)) },
+                    onDelete = {
+                        viewModel.deleteProduct(it)
+                        navController.popBackStack()
+                    }
+                )
+            }
+        }
+
     }
 }

@@ -1,14 +1,27 @@
 package com.undef.localhandsbrambillafunes.ui.screens.entrepreneur
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ArrowDropUp
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import androidx.compose.foundation.lazy.items
 import com.undef.localhandsbrambillafunes.data.model.Product
-import com.undef.localhandsbrambillafunes.ui.common.components.EditImageList
 import com.undef.localhandsbrambillafunes.data.model.viewmodel.ProductViewModel
 
 /**
@@ -57,16 +70,40 @@ fun EditProductScreen(
         Spacer(Modifier.height(16.dp))
 
         // Campos de entrada para cada atributo del producto
-        OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("Nombre") })
-        OutlinedTextField(value = description, onValueChange = { description = it }, label = { Text("Descripción") })
-        OutlinedTextField(value = producer, onValueChange = { producer = it }, label = { Text("Productor") })
-        OutlinedTextField(value = category, onValueChange = { category = it }, label = { Text("Categoría") })
+        OutlinedTextField(
+            value = name,
+            onValueChange = { name = it },
+            label = { Text("Nombre") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        OutlinedTextField(
+            value = description,
+            onValueChange = { description = it },
+            label = { Text("Descripción") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        OutlinedTextField(value = producer,
+            onValueChange = { producer = it },
+            label = { Text("Productor") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        CategoryDropdown(selectedCategory = category,
+            onCategorySelected = { category = it }
+        )
 
-        // Campo personalizado para la lista de imágenes
-        EditImageList(images = images, onImagesChange = { images = it })
+        // Botón para agregar varias imágenes del producto a vender
+        MultiImagePickerField(
+            selectedUris = images,
+            onImagesSelected = { images = it }
+        )
 
-        OutlinedTextField(value = price, onValueChange = { price = it }, label = { Text("Precio") })
-        OutlinedTextField(value = location, onValueChange = { location = it }, label = { Text("Ubicación") })
+        OutlinedTextField(value = price,
+            onValueChange = { price = it },
+            label = { Text("Precio") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        LocationDropdown(selectedLocation = location, onLocationSelected = { location = it })
+
         Spacer(Modifier.height(16.dp))
 
         Row {
@@ -109,4 +146,214 @@ fun EditProductScreen(
         }
     }
 }
+
+/**
+ * Composable que renderiza un menú desplegable para seleccionar una categoría de producto.
+ *
+ * Este componente muestra un `OutlinedTextField` de solo lectura que, al ser presionado, despliega
+ * una lista de categorías predefinidas para que el usuario seleccione una. La categoría seleccionada
+ * se muestra como texto y se propaga mediante el callback `onCategorySelected`.
+ *
+ * ## Uso:
+ * Ideal para formularios de edición o creación de productos donde se necesita restringir la entrada
+ * a un conjunto conocido de categorías válidas.
+ *
+ * @param selectedCategory Categoría actualmente seleccionada. Se muestra como valor en el campo de texto.
+ * @param onCategorySelected Función lambda que se invoca cuando el usuario selecciona una nueva categoría.
+ *
+ * ## Categorías disponibles:
+ * - "Alimentos"
+ * - "Textiles"
+ * - "Artesanías"
+ * - "Cosmética"
+ *
+ * @sample CategoryDropdown("Alimentos") { newCategory -> /* handle update */ }
+ */
+@Composable
+fun CategoryDropdown(
+    selectedCategory: String,
+    onCategorySelected: (String) -> Unit
+) {
+    val categories = listOf("Alimentos", "Textiles", "Artesanías", "Cosmética")
+    var expanded by remember { mutableStateOf(false) }
+
+    Box {
+        OutlinedTextField(
+            value = selectedCategory,
+            onValueChange = {},
+            readOnly = true,
+            label = { Text("Categoría") },
+            modifier = Modifier.fillMaxWidth(),
+            trailingIcon = {
+                IconButton(onClick = { expanded = !expanded }) {
+                    Icon(
+                        imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                        contentDescription = "Expandir"
+                    )
+                }
+            }
+        )
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            categories.forEach { category ->
+                DropdownMenuItem(
+                    text = { Text(category) },
+                    onClick = {
+                        onCategorySelected(category)
+                        expanded = false
+                    }
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Composable que muestra un menú desplegable de selección de localidades de Córdoba, Argentina.
+ *
+ * Esta función permite al usuario seleccionar su ubicación entre una lista completa de localidades
+ * de la provincia de Córdoba. La búsqueda es dinámica: al escribir en el campo, la lista se filtra automáticamente.
+ *
+ * ## Características:
+ * - Lista completa de localidades de Córdoba.
+ * - Filtro en tiempo real para facilitar la búsqueda.
+ * - Integración con formularios de productos u otros usos.
+ *
+ * @param selectedLocation Valor actual seleccionado por el usuario.
+ * @param onLocationSelected Función callback que se ejecuta al seleccionar una nueva localidad.
+ */
+@Composable
+fun LocationDropdown(
+    selectedLocation: String,
+    onLocationSelected: (String) -> Unit
+) {
+    val allLocations = listOf(
+        "Córdoba Capital", "Villa Carlos Paz", "Alta Gracia", "Jesús María", "Río Cuarto",
+        "Villa María", "Villa Dolores", "Villa General Belgrano", "Cosquín", "La Cumbre",
+        "Capilla del Monte", "Mina Clavero", "San Marcos Sierras", "Villa Allende", "Unquillo",
+        "Salsipuedes", "Colonia Caroya", "La Falda", "Malagueño", "Monte Cristo", "Río Ceballos",
+        "Dean Funes", "Bell Ville", "Arroyito", "San Francisco", "Leones", "Corral de Bustos",
+        "Laboulaye", "Huinca Renancó", "La Carlota", "Cruz del Eje", "Marcos Juárez", "General Deheza",
+        "General Cabrera", "Morteros", "Oncativo", "Las Varillas", "Villa Nueva", "Pilar", "Villa del Rosario",
+        "Laguna Larga", "Tancacha", "Oliva", "La Calera", "Monte Maíz", "Embalse", "La Paz", "Almafuerte",
+        "Bialet Massé", "Santa Rosa de Calamuchita", "Villa Rumipal", "Villa Yacanto", "Nono", "Tanti"
+    )
+
+    var expanded by remember { mutableStateOf(false) }
+    var searchText by remember { mutableStateOf("") }
+
+    val filteredLocations = remember(searchText) {
+        allLocations.filter { it.contains(searchText, ignoreCase = true) }
+    }
+
+    Box {
+        OutlinedTextField(
+            value = searchText.ifBlank { selectedLocation },
+            onValueChange = {
+                searchText = it
+                expanded = true
+            },
+            label = { Text("Ubicación") },
+            modifier = Modifier.fillMaxWidth(),
+            readOnly = false,
+            trailingIcon = {
+                IconButton(onClick = { expanded = !expanded }) {
+                    Icon(
+                        imageVector = if (expanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                        contentDescription = "Expandir"
+                    )
+                }
+            }
+        )
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            filteredLocations.forEach { location ->
+                DropdownMenuItem(
+                    text = { Text(location) },
+                    onClick = {
+                        onLocationSelected(location)
+                        searchText = location
+                        expanded = false
+                    }
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Selector visual para múltiples imágenes desde la galería del dispositivo.
+ *
+ * Esta función composable permite al usuario seleccionar múltiples imágenes de su galería utilizando
+ * `ActivityResultContracts.GetMultipleContents`. Las imágenes seleccionadas se visualizan en una fila horizontal.
+ *
+ * Está diseñada para integrarse con formularios o pantallas de edición de contenido (por ejemplo, productos
+ * con imágenes en una aplicación de marketplace).
+ *
+ * ## Características:
+ * - Permite seleccionar múltiples imágenes a la vez.
+ * - Muestra las imágenes seleccionadas en miniaturas (LazyRow).
+ * - Utiliza `rememberLauncherForActivityResult` para gestionar el resultado de la selección.
+ *
+ * ## Parámetros:
+ * @param selectedUris Lista actual de imágenes seleccionadas (como URIs).
+ * @param onImagesSelected Función callback que se invoca con la nueva lista de URIs seleccionadas cuando el usuario elige imágenes.
+ *
+ * ## Ejemplo de uso:
+ * ```
+ * var imageUris by remember { mutableStateOf<List<Uri>>(emptyList()) }
+ * MultiImagePickerField(
+ *     selectedUris = imageUris,
+ *     onImagesSelected = { imageUris = it }
+ * )
+ * ```
+ *
+ * ## Consideraciones:
+ * - El parámetro `imageUris.map { it.toString() }` puede usarse para almacenar las rutas en Room.
+ * - En emuladores o dispositivos físicos se requiere acceso al sistema de archivos (la galería).
+ */
+@Composable
+fun MultiImagePickerField(
+    selectedUris: List<String>,
+    onImagesSelected: (List<String>) -> Unit
+) {
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetMultipleContents()
+    ) { uris: List<Uri> ->
+        if (uris.isNotEmpty()) {
+            onImagesSelected(uris.map { it.toString() })
+        }
+    }
+
+    Column {
+        Button(onClick = { launcher.launch("image/*") }) {
+            Text("Seleccionar imágenes")
+        }
+
+        if (selectedUris.isNotEmpty()) {
+            LazyRow(modifier = Modifier.padding(top = 8.dp)) {
+                items(selectedUris) { uri ->
+                    AsyncImage(
+                        model = uri,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .size(100.dp)
+                            .clip(RoundedCornerShape(8.dp)),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+            }
+        }
+    }
+}
+
+
 
