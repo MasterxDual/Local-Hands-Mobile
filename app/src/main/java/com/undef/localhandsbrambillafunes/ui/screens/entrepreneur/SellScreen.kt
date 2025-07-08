@@ -1,8 +1,10 @@
 package com.undef.localhandsbrambillafunes.ui.screens.entrepreneur
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,8 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
@@ -153,25 +153,25 @@ fun SellScreen(navController: NavController) {
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(products) { product ->
-                    Card(
+                    Box(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(Color(0xFFE6E6EC))
                             .clickable {
                                 navController.navigate(
                                     AppScreens.ProductOwnerDetailScreen.createRoute(product.id)
                                 )
-                            },
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                            }
+                            .padding(12.dp)
                     ) {
                         Row(
-                            modifier = Modifier
-                                .padding(12.dp)
-                                .fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            val imageUrl = product.images.firstOrNull()
                             // Imagen del producto (desde URL o base de datos)
                             Image(
-                                painter = rememberAsyncImagePainter(model = product.imageUrl),
+                                painter = rememberAsyncImagePainter(model = imageUrl),
                                 contentDescription = "Imagen del producto ${product.name}",
                                 modifier = Modifier
                                     .size(80.dp)

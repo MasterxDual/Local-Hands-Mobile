@@ -21,8 +21,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import com.undef.localhandsbrambillafunes.data.model.Product
 import com.undef.localhandsbrambillafunes.data.model.viewmodel.ProductViewModel
+import java.io.File
 
 /**
  * Pantalla de edición o creación de productos en la aplicación.
@@ -45,12 +48,30 @@ import com.undef.localhandsbrambillafunes.data.model.viewmodel.ProductViewModel
 @Composable
 fun EditProductScreen(
     navController: NavController,
-    productId: Int
+    productId: Int,
+    viewModel: ProductViewModel = viewModel()
 ) {
-    // ViewModel que contiene el estado de la lista de productos
-    val viewModel: ProductViewModel = viewModel()
     val allProducts by viewModel.products.collectAsState()
-    val originalProduct = allProducts.find { it.id == productId }
+
+    // Estado para evitar recomposición hasta que se cargue el producto
+    var productLoaded by remember { mutableStateOf(false) }
+    var originalProduct: Product? by remember { mutableStateOf(null) }
+
+    LaunchedEffect(allProducts) {
+        val foundProduct = allProducts.find { it.id == productId }
+        if (foundProduct != null) {
+            originalProduct = foundProduct
+            productLoaded = true
+        }
+    }
+
+    if (!productLoaded && productId != 0) {
+        // Mostrar carga o espera si es edición
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+        return
+    }
 
     // Variables de estado que contienen los campos editables
     // Si es un producto nuevo, los campos están vacíos
@@ -58,6 +79,8 @@ fun EditProductScreen(
     var description by remember { mutableStateOf(originalProduct?.description ?: "") }
     var producer by remember { mutableStateOf(originalProduct?.producer ?: "") }
     var category by remember { mutableStateOf(originalProduct?.category ?: "") }
+
+    // Estado de imágenes seleccionadas en la pantalla de edición/creación
     var images by remember { mutableStateOf(originalProduct?.images ?: emptyList()) }
     var price by remember { mutableStateOf(originalProduct?.price?.toString() ?: "") }
     var location by remember { mutableStateOf(originalProduct?.location ?: "") }
@@ -93,7 +116,7 @@ fun EditProductScreen(
 
         // Botón para agregar varias imágenes del producto a vender
         MultiImagePickerField(
-            selectedUris = images,
+            selectedPaths = images,
             onImagesSelected = { images = it }
         )
 
@@ -135,8 +158,10 @@ fun EditProductScreen(
             if (isEditing) {
                 Button(
                     onClick = {
-                        viewModel.deleteProduct(originalProduct)
-                        navController.popBackStack()
+                        originalProduct?.let {
+                            viewModel.deleteProduct(it)
+                            navController.popBackStack()
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                 ) {
@@ -289,6 +314,10 @@ fun LocationDropdown(
 }
 
 /**
+ *
+ * MultiImagePickerField: componente reutilizable para selección de imágenes.
+ * Al seleccionar una o varias imágenes, se guardan en almacenamiento interno
+ * y se actualiza el estado `images`, listo para ser persistido en Room.
  * Selector visual para múltiples imágenes desde la galería del dispositivo.
  *
  * Esta función composable permite al usuario seleccionar múltiples imágenes de su galería utilizando
@@ -321,27 +350,35 @@ fun LocationDropdown(
  */
 @Composable
 fun MultiImagePickerField(
-    selectedUris: List<String>,
+    selectedPaths: List<String>,
     onImagesSelected: (List<String>) -> Unit
 ) {
+    val context = LocalContext.current
+
+    // Launcher para seleccionar múltiples imágenes desde el explorador
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents()
     ) { uris: List<Uri> ->
-        if (uris.isNotEmpty()) {
-            onImagesSelected(uris.map { it.toString() })
+        val paths = uris.mapNotNull { uri ->
+            copyUriToInternalStorage(context, uri)
+        }
+        if (paths.isNotEmpty()) {
+            onImagesSelected(paths)
         }
     }
 
     Column {
+        // Botón que abre el selector de imágenes
         Button(onClick = { launcher.launch("image/*") }) {
             Text("Seleccionar imágenes")
         }
 
-        if (selectedUris.isNotEmpty()) {
+        // Vista previa horizontal de las imágenes seleccionadas
+        if (selectedPaths.isNotEmpty()) {
             LazyRow(modifier = Modifier.padding(top = 8.dp)) {
-                items(selectedUris) { uri ->
+                items(selectedPaths) { path ->
                     AsyncImage(
-                        model = uri,
+                        model = File(path), // Carga desde archivo local
                         contentDescription = null,
                         modifier = Modifier
                             .padding(end = 8.dp)

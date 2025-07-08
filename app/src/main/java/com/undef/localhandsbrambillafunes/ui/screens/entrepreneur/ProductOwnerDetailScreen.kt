@@ -45,6 +45,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -167,16 +168,55 @@ fun ProductOwnerDetailScreen(
                 }
             }
 
+            // Contenido Principal
             Column(Modifier.padding(16.dp)) {
-                Text(product.name, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
-                Text("Ubicación: ${product.location}", style = MaterialTheme.typography.bodyMedium)
-                Text("Precio: $${product.price}", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                Text(
+                    text = product.name,
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Text(
+                    "Ubicación: ${product.location}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                )
+                Text(
+                    text = "Precio: $${product.price}",
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                )
                 Spacer(modifier = Modifier.height(12.dp))
-                Text("Descripción", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                Text(product.description, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(top = 8.dp))
+                Text(
+                    text = "Descripción",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = product.description,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+
                 Spacer(modifier = Modifier.height(12.dp))
-                Text("Categoría: ${product.category}", style = MaterialTheme.typography.bodyMedium)
-                Text("Vendedor: ${product.producer}", style = MaterialTheme.typography.bodyMedium)
+
+                Text(
+                    text = "Categoría: ${product.category}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Text(
+                    text = "Vendedor: ${product.producer}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
                 Spacer(modifier = Modifier.height(24.dp))
 
                 // Botones de editar y eliminar
@@ -184,13 +224,14 @@ fun ProductOwnerDetailScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    IconButton(onClick = { onEdit(product) }) {
+                    IconButton(onClick = { navController.navigate(AppScreens.EditProductScreen.createRoute(product.id)) }) {
                         Icon(Icons.Filled.Edit, contentDescription = "Editar", modifier = Modifier.size(32.dp))
                     }
                     IconButton(onClick = { onDelete(product) }) {
                         Icon(Icons.Filled.Delete, contentDescription = "Eliminar", modifier = Modifier.size(32.dp))
                     }
                 }
+                Spacer(modifier = Modifier.height(24.dp))
             }
         }
     }
