@@ -21,10 +21,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.undef.localhandsbrambillafunes.data.model.Product
 import com.undef.localhandsbrambillafunes.data.model.viewmodel.ProductViewModel
+import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 import java.io.File
 
 /**
@@ -45,6 +53,7 @@ import java.io.File
  * @param navController Controlador de navegación utilizado para volver a la pantalla anterior.
  * @param productId ID del producto a editar. Si no existe, se asume que se está creando un nuevo producto.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditProductScreen(
     navController: NavController,
@@ -86,86 +95,150 @@ fun EditProductScreen(
     var location by remember { mutableStateOf(originalProduct?.location ?: "") }
 
     val isEditing = originalProduct != null
+    // Validaciones
+    val isNameValid = isValidTextField(name)
+    val isDescriptionValid = isValidTextField(description)
+    val isProducerValid = isValidTextField(producer)
+    val isPriceValid = isValidPrice(price)
+    // Formulario válido solo si todo está correcto
+    val isFormValid = isNameValid && isDescriptionValid && isProducerValid && isPriceValid &&
+            category.isNotEmpty() && location.isNotEmpty() && images.isNotEmpty()
 
-    // Estructura de la pantalla con inputs y acciones
-    Column(Modifier.padding(16.dp)) {
-        Text(if (isEditing) "Editar producto" else "Nuevo producto", style = MaterialTheme.typography.headlineMedium)
-        Spacer(Modifier.height(16.dp))
-
-        // Campos de entrada para cada atributo del producto
-        OutlinedTextField(
-            value = name,
-            onValueChange = { name = it },
-            label = { Text("Nombre") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        OutlinedTextField(
-            value = description,
-            onValueChange = { description = it },
-            label = { Text("Descripción") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        OutlinedTextField(value = producer,
-            onValueChange = { producer = it },
-            label = { Text("Productor") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        CategoryDropdown(selectedCategory = category,
-            onCategorySelected = { category = it }
-        )
-
-        // Botón para agregar varias imágenes del producto a vender
-        MultiImagePickerField(
-            selectedPaths = images,
-            onImagesSelected = { images = it }
-        )
-
-        OutlinedTextField(value = price,
-            onValueChange = { price = it },
-            label = { Text("Precio") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        LocationDropdown(selectedLocation = location, onLocationSelected = { location = it })
-
-        Spacer(Modifier.height(16.dp))
-
-        Row {
-            // Botón para guardar o crear producto
-            Button(
-                onClick = {
-                    val entity = Product(
-                        id = originalProduct?.id ?: 0,
-                        name = name,
-                        description = description,
-                        producer = producer,
-                        category = category,
-                        images = images,
-                        price = price.toDoubleOrNull() ?: 0.0,
-                        location = location
-                    )
-                    if (isEditing) {
-                        viewModel.updateProduct(entity)
-                    } else {
-                        viewModel.addProduct(entity)
+    Scaffold(
+        // Barra superior con acciones
+        topBar = {
+            TopAppBar(
+                title = {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(Icons.Filled.ArrowBackIosNew, contentDescription = "Volver Atras")
+                        }
+                        Spacer(Modifier.width(8.dp))
+                        Text(
+                            if (isEditing) "Editar producto" else "Nuevo producto",
+                            style = MaterialTheme.typography.headlineMedium
+                        )
                     }
-                    navController.popBackStack() // Vuelve a la lista
-                }
-            ) { Text(if (isEditing) "Guardar cambios" else "Crear producto") }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFF242424),
+                    titleContentColor = Color.White,
+                    actionIconContentColor = Color.White
+                )
+            )
+        }
+    ) { paddingValues ->
+        // Estructura de la pantalla con inputs y acciones
+        Column(
+            Modifier
+                .padding(16.dp)
+                .padding(paddingValues)
+        ) {
+            // Campos de entrada para cada atributo del producto
+            OutlinedTextField(
+                value = name,
+                onValueChange = { name = it },
+                label = { Text("Nombre") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                colors = TextFieldDefaults.colors(
+                    focusedLabelColor = if (isNameValid) Color.Green else Color.Red,
+                    focusedIndicatorColor = if (isNameValid) Color.Green else Color.Red,
+                    unfocusedIndicatorColor = if (isNameValid) Color.Green.copy(0.6f) else Color.Red.copy(0.6f)
+                )
+            )
+            OutlinedTextField(
+                value = description,
+                onValueChange = { description = it },
+                label = { Text("Descripción") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                colors = TextFieldDefaults.colors(
+                    focusedLabelColor = if (isDescriptionValid) Color.Green else Color.Red,
+                    focusedIndicatorColor = if (isDescriptionValid) Color.Green else Color.Red,
+                    unfocusedIndicatorColor = if (isDescriptionValid) Color.Green.copy(0.6f) else Color.Red.copy(0.6f)
+                )
+            )
+            OutlinedTextField(
+                value = producer,
+                onValueChange = { producer = it },
+                label = { Text("Productor") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                colors = TextFieldDefaults.colors(
+                    focusedLabelColor = if (isProducerValid) Color.Green else Color.Red,
+                    focusedIndicatorColor = if (isProducerValid) Color.Green else Color.Red,
+                    unfocusedIndicatorColor = if (isProducerValid) Color.Green.copy(0.6f) else Color.Red.copy(0.6f)
+                )
+            )
+            CategoryDropdown(
+                selectedCategory = category,
+                onCategorySelected = { category = it }
+            )
 
-            Spacer(Modifier.width(16.dp))
+            // Botón para agregar varias imágenes del producto a vender
+            MultiImagePickerField(
+                selectedPaths = images,
+                onImagesSelected = { images = it }
+            )
 
-            // Botón para eliminar producto (solo en modo edición)
-            if (isEditing) {
+            OutlinedTextField(
+                value = price,
+                onValueChange = { price = it },
+                label = { Text("Precio") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                colors = TextFieldDefaults.colors(
+                    focusedLabelColor = if (isPriceValid) Color.Green else Color.Red,
+                    focusedIndicatorColor = if (isPriceValid) Color.Green else Color.Red,
+                    unfocusedIndicatorColor = if (isPriceValid) Color.Green.copy(0.6f) else Color.Red.copy(0.6f)
+                )
+            )
+            LocationDropdown(selectedLocation = location, onLocationSelected = { location = it })
+
+            Spacer(Modifier.height(16.dp))
+
+            Row {
+                // Botón para guardar o crear producto
                 Button(
                     onClick = {
-                        originalProduct?.let {
-                            viewModel.deleteProduct(it)
-                            navController.popBackStack()
+                        val entity = Product(
+                            id = originalProduct?.id ?: 0,
+                            name = name,
+                            description = description,
+                            producer = producer,
+                            category = category,
+                            images = images,
+                            price = price.toDoubleOrNull() ?: 0.0,
+                            location = location
+                        )
+                        if (isEditing) {
+                            viewModel.updateProduct(entity)
+                        } else {
+                            viewModel.addProduct(entity)
                         }
+                        navController.popBackStack() // Vuelve a la lista
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                    enabled = isFormValid
                 ) {
-                    Text("Eliminar")
+                    Text(if (isEditing) "Guardar cambios" else "Crear producto")
+                }
+
+                Spacer(Modifier.width(16.dp))
+
+                // Botón para eliminar producto (solo en modo edición)
+                if (isEditing) {
+                    Button(
+                        onClick = {
+                            originalProduct?.let {
+                                viewModel.deleteProduct(it)
+                                navController.popBackStack()
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                    ) {
+                        Text("Eliminar")
+                    }
                 }
             }
         }
@@ -391,6 +464,20 @@ fun MultiImagePickerField(
         }
     }
 }
+
+/**
+ * Valida si el campo de texto contiene por lo menos 10 caracteres
+ * @input Texto a validar
+ * */
+fun isValidTextField(input: String): Boolean = input.trim().length >= 10
+
+/**
+ * Valida si el precio es un número positivo
+ * @price Precio a validar
+ * */
+fun isValidPrice(price: String): Boolean =
+    price.toDoubleOrNull()?.let { it > 0 } == true
+
 
 
 
