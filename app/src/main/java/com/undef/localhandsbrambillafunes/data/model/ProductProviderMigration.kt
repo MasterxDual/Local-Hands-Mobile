@@ -1,9 +1,11 @@
 package com.undef.localhandsbrambillafunes.data.model
 
+import com.undef.localhandsbrambillafunes.data.model.entities.Product
+
 
 /**
  * Objeto encargado de realizar la migración de productos desde una fuente externa ([ProductProvider])
- * hacia entidades del modelo local [Product] utilizadas por la base de datos (Room).
+ * hacia entidades del modelo local [com.undef.localhandsbrambillafunes.data.model.entities.Product] utilizadas por la base de datos (Room).
  *
  * Este proceso se suele utilizar en etapas de inicialización de datos o sincronización local.
  *
@@ -27,7 +29,8 @@ object ProductProviderMigration {
             category = prod.category,
             images = prod.images, // Simple serialización
             price = prod.price,
-            location = prod.location
+            location = prod.location,
+            ownerId = prod.ownerId
         )
     }
 }

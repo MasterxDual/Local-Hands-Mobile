@@ -1,8 +1,9 @@
-// Product.kt
-package com.undef.localhandsbrambillafunes.data.model
+package com.undef.localhandsbrambillafunes.data.model.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.undef.localhandsbrambillafunes.data.model.db.Converters
 
 /**
  * Modelo de datos que representa un producto almacenado en la base de datos local.
@@ -26,12 +27,14 @@ import androidx.room.PrimaryKey
  * @property location Ciudad o lugar donde se encuentra disponible el producto.
  */
 @Entity(tableName = "ProductEntity")
+@TypeConverters(Converters::class)
 data class Product(
     @PrimaryKey(autoGenerate = true) val id: Int = 1,
     val name: String,
     val description: String,
     val producer: String,
     val category: String,
+    val ownerId: Int?, // null = producto público, no de ningún emprendedor aún
     val images: List<String>, // Mínimo 1 imagen, máximo 10
     val price: Double,
     val location: String

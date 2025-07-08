@@ -19,6 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
+import com.undef.localhandsbrambillafunes.data.model.Category
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
 /**

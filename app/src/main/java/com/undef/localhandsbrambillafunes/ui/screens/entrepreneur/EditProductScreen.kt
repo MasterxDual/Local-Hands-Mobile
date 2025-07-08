@@ -22,17 +22,11 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.filled.ArrowBackIosNew
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import com.undef.localhandsbrambillafunes.data.model.Product
+import com.undef.localhandsbrambillafunes.data.model.entities.Product
 import com.undef.localhandsbrambillafunes.data.model.viewmodel.ProductViewModel
-import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 import java.io.File
 
 /**
@@ -210,7 +204,8 @@ fun EditProductScreen(
                             category = category,
                             images = images,
                             price = price.toDoubleOrNull() ?: 0.0,
-                            location = location
+                            location = location,
+                            ownerId = originalProduct?.ownerId
                         )
                         if (isEditing) {
                             viewModel.updateProduct(entity)

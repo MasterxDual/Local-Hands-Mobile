@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.undef.localhandsbrambillafunes.data.model.Product
+import com.undef.localhandsbrambillafunes.data.model.entities.Product
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -31,7 +31,7 @@ interface ProductDao {
      * @param product Producto a insertar.
      * @return ID generado del producto insertado.
      */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun addProduct(product: Product): Long
 
     /**
@@ -51,6 +51,33 @@ interface ProductDao {
      */
     @Query("SELECT * FROM ProductEntity WHERE location = :location")
     suspend fun getProductsByCity(location: String): List<Product>
+
+
+    /**
+     * Recupera todos los productos asociados a un determinado usuario (vendedor).
+     *
+     * Esta consulta obtiene todos los registros de la tabla `ProductEntity` cuyo campo `ownerId`
+     * coincida con el identificador del usuario proporcionado. El resultado se devuelve como
+     * un `Flow`, lo que permite observar los cambios en tiempo real (por ejemplo, si se agregan,
+     * actualizan o eliminan productos del vendedor).
+     *
+     * ## Parámetros:
+     * @param userId ID del usuario (vendedor) del cual se desean recuperar los productos publicados.
+     *
+     * ## Retorno:
+     * @return Un `Flow` que emite listas actualizadas de productos pertenecientes al usuario indicado.
+     *
+     * ## Uso típico:
+     * Este método es útil para mostrar en pantalla los productos que un usuario ha creado, como
+     * en una sección de “Mis productos” o “Administrar publicaciones”.
+     *
+     * ## Ejemplo de consulta SQL generada:
+     * ```sql
+     * SELECT * FROM ProductEntity WHERE ownerId = :userId
+     * ```
+     */
+    @Query("SELECT * FROM ProductEntity WHERE ownerId = :userId")
+    fun getProductsByOwner(userId: Int): Flow<List<Product>>
 
     /**
      * Busca productos filtrando por nombre de vendedor.

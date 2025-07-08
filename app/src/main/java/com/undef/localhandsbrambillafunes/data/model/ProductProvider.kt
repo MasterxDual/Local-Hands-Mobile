@@ -1,6 +1,8 @@
 // ProductProvider.kt
 package com.undef.localhandsbrambillafunes.data.model
 
+import com.undef.localhandsbrambillafunes.data.model.entities.Product
+
 //import com.undef.localhandsbrambillafunes.R
 
 // Objeto que proporciona una lista de productos de ejemplo (para la simulacion y pruebas)
@@ -15,7 +17,8 @@ object ProductProvider {
             category = "Alimentos",
             images = listOf("https://cdn.pixabay.com/photo/2015/10/20/10/25/jams-997593_1280.jpg"),
             price = 450.0,
-            location = "Villa General Belgrano"
+            location = "Villa General Belgrano",
+            ownerId = null
         ),
         Product(
             id = 2,
@@ -25,7 +28,8 @@ object ProductProvider {
             category = "Textiles",
             images = listOf("https://cdn.pixabay.com/photo/2016/10/03/19/58/woolen-hat-1712687_960_720.jpg"),
             price = 3200.0,
-            location = "La Cumbre"
+            location = "La Cumbre",
+            ownerId = null
         ),
         Product(
             id = 3,
@@ -35,7 +39,8 @@ object ProductProvider {
             category = "Cosmética",
             images = listOf("https://cdn.pixabay.com/photo/2020/02/08/10/35/soap-4829708_1280.jpg"),
             price = 890.0,
-            location = "Alta Gracia"
+            location = "Alta Gracia",
+            ownerId = null
         ),
         Product(
             id = 4,
@@ -48,7 +53,8 @@ object ProductProvider {
                 "https://cdn.pixabay.com/photo/2017/06/24/23/41/beer-2439237_1280.jpg"
             ),
             price = 650.0,
-            location = "Villa Carlos Paz"
+            location = "Villa Carlos Paz",
+            ownerId = null
         ),
         Product(
             id = 5,
@@ -58,7 +64,8 @@ object ProductProvider {
             category = "Artesanías",
             images = listOf("https://cdn.pixabay.com/photo/2015/01/08/12/20/flowers-592829_960_720.jpg"),
             price = 2500.0,
-            location = "Mina Clavero"
+            location = "Mina Clavero",
+            ownerId = null
         ),
         Product(
             id = 6,
@@ -68,7 +75,8 @@ object ProductProvider {
             category = "Alimentos",
             images = listOf("https://cdn.pixabay.com/photo/2016/06/03/14/33/cheeses-1433514_1280.jpg"),
             price = 1200.0,
-            location = "San Marcos Sierras"
+            location = "San Marcos Sierras",
+            ownerId = null
         ),
         Product(
             id = 7,
@@ -81,7 +89,8 @@ object ProductProvider {
                 "https://cdn.pixabay.com/photo/2017/09/09/18/25/living-room-2732939_1280.jpg"
             ),
             price = 18900.0,
-            location = "Cosquín"
+            location = "Cosquín",
+            ownerId = null
         ),
         Product(
             id = 8,
@@ -91,7 +100,8 @@ object ProductProvider {
             category = "Decoración",
             images = listOf("https://cdn.pixabay.com/photo/2014/10/04/02/35/candles-472379_960_720.jpg"),
             price = 750.0,
-            location = "Capilla del Monte"
+            location = "Capilla del Monte",
+            ownerId = null
         ),
         Product(
             id = 9,
@@ -101,7 +111,8 @@ object ProductProvider {
             category = "Cosmética",
             images = listOf("https://cdn.pixabay.com/photo/2017/06/08/22/17/essential-oils-2385087_960_720.jpg"),
             price = 1500.0,
-            location = "Jesús María"
+            location = "Jesús María",
+            ownerId = null
         ),
         Product(
             id = 10,
@@ -111,7 +122,8 @@ object ProductProvider {
             category = "Textiles",
             images = listOf("https://cdn.pixabay.com/photo/2021/07/02/03/18/culture-6380757_1280.jpg"),
             price = 5800.0,
-            location = "Cruz del Eje"
+            location = "Cruz del Eje",
+            ownerId = null
         )
     )
 }

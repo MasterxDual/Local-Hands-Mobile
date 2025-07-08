@@ -40,7 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.undef.localhandsbrambillafunes.data.model.Product
+import com.undef.localhandsbrambillafunes.data.model.entities.Product
 import com.undef.localhandsbrambillafunes.data.model.ProductListItem
 import com.undef.localhandsbrambillafunes.data.model.ProductProvider
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens

@@ -1,5 +1,7 @@
 package com.undef.localhandsbrambillafunes.data.model
 
+import com.undef.localhandsbrambillafunes.data.model.entities.Product
+
 // Para esta primera etapa guardamos los favoritos dentro de un archivo de configuracion para datos simples
 object FavoriteProducts {
     // Lista en memoria (se borra al cerrar la app)
