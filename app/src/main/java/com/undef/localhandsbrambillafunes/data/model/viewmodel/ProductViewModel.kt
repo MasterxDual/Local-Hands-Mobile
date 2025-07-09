@@ -31,21 +31,13 @@ import kotlinx.coroutines.launch
  * - Facilita la reutilización y testeo.
  * - Hace que la UI sea más declarativa y reactiva.
  */
-class ProductViewModel(application: Application, private val userId: Int) : AndroidViewModel(application) {
+class ProductViewModel(application: Application) : AndroidViewModel(application) {
     private val db = ProductDatabase.getInstance(application)
     private val repository = ProductRepository(db)
 
     // Todos los productos disponibles
     val products: StateFlow<List<Product>> = repository.getAllProducts()
         .stateIn(viewModelScope, SharingStarted.Companion.Lazily, emptyList())
-
-    // Productos que está vendiendo este usuario
-    val myProducts: StateFlow<List<Product>> = repository.getProductsByOwner(userId)
-        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
-
-    // Favoritos del usuario
-    val favorites: StateFlow<List<Product>> = repository.getFavoritesForUser(userId)
-        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     //Inicializamos la BD con los productos migrados
     init {
@@ -116,7 +108,7 @@ class ProductViewModel(application: Application, private val userId: Int) : Andr
      *
      * @param productId ID del producto a marcar como favorito.
      */
-    fun addFavorite(productId: Int) = viewModelScope.launch {
+    fun addFavorite(productId: Int, userId: Int) = viewModelScope.launch {
         repository.addFavorite(userId, productId)
     }
 
@@ -128,7 +120,33 @@ class ProductViewModel(application: Application, private val userId: Int) : Andr
      *
      * @param productId ID del producto que se desea eliminar de favoritos.
      */
-    fun removeFavorite(productId: Int) = viewModelScope.launch {
+    fun removeFavorite(productId: Int, userId: Int) = viewModelScope.launch {
         repository.removeFavorite(userId, productId)
     }
+
+    /**
+     * Obtiene los productos que el usuario con el ID especificado está vendiendo.
+     *
+     * Esta función recupera una lista reactiva de productos pertenecientes al usuario
+     * y la expone como un [StateFlow] que se inicializa de manera perezosa.
+     *
+     * @param userId ID del usuario del cual se desean obtener los productos.
+     * @return Un [StateFlow] que contiene una lista de productos publicados por el usuario.
+     */
+    fun getMyProducts(userId: Int): StateFlow<List<Product>> =
+        repository.getProductsByOwner(userId)
+            .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+
+    /**
+     * Obtiene la lista de productos marcados como favoritos por el usuario.
+     *
+     * Esta función recupera una lista reactiva de productos que el usuario ha marcado como favoritos
+     * y la expone como un [StateFlow], también inicializado de manera perezosa.
+     *
+     * @param userId ID del usuario del cual se desean obtener los productos favoritos.
+     * @return Un [StateFlow] que contiene una lista de productos favoritos del usuario.
+     */
+    fun getFavorites(userId: Int): StateFlow<List<Product>> =
+        repository.getFavoritesForUser(userId)
+            .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 }

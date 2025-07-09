@@ -26,9 +26,10 @@ import com.undef.localhandsbrambillafunes.data.model.entities.Favorite
  * - Versión: 1
  * - Convertidores: [Converters] (necesarios para manejar listas de imágenes `List<String>`)
  */
-@Database(entities = [Product::class, Favorite::class], version = 1)
+@Database(entities = [Product::class, Favorite::class], version = 2)
 @TypeConverters(Converters::class) //Para cargar List<String> de Product
 abstract class ProductDatabase: RoomDatabase() {
+
     /**
      * Proporciona acceso al DAO de productos.
      *
@@ -55,6 +56,10 @@ abstract class ProductDatabase: RoomDatabase() {
          * Devuelve la instancia existente de la base de datos o la crea si aún no ha sido inicializada.
          *
          * Utiliza el contexto de la aplicación para evitar fugas de memoria.
+         * Aplica `fallbackToDestructiveMigration()` para eliminar y recrear la base de datos
+         * en caso de que ocurra una incompatibilidad entre versiones de esquema.
+         *
+         * ⚠️ Este enfoque implica pérdida de datos ante cambios estructurales.
          *
          * @param context Contexto de la aplicación.
          * @return Instancia única de [ProductDatabase].
@@ -65,7 +70,9 @@ abstract class ProductDatabase: RoomDatabase() {
                     context.applicationContext,
                     ProductDatabase::class.java,
                     "ProductDatabase"
-                ).build().also { INSTANCE = it }
+                )
+                    .fallbackToDestructiveMigration(true) // Borra la base de datos vieja en caso de que se modifique la estructura de la misma y se incremente la versión
+                    .build().also { INSTANCE = it }
             }
     }
 }
