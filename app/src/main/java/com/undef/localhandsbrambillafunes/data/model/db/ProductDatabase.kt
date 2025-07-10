@@ -28,7 +28,7 @@ import com.undef.localhandsbrambillafunes.data.model.entities.User
  * - Versión: 1
  * - Convertidores: [Converters] (necesarios para manejar listas de imágenes `List<String>`)
  */
-@Database(entities = [Product::class, Favorite::class, User::class], version = 3)
+@Database(entities = [Product::class, Favorite::class, User::class], version = 4)
 @TypeConverters(Converters::class) //Para cargar List<String> de Product
 abstract class ProductDatabase: RoomDatabase() {
 

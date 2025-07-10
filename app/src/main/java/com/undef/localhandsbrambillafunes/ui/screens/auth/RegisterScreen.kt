@@ -1,6 +1,8 @@
 package com.undef.localhandsbrambillafunes.ui.screens.auth
 
+import android.app.Application
 import android.util.Patterns
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -33,15 +35,34 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.undef.localhandsbrambillafunes.data.model.db.ProductDatabase
+import com.undef.localhandsbrambillafunes.data.model.entities.User
+import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModel
+import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModelFactory
+import com.undef.localhandsbrambillafunes.data.repository.UserRepository
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
 @Composable
 fun RegisterScreen(navController: NavController) {
+    val context = LocalContext.current
+
+    // Instancia segura de UserRepository y SessionViewModel
+    val userRepository = remember {
+        UserRepository(
+            ProductDatabase.getInstance(context.applicationContext as Application).userDao()
+        )
+    }
+    val sessionViewModel: SessionViewModel = viewModel(
+        factory = SessionViewModelFactory(context.applicationContext as Application, userRepository)
+    )
+
     //Variables que se utilizarán para ingresar los datos
     var name by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
@@ -106,7 +127,24 @@ fun RegisterScreen(navController: NavController) {
 
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(
-                        onClick = { navController.navigate(route = AppScreens.LoginScreen.route) }, //El boton de registro navega hacia la pantalla de login una vez que son validados los datos ingresados
+                        onClick = {
+                            // Crear UserEntity con los datos del formulario
+                            val newUser = User(
+                                name = name,
+                                lastName = lastName,
+                                email = email,
+                                password = password
+                            )
+                            // Registrar el usuario usando el ViewModel
+                            sessionViewModel.registerUser(newUser) { id ->
+                                if (id > 0) {
+                                    Toast.makeText(context, "Usuario registrado con éxito", Toast.LENGTH_SHORT).show()
+                                    navController.navigate(route = AppScreens.LoginScreen.route)
+                                } else {
+                                    Toast.makeText(context, "Error al registrar usuario", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        },
                         enabled = isFormComplete, //Verifica que el formulario haya sido totalmente completado
                         modifier = Modifier.fillMaxWidth() //Ocupa todo el ancho de la pantalla
                     ) {

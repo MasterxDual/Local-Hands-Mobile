@@ -21,7 +21,7 @@ data class User(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0, //Empieza en 1 automáticamente
     val name: String,
-    val surname: String,
+    val lastName: String,
     val email: String,
     val password: String
 )

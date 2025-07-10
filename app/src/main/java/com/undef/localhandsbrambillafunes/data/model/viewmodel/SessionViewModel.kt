@@ -3,6 +3,7 @@ package com.undef.localhandsbrambillafunes.data.model.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.undef.localhandsbrambillafunes.data.model.entities.User
 import com.undef.localhandsbrambillafunes.data.repository.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -61,6 +62,19 @@ class SessionViewModel(
                 _userId.value = user.id
                 _loginResult.value = LoginResult.Success(user.id)
             }
+        }
+    }
+
+    /**
+     * Registra un nuevo usuario.
+     *
+     * @param user Instancia del usuario a registrar.
+     * @param onResult Callback que se llama con el ID generado por la base de datos.
+    */
+    fun registerUser(user: User, onResult: (Long) -> Unit) {
+        viewModelScope.launch {
+            val id = userRepository.insertUser(user)
+            onResult(id)
         }
     }
 
