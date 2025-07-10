@@ -1,6 +1,7 @@
 package com.undef.localhandsbrambillafunes.ui.screens.auth
 
 //Imports necesarios para Composables, UI, estado, imágenes, etc.
+import android.app.Application
 import android.content.Context
 import android.util.Patterns
 import android.widget.Toast
@@ -44,17 +45,29 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.undef.localhandsbrambillafunes.R
+import com.undef.localhandsbrambillafunes.data.model.db.ProductDatabase
 import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModel
+import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModelFactory
+import com.undef.localhandsbrambillafunes.data.repository.UserRepository
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
 //Para mostrar como quedaría nuestro login en una interfaz
 //Vista previa de la pantalla de login para diseño
 
 @Composable
-fun LoginScreen(navController: NavController,
-                sessionViewModel: SessionViewModel = viewModel()
-) {
+fun LoginScreen(navController: NavController) {
     val context = LocalContext.current
+    // Crea el UserRepository (ajusta según tu implementación)
+    val userRepository = remember {
+        UserRepository(
+            ProductDatabase.getInstance(context.applicationContext as Application).userDao()
+        )
+    }
+
+    // Usa el Factory para crear el SessionViewModel
+    val sessionViewModel: SessionViewModel = viewModel(
+        factory = SessionViewModelFactory(context.applicationContext as Application, userRepository)
+    )
 
     //Variables que se utilizarán para ingresar los datos
     var email by remember { mutableStateOf("") }

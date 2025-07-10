@@ -9,7 +9,9 @@ import com.undef.localhandsbrambillafunes.data.model.dao.FavoriteDao
 
 import com.undef.localhandsbrambillafunes.data.model.entities.Product;
 import com.undef.localhandsbrambillafunes.data.model.dao.ProductDao;
+import com.undef.localhandsbrambillafunes.data.model.dao.UserDao
 import com.undef.localhandsbrambillafunes.data.model.entities.Favorite
+import com.undef.localhandsbrambillafunes.data.model.entities.User
 
 /**
  * Clase abstracta que representa la base de datos local de productos utilizando Room.
@@ -26,7 +28,7 @@ import com.undef.localhandsbrambillafunes.data.model.entities.Favorite
  * - Versión: 1
  * - Convertidores: [Converters] (necesarios para manejar listas de imágenes `List<String>`)
  */
-@Database(entities = [Product::class, Favorite::class], version = 2)
+@Database(entities = [Product::class, Favorite::class, User::class], version = 3)
 @TypeConverters(Converters::class) //Para cargar List<String> de Product
 abstract class ProductDatabase: RoomDatabase() {
 
@@ -43,6 +45,13 @@ abstract class ProductDatabase: RoomDatabase() {
      * @return Instancia de [FavoriteDao] para ejecutar operaciones CRUD sobre la base de datos.
      */
     abstract fun favoriteDao(): FavoriteDao
+
+    /**
+     * Proporciona acceso al DAO de usuarios.
+     *
+     * @return Instancia de [UserDao] para ejecutar operaciones CRUD sobre la base de datos.
+     */
+    abstract fun userDao(): UserDao
 
     companion object {
         /**

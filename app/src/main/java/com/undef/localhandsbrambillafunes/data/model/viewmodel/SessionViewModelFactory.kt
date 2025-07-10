@@ -18,7 +18,9 @@ import com.undef.localhandsbrambillafunes.data.repository.UserRepository
  *
  * @param application instancia de [Application] que se pasa al ViewModel.
  */
-class SessionViewModelFactory(private val application: Application, private val userRepository: UserRepository) : ViewModelProvider.Factory {
+class SessionViewModelFactory(private val application: Application,
+                              private val userRepository: UserRepository
+) : ViewModelProvider.Factory {
 
     /**
      * Crea una nueva instancia del ViewModel dado el tipo de clase proporcionado.
