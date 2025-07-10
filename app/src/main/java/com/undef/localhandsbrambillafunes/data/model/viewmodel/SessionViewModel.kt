@@ -29,12 +29,16 @@ class SessionViewModel(
     /**
      * Flujo interno y mutable que contiene el ID del usuario actualmente autenticado.
      * Es `null` si no hay una sesión activa
+     * Es un flujo mutable interno (privado) que guarda el estado actual del ID del usuario logueado.
+     * Puede cambiar con setUserId() o clearSession().
      */
     private val _userId = MutableStateFlow<Int?>(null)
 
     /**
      * Flujo inmutable expuesto públicamente que representa el ID del usuario autenticado.
      * Las clases consumidoras pueden observar este flujo para reaccionar a los cambios de sesión.
+     * Es la exposición pública e inmutable de ese flujo. Lo usás cuando querés observar los
+     * cambios en tiempo real (por ejemplo, en la UI con collectAsState() en Jetpack Compose).
      */
     val userId: StateFlow<Int?> = _userId
 
@@ -58,6 +62,19 @@ class SessionViewModel(
         _userId.value = id
     }
 
+
+    /**
+     *
+     * Útil para lógica puntual en ViewModel donde necesitás el valor actual
+     * (por ejemplo, enviar el userId a un repositorio o guardarlo en otro lado).
+     *
+     * ## Cuando no conviene usarlo:
+     *
+     * En la UI, si querés mostrar algo que cambie dinámicamente al iniciar o cerrar sesión.
+     *
+     * Si querés observar si el usuario cambió y actualizar algo automáticamente (por ejemplo,
+     * mostrar los productos favoritos del nuevo usuario logueado).
+     */
     fun getUserId(): Int {
         return _userId.value ?: 0
     }
