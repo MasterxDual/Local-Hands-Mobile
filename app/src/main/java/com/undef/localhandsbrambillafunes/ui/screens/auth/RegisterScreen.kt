@@ -42,7 +42,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.undef.localhandsbrambillafunes.data.model.db.ProductDatabase
+import com.undef.localhandsbrambillafunes.data.model.db.ApplicationDatabase
 import com.undef.localhandsbrambillafunes.data.model.entities.User
 import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModel
 import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModelFactory
@@ -56,7 +56,7 @@ fun RegisterScreen(navController: NavController) {
     // Instancia segura de UserRepository y SessionViewModel
     val userRepository = remember {
         UserRepository(
-            ProductDatabase.getInstance(context.applicationContext as Application).userDao()
+            ApplicationDatabase.getInstance(context.applicationContext as Application).userDao()
         )
     }
     val sessionViewModel: SessionViewModel = viewModel(

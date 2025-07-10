@@ -1,5 +1,6 @@
 package com.undef.localhandsbrambillafunes.ui.screens.productdetail
 
+import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -44,6 +45,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -51,14 +53,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import coil3.compose.AsyncImage
 import com.undef.localhandsbrambillafunes.data.model.entities.Product
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 import com.undef.localhandsbrambillafunes.data.model.FavoriteProducts
+import com.undef.localhandsbrambillafunes.data.model.db.ApplicationDatabase
+import com.undef.localhandsbrambillafunes.data.model.viewmodel.FavoriteViewModel
+import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModel
+import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModelFactory
+import com.undef.localhandsbrambillafunes.data.repository.FavoriteRepository
+import com.undef.localhandsbrambillafunes.data.repository.UserRepository
+import androidx.compose.runtime.*
+
+import coil.compose.AsyncImage
+
+
 
 /**
  * Pantalla de detalles del producto que muestra información completa del producto
@@ -73,6 +87,29 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
 
     // Control del visor de imágenes
     val pagerState = rememberPagerState(pageCount = { productImages.size })
+
+    // Obtenemos el contexto de la aplicación
+    val context = LocalContext.current
+
+    // Para agregar a la base de datos los productos favoritos
+    val favoriteRepository = remember {
+        FavoriteRepository(
+            ApplicationDatabase.getInstance(context.applicationContext as Application).favoriteDao()
+        )
+    }
+    val viewModel: FavoriteViewModel = FavoriteViewModel(favoriteRepository)
+
+    // Para obtener el id del usuario de la sesión actual
+    val userRepository = remember {
+        UserRepository(
+            ApplicationDatabase.getInstance(context.applicationContext as Application).userDao()
+        )
+    }
+    val sessionViewModel: SessionViewModel = viewModel(
+        factory = SessionViewModelFactory(context.applicationContext as Application, userRepository)
+    )
+
+    val userId by sessionViewModel.userId.collectAsState()
 
     // Estado para el favorito (actualizado desde FavoriteProducts)
     val isFavorite = remember { mutableStateOf(FavoriteProducts.isFavorite(product.id)) }
@@ -213,6 +250,7 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                             FavoriteProducts.removeToFavorite(product.id)
                         } else {
                             FavoriteProducts.addToFavorite(product)
+                            viewModel.addFavorite(userId!!, product.id)
                         }
                         // Actualizar el estado para recomponer el Icono
                         isFavorite.value = FavoriteProducts.isFavorite(product.id)

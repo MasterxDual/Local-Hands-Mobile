@@ -2,7 +2,6 @@ package com.undef.localhandsbrambillafunes.ui.screens.auth
 
 //Imports necesarios para Composables, UI, estado, imágenes, etc.
 import android.app.Application
-import android.content.Context
 import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -43,9 +42,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.undef.localhandsbrambillafunes.R
-import com.undef.localhandsbrambillafunes.data.model.db.ProductDatabase
+import com.undef.localhandsbrambillafunes.data.model.db.ApplicationDatabase
 import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModel
 import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModelFactory
 import com.undef.localhandsbrambillafunes.data.repository.UserRepository
@@ -60,7 +58,7 @@ fun LoginScreen(navController: NavController) {
     // Crea el UserRepository (ajusta según tu implementación)
     val userRepository = remember {
         UserRepository(
-            ProductDatabase.getInstance(context.applicationContext as Application).userDao()
+            ApplicationDatabase.getInstance(context.applicationContext as Application).userDao()
         )
     }
 

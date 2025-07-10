@@ -1,7 +1,7 @@
 package com.undef.localhandsbrambillafunes.data.repository
 
 import com.undef.localhandsbrambillafunes.data.model.entities.Product
-import com.undef.localhandsbrambillafunes.data.model.db.ProductDatabase
+import com.undef.localhandsbrambillafunes.data.model.db.ApplicationDatabase
 import com.undef.localhandsbrambillafunes.data.model.entities.Favorite
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -26,9 +26,9 @@ import kotlinx.coroutines.withContext
  * --> Facilita pruebas unitarias porque se puede simular fácilmente.
  *
  * --> Mejora la escalabilidad y mantenibilidad del código.
- * @param com.undef.localhandsbrambillafunes.data.model.db.ProductDatabase base de datos de productos.
+ * @param com.undef.localhandsbrambillafunes.data.model.db.ApplicationDatabase base de datos de productos.
  * */
-class ProductRepository(private val db: ProductDatabase) {
+class ProductRepository(private val db: ApplicationDatabase) {
 
     /**
      * Obtiene todos los productos como un flujo reactivo.

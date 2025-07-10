@@ -26,7 +26,7 @@ import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import com.undef.localhandsbrambillafunes.data.model.db.ProductDatabase
+import com.undef.localhandsbrambillafunes.data.model.db.ApplicationDatabase
 import com.undef.localhandsbrambillafunes.data.model.entities.Product
 import com.undef.localhandsbrambillafunes.data.model.viewmodel.ProductViewModel
 import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModel
@@ -61,7 +61,7 @@ fun EditProductScreen(
 ) {
     // Obtenemos el usuario actual de la sesión
     val context = LocalContext.current
-    val userRepository = UserRepository(ProductDatabase.getInstance(context.applicationContext as Application).userDao())
+    val userRepository = UserRepository(ApplicationDatabase.getInstance(context.applicationContext as Application).userDao())
     val sessionViewModel: SessionViewModel = viewModel(factory = SessionViewModelFactory(context.applicationContext as Application, userRepository))
     val userId by sessionViewModel.userId.collectAsState()
 

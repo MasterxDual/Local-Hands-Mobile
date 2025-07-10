@@ -30,7 +30,7 @@ import com.undef.localhandsbrambillafunes.data.model.entities.User
  */
 @Database(entities = [Product::class, Favorite::class, User::class], version = 4)
 @TypeConverters(Converters::class) //Para cargar List<String> de Product
-abstract class ProductDatabase: RoomDatabase() {
+abstract class ApplicationDatabase: RoomDatabase() {
 
     /**
      * Proporciona acceso al DAO de productos.
@@ -59,7 +59,7 @@ abstract class ProductDatabase: RoomDatabase() {
          * Marcada como `@Volatile` para asegurar la visibilidad entre hilos.
          */
         @Volatile
-        private var INSTANCE: ProductDatabase? = null
+        private var INSTANCE: ApplicationDatabase? = null
 
         /**
          * Devuelve la instancia existente de la base de datos o la crea si aún no ha sido inicializada.
@@ -71,13 +71,13 @@ abstract class ProductDatabase: RoomDatabase() {
          * ⚠️ Este enfoque implica pérdida de datos ante cambios estructurales.
          *
          * @param context Contexto de la aplicación.
-         * @return Instancia única de [ProductDatabase].
+         * @return Instancia única de [ApplicationDatabase].
          */
-        fun getInstance(context: Context): ProductDatabase =
+        fun getInstance(context: Context): ApplicationDatabase =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: Room.databaseBuilder(
                     context.applicationContext,
-                    ProductDatabase::class.java,
+                    ApplicationDatabase::class.java,
                     "ProductDatabase"
                 )
                     .fallbackToDestructiveMigration(true) // Borra la base de datos vieja en caso de que se modifique la estructura de la misma y se incremente la versión

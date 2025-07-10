@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.undef.localhandsbrambillafunes.data.model.entities.Product
 import com.undef.localhandsbrambillafunes.data.model.ProductProviderMigration
-import com.undef.localhandsbrambillafunes.data.model.db.ProductDatabase
+import com.undef.localhandsbrambillafunes.data.model.db.ApplicationDatabase
 import com.undef.localhandsbrambillafunes.data.repository.ProductRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
  * - Hace que la UI sea más declarativa y reactiva.
  */
 class ProductViewModel(application: Application) : AndroidViewModel(application) {
-    private val db = ProductDatabase.getInstance(application)
+    private val db = ApplicationDatabase.getInstance(application)
     private val repository = ProductRepository(db)
 
     // Todos los productos disponibles
