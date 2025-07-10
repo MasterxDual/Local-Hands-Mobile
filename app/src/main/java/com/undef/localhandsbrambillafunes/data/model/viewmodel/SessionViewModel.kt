@@ -3,22 +3,31 @@ package com.undef.localhandsbrambillafunes.data.model.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.undef.localhandsbrambillafunes.data.repository.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /**
- * ViewModel responsable de gestionar el estado de sesión del usuario.
+ * ViewModel responsable de gestionar el estado de sesión del usuario autenticado.
  *
- * Esta clase extiende de [AndroidViewModel] para tener acceso al contexto de la aplicación
- * y utiliza [MutableStateFlow] para mantener y exponer de forma reactiva el identificador del usuario.
+ * Esta clase extiende de [AndroidViewModel] para acceder al contexto de la aplicación cuando sea necesario.
+ * Utiliza un [MutableStateFlow] para mantener el identificador del usuario autenticado y
+ * exponerlo de forma reactiva a la interfaz de usuario u otras capas.
  *
- * @param application instancia de la aplicación necesaria para [AndroidViewModel].
+ * Puede integrarse con un [UserRepository] si se desea validar o recuperar información adicional
+ * del usuario autenticado.
+ *
+ * @param application Instancia de la aplicación requerida por [AndroidViewModel].
  */
-class SessionViewModel(application: Application) : AndroidViewModel(application) {
+class SessionViewModel(
+    application: Application,
+    private val userRepository: UserRepository
+) : AndroidViewModel(application) {
+
     /**
      * Flujo interno y mutable que contiene el ID del usuario actualmente autenticado.
-     * Es `null` si no hay un usuario autenticado.
+     * Es `null` si no hay una sesión activa
      */
     private val _userId = MutableStateFlow<Int?>(null)
 
@@ -29,22 +38,49 @@ class SessionViewModel(application: Application) : AndroidViewModel(application)
     val userId: StateFlow<Int?> = _userId
 
     /**
-     * Inicia una sesión estableciendo el ID del usuario.
-     *
-     * @param id el identificador único del usuario que ha iniciado sesión.
+     * Flujo que representa el resultado del intento de inicio de sesión.
      */
-    fun login(id: Int) {
+    private val _loginResult = MutableStateFlow<LoginResult>(LoginResult.Idle)
+    val loginResult: StateFlow<LoginResult> = _loginResult
+
+    /**
+     * Intenta autenticar a un usuario mediante correo electrónico y contraseña.
+     *
+     * @param email Correo electrónico ingresado por el usuario.
+     * @param password Contraseña correspondiente.
+     */
+    fun login(email: String, password: String) {
         viewModelScope.launch {
-            _userId.value = id
+            val user = userRepository.getUserByEmail(email)
+
+            if (user == null) {
+                _loginResult.value = LoginResult.UserNotFound
+            } else if (user.password != password) {
+                _loginResult.value = LoginResult.InvalidPassword
+            } else {
+                _userId.value = user.id
+                _loginResult.value = LoginResult.Success(user.id)
+            }
         }
     }
 
     /**
-     * Cierra la sesión actual eliminando el ID del usuario.
+     * Cierra la sesión eliminando el estado del usuario autenticado.
      */
     fun logout() {
         viewModelScope.launch {
             _userId.value = null
+            _loginResult.value = LoginResult.Idle
         }
+    }
+
+    /**
+     * Representa los posibles resultados del intento de inicio de sesión.
+     */
+    sealed class LoginResult {
+        object Idle : LoginResult()
+        data class Success(val userId: Int) : LoginResult()
+        object UserNotFound : LoginResult()
+        object InvalidPassword : LoginResult()
     }
 }

@@ -40,16 +40,20 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.undef.localhandsbrambillafunes.R
+import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModel
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
 //Para mostrar como quedaría nuestro login en una interfaz
 //Vista previa de la pantalla de login para diseño
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController,
+                sessionViewModel: SessionViewModel = viewModel()
+) {
     val context = LocalContext.current
 
     //Variables que se utilizarán para ingresar los datos
@@ -60,6 +64,30 @@ fun LoginScreen(navController: NavController) {
     var isValidPassword = Regex("^(?=.*[A-Z])(?=.*\\d).{8,}$").matches(password)
 
     var visiblePassword by remember { mutableStateOf(false) }
+
+    // Observa el resultado del login
+    val loginResult by sessionViewModel.loginResult.collectAsState()
+
+    // Efecto para reaccionar a los cambios de resultado del login
+    LaunchedEffect(loginResult) {
+        when(loginResult) {
+            is SessionViewModel.LoginResult.Success -> {
+                val userId = (loginResult as SessionViewModel.LoginResult.Success).userId
+                Toast.makeText(context, "¡Bienvenido, usuario $userId!", Toast.LENGTH_SHORT).show()
+                navController.popBackStack()
+                navController.navigate(AppScreens.HomeScreen.route)
+            }
+            SessionViewModel.LoginResult.UserNotFound -> {
+                Toast.makeText(context, "Usuario no encontrado", Toast.LENGTH_SHORT).show()
+            }
+            SessionViewModel.LoginResult.InvalidPassword -> {
+                Toast.makeText(context, "Contraseña incorrecta", Toast.LENGTH_SHORT).show()
+            }
+            SessionViewModel.LoginResult.Idle -> {
+                // No hacer nada
+            }
+        }
+    }
 
     /*Parte visual de la pantalla*/
     //Caja que ocupará todo el tamaño de la pantalla
@@ -107,10 +135,11 @@ fun LoginScreen(navController: NavController) {
                     )
                     RowForgottenPassword(navController = navController)
                     RowButtonLogin(
-                        context = context,
                         isValidEmail = isValidEmail,
                         isValidPassword = isValidPassword,
-                        navController = navController
+                        onLoginClick = {
+                            sessionViewModel.login(email, password)
+                        }
                     )
                     RowRegister(navController = navController)
                 }
@@ -219,30 +248,21 @@ fun RowPassword(
 
 @Composable
 fun RowButtonLogin(
-    context: Context, //Para pasarle el valor al toast cuando hagamos el login correcto
     isValidEmail: Boolean,
     isValidPassword: Boolean,
-    navController: NavController
+    onLoginClick: () -> Unit
 ) {
     Row(Modifier.fillMaxWidth().padding(10.dp),
         horizontalArrangement = Arrangement.Center) {
         // Botón habilitado solo cuando las validaciones son correctas
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = {
-                navController.popBackStack() // Eliminamos la pantalla del stack de navegación
-                navController.navigate(route = AppScreens.HomeScreen.route)
-            },
+            onClick = onLoginClick,
             enabled = isValidEmail && isValidPassword  //Cuando se cumplan las validaciones el boton debe validarse
         ) {
             Text(text = "Iniciar sesión")
         }
     }
-}
-
-// Función simulada para login
-fun login(context: Context) {
-    Toast.makeText(context, "Login falso", Toast.LENGTH_SHORT).show()
 }
 
 @Composable

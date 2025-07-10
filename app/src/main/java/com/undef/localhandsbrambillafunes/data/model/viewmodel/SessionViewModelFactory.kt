@@ -3,6 +3,7 @@ package com.undef.localhandsbrambillafunes.data.model.viewmodel
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.undef.localhandsbrambillafunes.data.repository.UserRepository
 
 //Si queremos que el userId persista aunque se cierre la app, le podemos agregar SharedPreferences al ViewModel
 
@@ -17,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider
  *
  * @param application instancia de [Application] que se pasa al ViewModel.
  */
-class SessionViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
+class SessionViewModelFactory(private val application: Application, private val userRepository: UserRepository) : ViewModelProvider.Factory {
 
     /**
      * Crea una nueva instancia del ViewModel dado el tipo de clase proporcionado.
@@ -29,7 +30,7 @@ class SessionViewModelFactory(private val application: Application) : ViewModelP
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SessionViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return SessionViewModel(application) as T
+            return SessionViewModel(application, userRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

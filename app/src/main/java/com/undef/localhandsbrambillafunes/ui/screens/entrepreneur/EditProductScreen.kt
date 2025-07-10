@@ -1,5 +1,6 @@
 package com.undef.localhandsbrambillafunes.ui.screens.entrepreneur
 
+import android.app.Application
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -27,6 +28,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.undef.localhandsbrambillafunes.data.model.entities.Product
 import com.undef.localhandsbrambillafunes.data.model.viewmodel.ProductViewModel
+import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModel
+import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModelFactory
 import java.io.File
 
 /**
@@ -54,6 +57,11 @@ fun EditProductScreen(
     productId: Int,
     viewModel: ProductViewModel = viewModel()
 ) {
+    // Obtenemos el usuario actual de la sesión
+    val context = LocalContext.current
+    val sessionViewModel: SessionViewModel = viewModel(factory = SessionViewModelFactory(context.applicationContext as Application))
+    val userId by sessionViewModel.userId.collectAsState()
+
     val allProducts by viewModel.products.collectAsState()
 
     // Estado para evitar recomposición hasta que se cargue el producto
@@ -205,7 +213,7 @@ fun EditProductScreen(
                             images = images,
                             price = price.toDoubleOrNull() ?: 0.0,
                             location = location,
-                            ownerId = originalProduct?.ownerId
+                            ownerId = userId ?: originalProduct?.ownerId
                         )
                         if (isEditing) {
                             viewModel.updateProduct(entity)
