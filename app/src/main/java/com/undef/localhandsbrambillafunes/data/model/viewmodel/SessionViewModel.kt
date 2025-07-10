@@ -45,6 +45,36 @@ class SessionViewModel(
     val loginResult: StateFlow<LoginResult> = _loginResult
 
     /**
+     * Establece el ID del usuario autenticado en la sesión actual.
+     *
+     * Este método debe llamarse luego de un inicio de sesión exitoso,
+     * para guardar el identificador del usuario en el flujo de estado `_userId`,
+     * permitiendo que otros componentes de la aplicación reaccionen
+     * al cambio de estado de autenticación.
+     *
+     * @param id Identificador único del usuario autenticado.
+     */
+    fun setUserId(id: Int) {
+        _userId.value = id
+    }
+
+    fun getUserId(): Int {
+        return _userId.value ?: 0
+    }
+
+    /**
+     * Limpia la sesión de usuario actual.
+     *
+     * Este método debe invocarse al cerrar sesión, eliminando
+     * cualquier rastro del usuario autenticado al establecer
+     * el valor de `_userId` como `null`. De esta forma, se
+     * indica que no hay un usuario actualmente autenticado.
+     */
+    fun clearSession() {
+        _userId.value = null
+    }
+
+    /**
      * Intenta autenticar a un usuario mediante correo electrónico y contraseña.
      *
      * @param email Correo electrónico ingresado por el usuario.

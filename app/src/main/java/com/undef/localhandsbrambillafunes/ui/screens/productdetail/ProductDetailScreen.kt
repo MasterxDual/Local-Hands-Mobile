@@ -45,7 +45,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -57,7 +56,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.undef.localhandsbrambillafunes.data.model.entities.Product
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
@@ -65,10 +63,7 @@ import com.undef.localhandsbrambillafunes.data.model.FavoriteProducts
 import com.undef.localhandsbrambillafunes.data.model.db.ApplicationDatabase
 import com.undef.localhandsbrambillafunes.data.model.viewmodel.FavoriteViewModel
 import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModel
-import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModelFactory
 import com.undef.localhandsbrambillafunes.data.repository.FavoriteRepository
-import com.undef.localhandsbrambillafunes.data.repository.UserRepository
-import androidx.compose.runtime.*
 
 import coil.compose.AsyncImage
 
@@ -80,7 +75,7 @@ import coil.compose.AsyncImage
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductDetailScreen(navController: NavController, product: Product) {
+fun ProductDetailScreen(navController: NavController, product: Product, sessionViewModel: SessionViewModel) {
 
     // Estado para manejar la lista de imágenes del producto
     val productImages = remember { product.images }
@@ -97,22 +92,13 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
             ApplicationDatabase.getInstance(context.applicationContext as Application).favoriteDao()
         )
     }
-    val viewModel: FavoriteViewModel = FavoriteViewModel(favoriteRepository)
-
-    // Para obtener el id del usuario de la sesión actual
-    val userRepository = remember {
-        UserRepository(
-            ApplicationDatabase.getInstance(context.applicationContext as Application).userDao()
-        )
-    }
-    val sessionViewModel: SessionViewModel = viewModel(
-        factory = SessionViewModelFactory(context.applicationContext as Application, userRepository)
-    )
-
-    val userId by sessionViewModel.userId.collectAsState()
+    val favoriteViewModel = FavoriteViewModel(favoriteRepository)
 
     // Estado para el favorito (actualizado desde FavoriteProducts)
     val isFavorite = remember { mutableStateOf(FavoriteProducts.isFavorite(product.id)) }
+
+    // Traemos el userId global  creado previamente en el registro del mismo
+    val userId = sessionViewModel.getUserId()
 
     Scaffold(
         // Barra superior con botón de retroceso
@@ -250,7 +236,7 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                             FavoriteProducts.removeToFavorite(product.id)
                         } else {
                             FavoriteProducts.addToFavorite(product)
-                            viewModel.addFavorite(userId!!, product.id)
+                            favoriteViewModel.addFavorite(userId, product.id)
                         }
                         // Actualizar el estado para recomponer el Icono
                         isFavorite.value = FavoriteProducts.isFavorite(product.id)

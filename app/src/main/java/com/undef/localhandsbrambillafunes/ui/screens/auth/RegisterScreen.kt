@@ -50,18 +50,8 @@ import com.undef.localhandsbrambillafunes.data.repository.UserRepository
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
 @Composable
-fun RegisterScreen(navController: NavController) {
+fun RegisterScreen(navController: NavController, sessionViewModel: SessionViewModel) {
     val context = LocalContext.current
-
-    // Instancia segura de UserRepository y SessionViewModel
-    val userRepository = remember {
-        UserRepository(
-            ApplicationDatabase.getInstance(context.applicationContext as Application).userDao()
-        )
-    }
-    val sessionViewModel: SessionViewModel = viewModel(
-        factory = SessionViewModelFactory(context.applicationContext as Application, userRepository)
-    )
 
     //Variables que se utilizarán para ingresar los datos
     var name by remember { mutableStateOf("") }
@@ -139,6 +129,7 @@ fun RegisterScreen(navController: NavController) {
                             sessionViewModel.registerUser(newUser) { id ->
                                 if (id > 0) {
                                     Toast.makeText(context, "Usuario registrado con éxito", Toast.LENGTH_SHORT).show()
+                                    sessionViewModel.setUserId(id.toInt()) //Guardamos el userId para pasarlo a las demás pantallas
                                     navController.navigate(route = AppScreens.LoginScreen.route)
                                 } else {
                                     Toast.makeText(context, "Error al registrar usuario", Toast.LENGTH_SHORT).show()

@@ -1,7 +1,10 @@
 package com.undef.localhandsbrambillafunes.ui.navigation
 
+import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -9,7 +12,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.undef.localhandsbrambillafunes.data.model.ProductProvider
+import com.undef.localhandsbrambillafunes.data.model.db.ApplicationDatabase
 import com.undef.localhandsbrambillafunes.data.model.viewmodel.ProductViewModel
+import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModel
+import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModelFactory
+import com.undef.localhandsbrambillafunes.data.repository.UserRepository
 import com.undef.localhandsbrambillafunes.ui.screens.auth.ForgotPasswordScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.LoginScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.RegisterScreen
@@ -36,6 +43,16 @@ fun Navigation() {
     // Crear NavController que recordará el estado de navegación
     val navController = rememberNavController()
 
+    val context = LocalContext.current
+    val userRepository = remember {
+        UserRepository(
+            ApplicationDatabase.getInstance(context.applicationContext as Application).userDao()
+        )
+    }
+    val sessionViewModel: SessionViewModel = viewModel(
+        factory = SessionViewModelFactory(LocalContext.current.applicationContext as Application, userRepository)
+    )
+
     NavHost(
         navController = navController,
         startDestination = AppScreens.SplashScreen.route // Primer destino de la navegación será la pantalla de splash
@@ -53,7 +70,7 @@ fun Navigation() {
          * Pantalla de inicio de sesión donde los usuarios pueden autenticarse.
          */
         composable(AppScreens.LoginScreen.route) {
-            LoginScreen(navController)
+            LoginScreen(navController, sessionViewModel)
         }
 
         /**
@@ -67,7 +84,7 @@ fun Navigation() {
          * Pantalla de registro para nuevos usuarios.
          */
         composable(AppScreens.RegisterScreen.route) {
-            RegisterScreen(navController)
+            RegisterScreen(navController, sessionViewModel)
         }
 
         /**
@@ -113,7 +130,8 @@ fun Navigation() {
             // Muestra la pantalla de detalle con el producto encontrado
             ProductDetailScreen(
                 navController = navController,
-                product = product
+                product = product,
+                sessionViewModel
             )
         }
 
