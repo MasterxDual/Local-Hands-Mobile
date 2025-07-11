@@ -57,7 +57,7 @@ import java.io.File
 fun EditProductScreen(
     navController: NavController,
     productId: Int,
-    productViewModel: ProductViewModel = viewModel(),
+    productViewModel: ProductViewModel,
     sessionViewModel: SessionViewModel
 ) {
     // Obtenemos el usuario actual de la sesión
@@ -217,7 +217,6 @@ fun EditProductScreen(
                             location = location,
                             ownerId = userId ?: originalProduct?.ownerId
                         )
-                        productViewModel.addProduct(entity)
                         if (isEditing) {
                             productViewModel.updateProduct(entity)
                         } else {

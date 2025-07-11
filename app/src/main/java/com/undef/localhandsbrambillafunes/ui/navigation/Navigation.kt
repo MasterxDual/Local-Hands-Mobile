@@ -39,7 +39,6 @@ import com.undef.localhandsbrambillafunes.ui.screens.entrepreneur.ProductOwnerDe
  */
 @Composable
 fun Navigation() {
-
     // Crear NavController que recordará el estado de navegación
     val navController = rememberNavController()
 
@@ -52,6 +51,11 @@ fun Navigation() {
     val sessionViewModel: SessionViewModel = viewModel(
         factory = SessionViewModelFactory(LocalContext.current.applicationContext as Application, userRepository)
     )
+
+    // Instancia compartida de ProductViewModel en el scope de Navigation
+    // Esto se hace con el fin de no tener que instanciar varias veces al productViewModel y así
+    // tengamos los mismos productos en todas las pantallas que lo utilicemos
+    val productViewModel: ProductViewModel = viewModel()
 
     NavHost(
         navController = navController,
@@ -91,7 +95,7 @@ fun Navigation() {
          * Pantalla principal de la aplicación que se muestra después de la autenticación.
          */
         composable(AppScreens.HomeScreen.route) {
-            HomeScreen(navController)
+            HomeScreen(navController, productViewModel)
         }
 
         /**
@@ -163,7 +167,7 @@ fun Navigation() {
             SellScreen(
                 navController,
                 sessionViewModel,
-                viewModel()
+                productViewModel
             )
         }
 
@@ -178,7 +182,7 @@ fun Navigation() {
             EditProductScreen(
                 navController = navController,
                 productId = productId,
-                viewModel(),
+                productViewModel,
                 sessionViewModel
             )
         }
@@ -191,15 +195,15 @@ fun Navigation() {
             arguments = listOf(navArgument("productId") { type = NavType.IntType })
         ) { backStackEntry ->
             val productId = backStackEntry.arguments?.getInt("productId") ?: 0
-            val viewModel: ProductViewModel = viewModel()
-            val product = viewModel.products.collectAsState().value.find { it.id == productId }
+            val productViewModel = productViewModel
+            val product = productViewModel.products.collectAsState().value.find { it.id == productId }
             product?.let {
                 ProductOwnerDetailScreen(
                     navController = navController,
                     product = it,
                     onEdit = { navController.navigate(AppScreens.EditProductScreen.createRoute(it.id)) },
                     onDelete = {
-                        viewModel.deleteProduct(it)
+                        productViewModel.deleteProduct(it)
                         navController.popBackStack()
                     }
                 )
