@@ -12,11 +12,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.undef.localhandsbrambillafunes.data.local.db.ApplicationDatabase
+import com.undef.localhandsbrambillafunes.data.local.repository.FavoriteRepository
 import com.undef.localhandsbrambillafunes.data.local.viewmodel.ProductViewModel
 import com.undef.localhandsbrambillafunes.data.local.viewmodel.SessionViewModel
 import com.undef.localhandsbrambillafunes.data.local.viewmodel.SessionViewModelFactory
 import com.undef.localhandsbrambillafunes.data.local.repository.UserRepository
 import com.undef.localhandsbrambillafunes.data.local.viewmodel.FavoriteViewModel
+import com.undef.localhandsbrambillafunes.data.local.viewmodel.FavoriteViewModelFactory
 import com.undef.localhandsbrambillafunes.ui.screens.auth.ForgotPasswordScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.LoginScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.RegisterScreen
@@ -52,12 +54,19 @@ fun Navigation() {
         factory = SessionViewModelFactory(LocalContext.current.applicationContext as Application, userRepository)
     )
 
+    val favoriteRepository = remember {
+        FavoriteRepository(
+            ApplicationDatabase.getInstance(context.applicationContext as Application).favoriteDao()
+        )
+    }
+    val favoriteViewModel: FavoriteViewModel = viewModel(
+        factory = FavoriteViewModelFactory(LocalContext.current.applicationContext as Application, favoriteRepository)
+    )
+
     // Instancia compartida de ProductViewModel en el scope de Navigation
     // Esto se hace con el fin de no tener que instanciar varias veces al productViewModel y así
     // tengamos los mismos productos en todas las pantallas que lo utilicemos
     val productViewModel: ProductViewModel = viewModel()
-
-    val favoriteViewModel: FavoriteViewModel = viewModel()
 
     NavHost(
         navController = navController,
@@ -138,7 +147,8 @@ fun Navigation() {
                 ProductDetailScreen(
                     navController = navController,
                     product = it,
-                    sessionViewModel
+                    sessionViewModel,
+                    favoriteViewModel
                 )
             }
         }

@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
  * del usuario autenticado.
  *
  * @param application Instancia de la aplicación requerida por [AndroidViewModel].
+ * @param userRepository Repositorio opcional para validar información del usuario.
  */
 class SessionViewModel(
     application: Application,
@@ -61,7 +62,6 @@ class SessionViewModel(
     fun setUserId(id: Int) {
         _userId.value = id
     }
-
 
     /**
      *

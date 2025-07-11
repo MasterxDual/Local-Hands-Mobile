@@ -75,24 +75,18 @@ import com.undef.localhandsbrambillafunes.data.local.entities.Favorite
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductDetailScreen(navController: NavController, product: Product, sessionViewModel: SessionViewModel) {
+fun ProductDetailScreen(
+    navController: NavController,
+    product: Product,
+    sessionViewModel: SessionViewModel,
+    favoriteViewModel: FavoriteViewModel
+) {
 
     // Estado para manejar la lista de imágenes del producto
     val productImages = remember { product.images }
 
     // Control del visor de imágenes
     val pagerState = rememberPagerState(pageCount = { productImages.size })
-
-    // Obtenemos el contexto de la aplicación
-    val context = LocalContext.current
-
-    // Para agregar a la base de datos los productos favoritos
-    val favoriteRepository = remember {
-        FavoriteRepository(
-            ApplicationDatabase.getInstance(context.applicationContext as Application).favoriteDao()
-        )
-    }
-    val favoriteViewModel = FavoriteViewModel(favoriteRepository)
 
     // Estado para el favorito (actualizado desde FavoriteProducts)
     val isFavorite = remember { mutableStateOf(FavoriteProducts.isFavorite(product.id)) }

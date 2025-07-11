@@ -46,6 +46,7 @@ fun FavoritesScreen(
     val userId = sessionViewModel.getUserId()
     val favorites by favoriteViewModel.getFavoritesForUser(userId).collectAsState(initial = emptyList())
 
+
     Scaffold(
         // Barra Superior con título y acciones
         topBar = {

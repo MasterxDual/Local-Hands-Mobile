@@ -1,5 +1,7 @@
 package com.undef.localhandsbrambillafunes.data.local.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.undef.localhandsbrambillafunes.data.local.dao.FavoriteDao
@@ -17,8 +19,9 @@ import kotlinx.coroutines.launch
  * @param favoriteRepository Instancia del repositorio que proporciona acceso a los datos de favoritos.
  */
 class FavoriteViewModel(
+    application: Application,
     private val favoriteRepository: FavoriteRepository
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
     /**
      * Agrega un producto a la lista de favoritos de un usuario específico.
