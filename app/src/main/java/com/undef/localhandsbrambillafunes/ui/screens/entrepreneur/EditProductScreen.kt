@@ -57,15 +57,14 @@ import java.io.File
 fun EditProductScreen(
     navController: NavController,
     productId: Int,
-    viewModel: ProductViewModel = viewModel()
+    productViewModel: ProductViewModel = viewModel(),
+    sessionViewModel: SessionViewModel
 ) {
     // Obtenemos el usuario actual de la sesión
     val context = LocalContext.current
-    val userRepository = UserRepository(ApplicationDatabase.getInstance(context.applicationContext as Application).userDao())
-    val sessionViewModel: SessionViewModel = viewModel(factory = SessionViewModelFactory(context.applicationContext as Application, userRepository))
     val userId by sessionViewModel.userId.collectAsState()
 
-    val allProducts by viewModel.products.collectAsState()
+    val allProducts by productViewModel.products.collectAsState()
 
     // Estado para evitar recomposición hasta que se cargue el producto
     var productLoaded by remember { mutableStateOf(false) }
@@ -218,10 +217,11 @@ fun EditProductScreen(
                             location = location,
                             ownerId = userId ?: originalProduct?.ownerId
                         )
+                        productViewModel.addProduct(entity)
                         if (isEditing) {
-                            viewModel.updateProduct(entity)
+                            productViewModel.updateProduct(entity)
                         } else {
-                            viewModel.addProduct(entity)
+                            productViewModel.addProduct(entity)
                         }
                         navController.popBackStack() // Vuelve a la lista
                     },
@@ -237,7 +237,7 @@ fun EditProductScreen(
                     Button(
                         onClick = {
                             originalProduct?.let {
-                                viewModel.deleteProduct(it)
+                                productViewModel.deleteProduct(it)
                                 navController.popBackStack()
                             }
                         },

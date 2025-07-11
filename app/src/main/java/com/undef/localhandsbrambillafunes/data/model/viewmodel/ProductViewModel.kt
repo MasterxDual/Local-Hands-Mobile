@@ -130,11 +130,11 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
      * Esta función recupera una lista reactiva de productos pertenecientes al usuario
      * y la expone como un [StateFlow] que se inicializa de manera perezosa.
      *
-     * @param userId ID del usuario del cual se desean obtener los productos.
+     * @param ownerId ID del usuario del cual se desean obtener los productos.
      * @return Un [StateFlow] que contiene una lista de productos publicados por el usuario.
      */
-    fun getMyProducts(userId: Int): StateFlow<List<Product>> =
-        repository.getProductsByOwner(userId)
+    fun getMyProducts(ownerId: Int): StateFlow<List<Product>> =
+        repository.getProductsByOwner(ownerId)
             .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     /**

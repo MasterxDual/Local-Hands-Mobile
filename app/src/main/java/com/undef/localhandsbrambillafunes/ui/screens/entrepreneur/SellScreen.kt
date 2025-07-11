@@ -53,6 +53,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import coil.compose.rememberAsyncImagePainter
+import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModel
 
 
 /**
@@ -68,9 +69,15 @@ import coil.compose.rememberAsyncImagePainter
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SellScreen(navController: NavController) {
-    val viewModel: ProductViewModel = viewModel()
-    val products by viewModel.products.collectAsState()
+fun SellScreen(
+    navController: NavController,
+    sessionViewModel: SessionViewModel,
+    productViewModel: ProductViewModel = viewModel()
+) {
+    val userId = sessionViewModel.getUserId()
+
+    // Obtiene los productos del vendedor actual
+    val products by productViewModel.getMyProducts(userId).collectAsState(initial = emptyList())
 
     Scaffold(
         // Barra superior con acciones

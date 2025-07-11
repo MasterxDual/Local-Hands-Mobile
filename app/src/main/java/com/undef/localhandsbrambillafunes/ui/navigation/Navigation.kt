@@ -160,7 +160,11 @@ fun Navigation() {
          * Pantalla para vender productos.
          */
         composable(AppScreens.SellScreen.route) {
-            SellScreen(navController)
+            SellScreen(
+                navController,
+                sessionViewModel,
+                viewModel()
+            )
         }
 
         /**
@@ -173,7 +177,9 @@ fun Navigation() {
             val productId = backStackEntry.arguments?.getInt("productId") ?: 0
             EditProductScreen(
                 navController = navController,
-                productId = productId
+                productId = productId,
+                viewModel(),
+                sessionViewModel
             )
         }
 

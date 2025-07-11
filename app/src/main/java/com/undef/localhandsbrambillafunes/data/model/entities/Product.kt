@@ -34,7 +34,7 @@ data class Product(
     val description: String,
     val producer: String,
     val category: String,
-    val ownerId: Int?, // null = producto público, no de ningún emprendedor aún
+    val ownerId: Int?, // null = producto público, no es de ningún emprendedor aún
     val images: List<String>, // Mínimo 1 imagen, máximo 10
     val price: Double,
     val location: String
