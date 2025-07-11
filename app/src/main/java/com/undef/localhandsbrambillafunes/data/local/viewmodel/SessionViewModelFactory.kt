@@ -1,9 +1,9 @@
-package com.undef.localhandsbrambillafunes.data.model.viewmodel
+package com.undef.localhandsbrambillafunes.data.local.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.undef.localhandsbrambillafunes.data.repository.UserRepository
+import com.undef.localhandsbrambillafunes.data.local.repository.UserRepository
 
 //Si queremos que el userId persista aunque se cierre la app, le podemos agregar SharedPreferences al ViewModel
 

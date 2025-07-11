@@ -1,7 +1,7 @@
-package com.undef.localhandsbrambillafunes.data.repository
+package com.undef.localhandsbrambillafunes.data.local.repository
 
-import com.undef.localhandsbrambillafunes.data.model.dao.UserDao
-import com.undef.localhandsbrambillafunes.data.model.entities.User
+import com.undef.localhandsbrambillafunes.data.local.dao.UserDao
+import com.undef.localhandsbrambillafunes.data.local.entities.User
 
 /**
  * Repositorio que actúa como intermediario entre la capa de datos (DAO) y la lógica de negocio.

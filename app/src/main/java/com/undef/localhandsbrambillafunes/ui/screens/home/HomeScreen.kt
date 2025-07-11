@@ -28,7 +28,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,9 +37,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.undef.localhandsbrambillafunes.R
-import com.undef.localhandsbrambillafunes.data.model.ProductListItem
-import com.undef.localhandsbrambillafunes.data.model.ProductProvider
-import com.undef.localhandsbrambillafunes.data.model.viewmodel.ProductViewModel
+import com.undef.localhandsbrambillafunes.data.local.model.ProductListItem
+import com.undef.localhandsbrambillafunes.data.local.viewmodel.ProductViewModel
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 import androidx.compose.runtime.getValue
 

@@ -1,7 +1,7 @@
-package com.undef.localhandsbrambillafunes.data.repository
+package com.undef.localhandsbrambillafunes.data.local.repository
 
-import com.undef.localhandsbrambillafunes.data.model.dao.FavoriteDao
-import com.undef.localhandsbrambillafunes.data.model.entities.Favorite
+import com.undef.localhandsbrambillafunes.data.local.dao.FavoriteDao
+import com.undef.localhandsbrambillafunes.data.local.entities.Favorite
 
 /**
  * Repositorio encargado de manejar las operaciones relacionadas con la entidad `Favorite`.

@@ -1,9 +1,8 @@
-package com.undef.localhandsbrambillafunes.data.repository
+package com.undef.localhandsbrambillafunes.data.local.repository
 
-import com.undef.localhandsbrambillafunes.data.model.dao.ProductDao
-import com.undef.localhandsbrambillafunes.data.model.entities.Product
-import com.undef.localhandsbrambillafunes.data.model.db.ApplicationDatabase
-import com.undef.localhandsbrambillafunes.data.model.entities.Favorite
+import com.undef.localhandsbrambillafunes.data.local.entities.Product
+import com.undef.localhandsbrambillafunes.data.local.db.ApplicationDatabase
+import com.undef.localhandsbrambillafunes.data.local.entities.Favorite
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -27,20 +26,27 @@ import kotlinx.coroutines.withContext
  * --> Facilita pruebas unitarias porque se puede simular fácilmente.
  *
  * --> Mejora la escalabilidad y mantenibilidad del código.
- * @param com.undef.localhandsbrambillafunes.data.model.db.ApplicationDatabase base de datos de productos.
+ * @param ApplicationDatabase base de datos de productos.
  * */
 class ProductRepository(private val db: ApplicationDatabase) {
 
     /**
      * Obtiene todos los productos como un flujo reactivo.
      *
-     * @return Un [kotlinx.coroutines.flow.Flow] que emite listas de productos almacenados en la base de datos.
+     * @return Un [Flow] que emite listas de productos almacenados en la base de datos.
      */
     fun getAllProducts(): Flow<List<Product>> {
         return db.productDao().getAllProducts()
     }
 
-
+    /**
+     * Obtiene un producto específico por su identificador.
+     *
+     * Esta función consulta la base de datos para recuperar un producto que coincida con el ID proporcionado.
+     *
+     * @param id El identificador único del producto que se desea obtener.
+     * @return Una instancia de [Product] correspondiente al ID proporcionado, o `null` si no se encuentra ningún producto con ese ID.
+     */
     fun getProductById(id: Int) = db.productDao().getProductById(id)
 
     /**

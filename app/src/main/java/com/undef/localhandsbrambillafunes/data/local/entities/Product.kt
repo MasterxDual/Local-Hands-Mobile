@@ -1,9 +1,9 @@
-package com.undef.localhandsbrambillafunes.data.model.entities
+package com.undef.localhandsbrambillafunes.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.undef.localhandsbrambillafunes.data.model.db.Converters
+import com.undef.localhandsbrambillafunes.data.local.db.Converters
 
 /**
  * Modelo de datos que representa un producto almacenado en la base de datos local.

@@ -11,12 +11,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.undef.localhandsbrambillafunes.data.model.ProductProvider
-import com.undef.localhandsbrambillafunes.data.model.db.ApplicationDatabase
-import com.undef.localhandsbrambillafunes.data.model.viewmodel.ProductViewModel
-import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModel
-import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModelFactory
-import com.undef.localhandsbrambillafunes.data.repository.UserRepository
+import com.undef.localhandsbrambillafunes.data.local.db.ApplicationDatabase
+import com.undef.localhandsbrambillafunes.data.local.viewmodel.ProductViewModel
+import com.undef.localhandsbrambillafunes.data.local.viewmodel.SessionViewModel
+import com.undef.localhandsbrambillafunes.data.local.viewmodel.SessionViewModelFactory
+import com.undef.localhandsbrambillafunes.data.local.repository.UserRepository
 import com.undef.localhandsbrambillafunes.ui.screens.auth.ForgotPasswordScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.LoginScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.RegisterScreen

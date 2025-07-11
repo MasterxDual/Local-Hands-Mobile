@@ -1,4 +1,4 @@
-package com.undef.localhandsbrambillafunes.data.model.dao
+package com.undef.localhandsbrambillafunes.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.undef.localhandsbrambillafunes.data.model.entities.Product
+import com.undef.localhandsbrambillafunes.data.local.entities.Product
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -24,7 +24,6 @@ interface ProductDao {
     */
     @Query("SELECT * FROM ProductEntity")
     fun getAllProducts(): Flow<List<Product>>
-
 
     /**
      * Consulta SQL para insertar un producto en la tabla de la base de datos
@@ -79,7 +78,17 @@ interface ProductDao {
     @Query("SELECT * FROM ProductEntity WHERE ownerId = :userId")
     fun getProductsByOwner(userId: Int): Flow<List<Product>>
 
-
+    /**
+     * Recupera un producto desde la base de datos en función de su identificador, como un flujo reactivo.
+     *
+     * Esta función retorna un [Flow] que emitirá el producto correspondiente al ID proporcionado, si existe.
+     * Si no se encuentra ningún producto con el ID especificado, el flujo emitirá `null`.
+     *
+     * El uso de [Flow] permite observar cambios en la base de datos y reaccionar ante ellos de forma automática.
+     *
+     * @param id El identificador único del producto que se desea consultar.
+     * @return Un [Flow] que emite una instancia de [Product] si se encuentra, o `null` en caso contrario.
+     */
     @Query("SELECT * FROM ProductEntity WHERE id = :id LIMIT 1")
     fun getProductById(id: Int): Flow<Product?>
 

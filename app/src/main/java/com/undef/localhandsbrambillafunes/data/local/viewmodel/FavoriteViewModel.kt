@@ -1,10 +1,9 @@
-package com.undef.localhandsbrambillafunes.data.model.viewmodel
+package com.undef.localhandsbrambillafunes.data.local.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.undef.localhandsbrambillafunes.data.model.entities.Favorite
-import com.undef.localhandsbrambillafunes.data.repository.FavoriteRepository
-import kotlinx.coroutines.flow.StateFlow
+import com.undef.localhandsbrambillafunes.data.local.entities.Favorite
+import com.undef.localhandsbrambillafunes.data.local.repository.FavoriteRepository
 import kotlinx.coroutines.launch
 
 /**

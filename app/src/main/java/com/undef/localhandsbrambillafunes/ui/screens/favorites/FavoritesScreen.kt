@@ -29,9 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.undef.localhandsbrambillafunes.data.model.ProductListItem
+import com.undef.localhandsbrambillafunes.data.local.model.ProductListItem
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
-import com.undef.localhandsbrambillafunes.data.model.FavoriteProducts
+import com.undef.localhandsbrambillafunes.data.local.model.FavoriteProducts
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

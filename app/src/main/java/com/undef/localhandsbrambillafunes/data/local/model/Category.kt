@@ -1,5 +1,4 @@
-package com.undef.localhandsbrambillafunes.data.model
-
+package com.undef.localhandsbrambillafunes.data.local.model
 
 /**
  * Representa una categoría dentro del sistema de productos de la aplicación.

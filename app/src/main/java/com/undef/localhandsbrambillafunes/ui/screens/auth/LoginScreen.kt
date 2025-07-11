@@ -41,7 +41,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.undef.localhandsbrambillafunes.R
-import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModel
+import com.undef.localhandsbrambillafunes.data.local.viewmodel.SessionViewModel
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
 //Para mostrar como quedaría nuestro login en una interfaz

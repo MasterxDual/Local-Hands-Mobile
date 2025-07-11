@@ -1,8 +1,12 @@
-package com.undef.localhandsbrambillafunes.data.model.dao
+package com.undef.localhandsbrambillafunes.data.local.dao
 
-import androidx.room.*
-import com.undef.localhandsbrambillafunes.data.model.entities.Favorite
-import com.undef.localhandsbrambillafunes.data.model.entities.Product
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.undef.localhandsbrambillafunes.data.local.entities.Favorite
+import com.undef.localhandsbrambillafunes.data.local.entities.Product
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -27,7 +31,7 @@ interface FavoriteDao {
      *
      * @param favorite Objeto que representa la relación entre el usuario y el producto favorito.
      */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun addFavorite(favorite: Favorite)
 
     /**

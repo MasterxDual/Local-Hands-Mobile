@@ -1,7 +1,7 @@
 // ProductProvider.kt
-package com.undef.localhandsbrambillafunes.data.model
+package com.undef.localhandsbrambillafunes.data.local.model
 
-import com.undef.localhandsbrambillafunes.data.model.entities.Product
+import com.undef.localhandsbrambillafunes.data.local.entities.Product
 
 //import com.undef.localhandsbrambillafunes.R
 

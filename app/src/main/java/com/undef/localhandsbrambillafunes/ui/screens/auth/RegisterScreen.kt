@@ -1,6 +1,5 @@
 package com.undef.localhandsbrambillafunes.ui.screens.auth
 
-import android.app.Application
 import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -40,13 +39,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.undef.localhandsbrambillafunes.data.model.db.ApplicationDatabase
-import com.undef.localhandsbrambillafunes.data.model.entities.User
-import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModel
-import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModelFactory
-import com.undef.localhandsbrambillafunes.data.repository.UserRepository
+import com.undef.localhandsbrambillafunes.data.local.entities.User
+import com.undef.localhandsbrambillafunes.data.local.viewmodel.SessionViewModel
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
 @Composable

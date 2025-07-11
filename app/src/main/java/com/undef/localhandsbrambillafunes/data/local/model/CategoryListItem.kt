@@ -1,6 +1,5 @@
-package com.undef.localhandsbrambillafunes.data.model
+package com.undef.localhandsbrambillafunes.data.local.model
 
-//import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,25 +16,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-//import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
-import com.undef.localhandsbrambillafunes.data.model.entities.Product
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
 /**
- * Un elemento de lista de productos optimizado que usa AsyncImage para carga diferida
+ * Un elemento de lista de categorias optimizado que usa AsyncImage para carga diferida
  * y reduce las recomposiciones innecesarias
  */
 @Composable
-fun ProductListItem(product : Product, navController: NavController) {
+fun CategoryListItem(category: Category, navController: NavController) {
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
             .fillMaxWidth()
-            .clickable() {
-                navController.navigate(route = AppScreens.ProductDetailScreen.createRoute(product.id))
+            .clickable {
+                navController.navigate(route = AppScreens.ProductDetailScreen.createRoute(category.id))
             },
         shape = RoundedCornerShape(corner = CornerSize(16.dp))
     ) {
@@ -43,24 +40,24 @@ fun ProductListItem(product : Product, navController: NavController) {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(8.dp)
         ) {
-            ProductImage(product = product)
+            CategoryImage(category = category)
             Column(
                 modifier = Modifier
                     .padding(start = 16.dp)
                     .weight(1f)
             ) {
-                Text(text = product.name, style = typography.bodyLarge)
-                Text(text = "Ver Detalle.", style = typography.bodyMedium)
+                Text(text = category.name, style = typography.bodyLarge)
             }
+
         }
     }
 }
 
 @Composable
-fun ProductImage(product: Product) {
+fun CategoryImage(category: Category) {
     AsyncImage(
-        model = product.images[0],
-        contentDescription = product.name,
+        model = category.images[0],
+        contentDescription = category.name,
         contentScale = ContentScale.Crop,
         modifier = Modifier
             .padding(8.dp)
@@ -68,6 +65,3 @@ fun ProductImage(product: Product) {
             .clip(RoundedCornerShape(corner = CornerSize(16.dp)))
     )
 }
-
-
-

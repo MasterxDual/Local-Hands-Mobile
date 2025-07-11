@@ -1,6 +1,6 @@
-package com.undef.localhandsbrambillafunes.data.model
+package com.undef.localhandsbrambillafunes.data.local.model
 
-import com.undef.localhandsbrambillafunes.data.model.entities.Product
+import com.undef.localhandsbrambillafunes.data.local.entities.Product
 
 // Para esta primera etapa guardamos los favoritos dentro de un archivo de configuracion para datos simples
 object FavoriteProducts {

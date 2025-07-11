@@ -1,4 +1,4 @@
-package com.undef.localhandsbrambillafunes.data.model.entities
+package com.undef.localhandsbrambillafunes.data.local.entities
 
 import androidx.room.Entity
 

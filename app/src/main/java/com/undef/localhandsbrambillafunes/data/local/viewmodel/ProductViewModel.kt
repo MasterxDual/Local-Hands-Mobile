@@ -1,12 +1,12 @@
-package com.undef.localhandsbrambillafunes.data.model.viewmodel
+package com.undef.localhandsbrambillafunes.data.local.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.undef.localhandsbrambillafunes.data.model.entities.Product
-import com.undef.localhandsbrambillafunes.data.model.ProductProviderMigration
-import com.undef.localhandsbrambillafunes.data.model.db.ApplicationDatabase
-import com.undef.localhandsbrambillafunes.data.repository.ProductRepository
+import com.undef.localhandsbrambillafunes.data.local.entities.Product
+import com.undef.localhandsbrambillafunes.data.local.model.ProductProviderMigration
+import com.undef.localhandsbrambillafunes.data.local.db.ApplicationDatabase
+import com.undef.localhandsbrambillafunes.data.local.repository.ProductRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

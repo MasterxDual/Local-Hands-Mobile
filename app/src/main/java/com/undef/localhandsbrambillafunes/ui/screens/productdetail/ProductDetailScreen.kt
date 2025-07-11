@@ -57,13 +57,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.undef.localhandsbrambillafunes.data.model.entities.Product
+import com.undef.localhandsbrambillafunes.data.local.entities.Product
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
-import com.undef.localhandsbrambillafunes.data.model.FavoriteProducts
-import com.undef.localhandsbrambillafunes.data.model.db.ApplicationDatabase
-import com.undef.localhandsbrambillafunes.data.model.viewmodel.FavoriteViewModel
-import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModel
-import com.undef.localhandsbrambillafunes.data.repository.FavoriteRepository
+import com.undef.localhandsbrambillafunes.data.local.model.FavoriteProducts
+import com.undef.localhandsbrambillafunes.data.local.db.ApplicationDatabase
+import com.undef.localhandsbrambillafunes.data.local.viewmodel.FavoriteViewModel
+import com.undef.localhandsbrambillafunes.data.local.viewmodel.SessionViewModel
+import com.undef.localhandsbrambillafunes.data.local.repository.FavoriteRepository
 
 import coil.compose.AsyncImage
 

@@ -1,6 +1,5 @@
 package com.undef.localhandsbrambillafunes.ui.screens.entrepreneur
 
-import android.app.Application
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import androidx.compose.foundation.lazy.items
@@ -26,12 +24,9 @@ import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import com.undef.localhandsbrambillafunes.data.model.db.ApplicationDatabase
-import com.undef.localhandsbrambillafunes.data.model.entities.Product
-import com.undef.localhandsbrambillafunes.data.model.viewmodel.ProductViewModel
-import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModel
-import com.undef.localhandsbrambillafunes.data.model.viewmodel.SessionViewModelFactory
-import com.undef.localhandsbrambillafunes.data.repository.UserRepository
+import com.undef.localhandsbrambillafunes.data.local.entities.Product
+import com.undef.localhandsbrambillafunes.data.local.viewmodel.ProductViewModel
+import com.undef.localhandsbrambillafunes.data.local.viewmodel.SessionViewModel
 import java.io.File
 
 /**

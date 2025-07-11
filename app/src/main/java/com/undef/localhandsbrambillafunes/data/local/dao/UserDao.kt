@@ -1,11 +1,12 @@
-package com.undef.localhandsbrambillafunes.data.model.dao
+package com.undef.localhandsbrambillafunes.data.local.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
-import com.undef.localhandsbrambillafunes.data.model.entities.User
-
-import androidx.room.*
+import androidx.room.Query
+import androidx.room.Update
+import com.undef.localhandsbrambillafunes.data.local.entities.User
 
 /**
  * Interfaz DAO (Data Access Object) para acceder a los datos de la entidad [User].
@@ -22,7 +23,7 @@ interface UserDao {
      * @param user Instancia del usuario a insertar.
      * @return ID generado para el nuevo usuario.
      */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun insertUser(user: User): Long
 
     /**

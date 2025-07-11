@@ -1,17 +1,17 @@
-package com.undef.localhandsbrambillafunes.data.model.db;
+package com.undef.localhandsbrambillafunes.data.local.db
 
 import android.content.Context
 import androidx.room.Database;
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters;
-import com.undef.localhandsbrambillafunes.data.model.dao.FavoriteDao
+import com.undef.localhandsbrambillafunes.data.local.dao.FavoriteDao
 
-import com.undef.localhandsbrambillafunes.data.model.entities.Product;
-import com.undef.localhandsbrambillafunes.data.model.dao.ProductDao;
-import com.undef.localhandsbrambillafunes.data.model.dao.UserDao
-import com.undef.localhandsbrambillafunes.data.model.entities.Favorite
-import com.undef.localhandsbrambillafunes.data.model.entities.User
+import com.undef.localhandsbrambillafunes.data.local.entities.Product;
+import com.undef.localhandsbrambillafunes.data.local.dao.ProductDao;
+import com.undef.localhandsbrambillafunes.data.local.dao.UserDao
+import com.undef.localhandsbrambillafunes.data.local.entities.Favorite
+import com.undef.localhandsbrambillafunes.data.local.entities.User
 
 /**
  * Clase abstracta que representa la base de datos local de productos utilizando Room.

@@ -1,4 +1,4 @@
-package com.undef.localhandsbrambillafunes.data.model.db
+package com.undef.localhandsbrambillafunes.data.local.db
 
 import android.app.Application
 import androidx.room.Room
