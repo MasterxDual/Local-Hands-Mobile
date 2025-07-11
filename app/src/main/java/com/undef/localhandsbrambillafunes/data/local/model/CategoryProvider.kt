@@ -1,4 +1,4 @@
-package com.undef.localhandsbrambillafunes.data.model
+package com.undef.localhandsbrambillafunes.data.local.model
 
 // Objeto que proporciona una lista de categorias de ejemplo (para la simulacion y pruebas)
 object CategoryProvider {

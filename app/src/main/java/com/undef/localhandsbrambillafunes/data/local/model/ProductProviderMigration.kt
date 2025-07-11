@@ -1,4 +1,6 @@
-package com.undef.localhandsbrambillafunes.data.model
+package com.undef.localhandsbrambillafunes.data.local.model
+
+import com.undef.localhandsbrambillafunes.data.local.entities.Product
 
 
 /**
@@ -27,7 +29,8 @@ object ProductProviderMigration {
             category = prod.category,
             images = prod.images, // Simple serialización
             price = prod.price,
-            location = prod.location
+            location = prod.location,
+            ownerId = prod.ownerId
         )
     }
 }

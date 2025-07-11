@@ -31,8 +31,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.undef.localhandsbrambillafunes.data.model.CategoryListItem
-import com.undef.localhandsbrambillafunes.data.model.CategoryProvider
+import com.undef.localhandsbrambillafunes.data.local.model.CategoryListItem
+import com.undef.localhandsbrambillafunes.data.local.model.CategoryProvider
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
