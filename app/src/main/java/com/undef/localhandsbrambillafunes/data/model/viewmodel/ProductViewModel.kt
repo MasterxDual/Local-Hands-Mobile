@@ -7,6 +7,7 @@ import com.undef.localhandsbrambillafunes.data.model.entities.Product
 import com.undef.localhandsbrambillafunes.data.model.ProductProviderMigration
 import com.undef.localhandsbrambillafunes.data.model.db.ApplicationDatabase
 import com.undef.localhandsbrambillafunes.data.repository.ProductRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
@@ -87,6 +88,8 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     fun deleteProduct(product: Product) = viewModelScope.launch {
         repository.deleteProduct(product)
     }
+
+    fun getProductById(id: Int): Flow<Product?> = repository.getProductById(id)
 
     /**
      * Inserta una lista de productos en la base de datos, reemplazando los existentes si hay conflicto.

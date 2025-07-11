@@ -1,5 +1,6 @@
 package com.undef.localhandsbrambillafunes.data.repository
 
+import com.undef.localhandsbrambillafunes.data.model.dao.ProductDao
 import com.undef.localhandsbrambillafunes.data.model.entities.Product
 import com.undef.localhandsbrambillafunes.data.model.db.ApplicationDatabase
 import com.undef.localhandsbrambillafunes.data.model.entities.Favorite
@@ -38,6 +39,9 @@ class ProductRepository(private val db: ApplicationDatabase) {
     fun getAllProducts(): Flow<List<Product>> {
         return db.productDao().getAllProducts()
     }
+
+
+    fun getProductById(id: Int) = db.productDao().getProductById(id)
 
     /**
      * Obtiene un flujo reactivo con todos los productos publicados por un usuario específico.

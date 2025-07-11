@@ -128,15 +128,17 @@ fun Navigation() {
             // Extrae el argumento productId del backstack, si no existe retorna sin hacer nada
             val productId = navBackStackEntry.arguments?.getInt("productId") ?: return@composable
 
-            // Busca el producto correspondiente en el proveedor de datos
-            val product = ProductProvider.products.find { it.id == productId } ?: return@composable
+            // Busca el producto correspondiente en la base de datos
+            val product = productViewModel.products.collectAsState().value.find { it.id == productId }
 
             // Muestra la pantalla de detalle con el producto encontrado
-            ProductDetailScreen(
-                navController = navController,
-                product = product,
-                sessionViewModel
-            )
+            product?.let {
+                ProductDetailScreen(
+                    navController = navController,
+                    product = it,
+                    sessionViewModel
+                )
+            }
         }
 
         /**

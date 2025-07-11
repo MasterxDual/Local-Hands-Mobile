@@ -79,6 +79,10 @@ interface ProductDao {
     @Query("SELECT * FROM ProductEntity WHERE ownerId = :userId")
     fun getProductsByOwner(userId: Int): Flow<List<Product>>
 
+
+    @Query("SELECT * FROM ProductEntity WHERE id = :id LIMIT 1")
+    fun getProductById(id: Int): Flow<Product?>
+
     /**
      * Busca productos filtrando por nombre de vendedor.
      * Realiza una búsqueda parcial utilizando `LIKE`.
