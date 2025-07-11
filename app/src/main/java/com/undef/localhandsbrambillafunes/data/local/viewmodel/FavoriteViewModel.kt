@@ -2,6 +2,7 @@ package com.undef.localhandsbrambillafunes.data.local.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.undef.localhandsbrambillafunes.data.local.dao.FavoriteDao
 import com.undef.localhandsbrambillafunes.data.local.entities.Favorite
 import com.undef.localhandsbrambillafunes.data.local.repository.FavoriteRepository
 import kotlinx.coroutines.launch
@@ -33,4 +34,11 @@ class FavoriteViewModel(
             favoriteRepository.addFavorite(Favorite(userId = userId, productId = productId))
         }
     }
+
+    fun removeFavorite(favorite: Favorite) = viewModelScope.launch {
+        favoriteRepository.removeFavorite(favorite)
+    }
+
+
+    fun getFavoritesForUser(userId: Int) = favoriteRepository.getFavoritesForUser(userId)
 }

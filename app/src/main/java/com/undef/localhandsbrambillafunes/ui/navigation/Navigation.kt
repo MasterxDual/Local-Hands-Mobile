@@ -16,6 +16,7 @@ import com.undef.localhandsbrambillafunes.data.local.viewmodel.ProductViewModel
 import com.undef.localhandsbrambillafunes.data.local.viewmodel.SessionViewModel
 import com.undef.localhandsbrambillafunes.data.local.viewmodel.SessionViewModelFactory
 import com.undef.localhandsbrambillafunes.data.local.repository.UserRepository
+import com.undef.localhandsbrambillafunes.data.local.viewmodel.FavoriteViewModel
 import com.undef.localhandsbrambillafunes.ui.screens.auth.ForgotPasswordScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.LoginScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.RegisterScreen
@@ -55,6 +56,8 @@ fun Navigation() {
     // Esto se hace con el fin de no tener que instanciar varias veces al productViewModel y así
     // tengamos los mismos productos en todas las pantallas que lo utilicemos
     val productViewModel: ProductViewModel = viewModel()
+
+    val favoriteViewModel: FavoriteViewModel = viewModel()
 
     NavHost(
         navController = navController,
@@ -144,7 +147,7 @@ fun Navigation() {
          * Pantalla que muestra los productos marcados como favoritos por el usuario.
          */
         composable(AppScreens.FavoritesScreen.route) {
-            FavoritesScreen(navController)
+            FavoritesScreen(navController, sessionViewModel, favoriteViewModel)
         }
 
         /**

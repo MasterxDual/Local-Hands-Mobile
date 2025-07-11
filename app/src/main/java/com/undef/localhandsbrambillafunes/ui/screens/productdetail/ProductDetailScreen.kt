@@ -66,7 +66,7 @@ import com.undef.localhandsbrambillafunes.data.local.viewmodel.SessionViewModel
 import com.undef.localhandsbrambillafunes.data.local.repository.FavoriteRepository
 
 import coil.compose.AsyncImage
-
+import com.undef.localhandsbrambillafunes.data.local.entities.Favorite
 
 
 /**
@@ -99,6 +99,9 @@ fun ProductDetailScreen(navController: NavController, product: Product, sessionV
 
     // Traemos el userId global  creado previamente en el registro del mismo
     val userId = sessionViewModel.getUserId()
+
+    // Obtenemos la instancia del producto favorito actual para poder eliminarlo correctamente
+    val favoriteProduct = Favorite(userId, product.id)
 
     Scaffold(
         // Barra superior con botón de retroceso
@@ -234,6 +237,7 @@ fun ProductDetailScreen(navController: NavController, product: Product, sessionV
                     onClick = {
                         if (isFavorite.value) {
                             FavoriteProducts.removeToFavorite(product.id)
+                            favoriteViewModel.removeFavorite(favoriteProduct)
                         } else {
                             FavoriteProducts.addToFavorite(product)
                             favoriteViewModel.addFavorite(userId, product.id)
