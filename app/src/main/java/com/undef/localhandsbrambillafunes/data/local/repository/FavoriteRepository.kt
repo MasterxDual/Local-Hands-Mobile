@@ -25,10 +25,11 @@ class FavoriteRepository(private val favoriteDao: FavoriteDao) {
     /**
      * Elimina un favorito existente de la base de datos.
      *
-     * @param favorite Objeto `Favorite` que se desea eliminar.
+     * @param userId Identificador único del usuario.
+     * @param productId Identificador único del producto.
      */
-    suspend fun removeFavorite(favorite: Favorite) {
-        favoriteDao.removeFavorite(favorite)
+    suspend fun removeFavorite(userId: Int, productId: Int) {
+        favoriteDao.removeFavoriteByUserAndProduct(userId, productId)
     }
 
     /**

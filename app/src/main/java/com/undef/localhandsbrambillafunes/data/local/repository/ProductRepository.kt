@@ -169,6 +169,6 @@ class ProductRepository(private val db: ApplicationDatabase) {
      * @param productId ID del producto a eliminar de la lista de favoritos.
      */
     suspend fun removeFavorite(userId: Int, productId: Int) = withContext(Dispatchers.IO) {
-        db.favoriteDao().removeFavorite(Favorite(userId, productId))
+        db.favoriteDao().removeFavoriteByUserAndProduct(userId, productId)
     }
 }

@@ -38,8 +38,8 @@ class FavoriteViewModel(
         }
     }
 
-    fun removeFavorite(favorite: Favorite) = viewModelScope.launch {
-        favoriteRepository.removeFavorite(favorite)
+    fun removeFavoriteByProductId(userId: Int, productId: Int) = viewModelScope.launch {
+        favoriteRepository.removeFavorite(userId, productId)
     }
 
 

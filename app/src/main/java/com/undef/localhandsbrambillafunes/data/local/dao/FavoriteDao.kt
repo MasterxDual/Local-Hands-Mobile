@@ -35,12 +35,18 @@ interface FavoriteDao {
     suspend fun addFavorite(favorite: Favorite)
 
     /**
-     * Elimina un producto de la lista de favoritos de un usuario.
+     * Elimina un producto favorito específico de un usuario en la base de datos.
      *
-     * @param favorite Objeto que representa la relación a eliminar.
+     * Esta función ejecuta una consulta SQL que elimina una entrada de la tabla `favoriteentity`
+     * que coincida con el identificador del usuario y el identificador del producto proporcionados.
+     *
+     * Es una operación suspendida y debe llamarse dentro de una corrutina o de otra función `suspend`.
+     *
+     * @param userId El identificador del usuario asociado al producto favorito.
+     * @param productId El identificador del producto que se desea eliminar de los favoritos.
      */
-    @Delete
-    suspend fun removeFavorite(favorite: Favorite)
+    @Query("DELETE FROM favoriteentity WHERE userId = :userId AND productId = :productId")
+    suspend fun removeFavoriteByUserAndProduct(userId: Int, productId: Int)
 
     /**
      * Recupera todos los productos que han sido marcados como favoritos por un usuario determinado.
