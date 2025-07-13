@@ -1,4 +1,4 @@
-package com.undef.localhandsbrambillafunes.data.local.viewmodel
+package com.undef.localhandsbrambillafunes.ui.viewmodel.favorites
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

@@ -32,8 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.undef.localhandsbrambillafunes.data.local.model.ProductListItem
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
-import com.undef.localhandsbrambillafunes.data.local.viewmodel.FavoriteViewModel
-import com.undef.localhandsbrambillafunes.data.local.viewmodel.SessionViewModel
+import com.undef.localhandsbrambillafunes.ui.viewmodel.favorites.FavoriteViewModel
+import com.undef.localhandsbrambillafunes.ui.viewmodel.session.SessionViewModel
 import androidx.compose.runtime.getValue
 
 @OptIn(ExperimentalMaterial3Api::class)

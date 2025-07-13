@@ -25,8 +25,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.undef.localhandsbrambillafunes.data.local.entities.Product
-import com.undef.localhandsbrambillafunes.data.local.viewmodel.ProductViewModel
-import com.undef.localhandsbrambillafunes.data.local.viewmodel.SessionViewModel
+import com.undef.localhandsbrambillafunes.ui.viewmodel.products.ProductViewModel
+import com.undef.localhandsbrambillafunes.ui.viewmodel.session.SessionViewModel
 import java.io.File
 
 /**

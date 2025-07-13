@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.undef.localhandsbrambillafunes.R
 import com.undef.localhandsbrambillafunes.data.local.model.ProductListItem
-import com.undef.localhandsbrambillafunes.data.local.viewmodel.ProductViewModel
+import com.undef.localhandsbrambillafunes.ui.viewmodel.products.ProductViewModel
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 import androidx.compose.runtime.getValue
 

@@ -45,7 +45,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,8 +58,8 @@ import androidx.navigation.NavController
 import com.undef.localhandsbrambillafunes.data.local.entities.Product
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 import com.undef.localhandsbrambillafunes.data.local.model.FavoriteProducts
-import com.undef.localhandsbrambillafunes.data.local.viewmodel.FavoriteViewModel
-import com.undef.localhandsbrambillafunes.data.local.viewmodel.SessionViewModel
+import com.undef.localhandsbrambillafunes.ui.viewmodel.favorites.FavoriteViewModel
+import com.undef.localhandsbrambillafunes.ui.viewmodel.session.SessionViewModel
 import coil.compose.AsyncImage
 import androidx.compose.runtime.getValue
 

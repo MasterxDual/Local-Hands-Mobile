@@ -1,10 +1,8 @@
-package com.undef.localhandsbrambillafunes.data.local.viewmodel
+package com.undef.localhandsbrambillafunes.ui.viewmodel.favorites
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.undef.localhandsbrambillafunes.data.local.dao.FavoriteDao
 import com.undef.localhandsbrambillafunes.data.local.entities.Favorite
 import com.undef.localhandsbrambillafunes.data.local.repository.FavoriteRepository
 import kotlinx.coroutines.launch

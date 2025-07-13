@@ -1,11 +1,11 @@
-package com.undef.localhandsbrambillafunes.data.local.viewmodel
+package com.undef.localhandsbrambillafunes.ui.viewmodel.products
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.undef.localhandsbrambillafunes.data.local.db.ApplicationDatabase
 import com.undef.localhandsbrambillafunes.data.local.entities.Product
 import com.undef.localhandsbrambillafunes.data.local.model.ProductProviderMigration
-import com.undef.localhandsbrambillafunes.data.local.db.ApplicationDatabase
 import com.undef.localhandsbrambillafunes.data.local.repository.ProductRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
  * - Hace que la UI sea más declarativa y reactiva.
  */
 class ProductViewModel(application: Application) : AndroidViewModel(application) {
-    private val db = ApplicationDatabase.getInstance(application)
+    private val db = ApplicationDatabase.Companion.getInstance(application)
     private val repository = ProductRepository(db)
 
     // Todos los productos disponibles
@@ -138,7 +138,7 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
      */
     fun getMyProducts(ownerId: Int): StateFlow<List<Product>> =
         repository.getProductsByOwner(ownerId)
-            .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+            .stateIn(viewModelScope, SharingStarted.Companion.Lazily, emptyList())
 
     /**
      * Obtiene la lista de productos marcados como favoritos por el usuario.
@@ -151,5 +151,5 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
      */
     fun getFavorites(userId: Int): StateFlow<List<Product>> =
         repository.getFavoritesForUser(userId)
-            .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+            .stateIn(viewModelScope, SharingStarted.Companion.Lazily, emptyList())
 }
