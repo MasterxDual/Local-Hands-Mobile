@@ -59,4 +59,9 @@ sealed class AppScreens(val route: String) {
     object EditProductScreen: AppScreens("edit_product_screen/{productId}") {
         fun createRoute(productId: Int) = "edit_product_screen/$productId"
     }
+
+    object ProductOwnerDetailScreen {
+        const val route = "product_owner_detail"
+        fun createRoute(productId: Int) = "$route/$productId"
+    }
 }

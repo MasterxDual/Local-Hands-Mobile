@@ -1,13 +1,17 @@
-package com.undef.localhandsbrambillafunes.data.model.db;
+package com.undef.localhandsbrambillafunes.data.local.db
 
 import android.content.Context
 import androidx.room.Database;
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters;
+import com.undef.localhandsbrambillafunes.data.local.dao.FavoriteDao
 
-import com.undef.localhandsbrambillafunes.data.model.Product;
-import com.undef.localhandsbrambillafunes.data.model.dao.ProductDao;
+import com.undef.localhandsbrambillafunes.data.local.entities.Product;
+import com.undef.localhandsbrambillafunes.data.local.dao.ProductDao;
+import com.undef.localhandsbrambillafunes.data.local.dao.UserDao
+import com.undef.localhandsbrambillafunes.data.local.entities.Favorite
+import com.undef.localhandsbrambillafunes.data.local.entities.User
 
 /**
  * Clase abstracta que representa la base de datos local de productos utilizando Room.
@@ -24,9 +28,10 @@ import com.undef.localhandsbrambillafunes.data.model.dao.ProductDao;
  * - Versión: 1
  * - Convertidores: [Converters] (necesarios para manejar listas de imágenes `List<String>`)
  */
-@Database(entities = [Product::class], version = 1)
+@Database(entities = [Product::class, Favorite::class, User::class], version = 4)
 @TypeConverters(Converters::class) //Para cargar List<String> de Product
-abstract class ProductDatabase: RoomDatabase() {
+abstract class ApplicationDatabase: RoomDatabase() {
+
     /**
      * Proporciona acceso al DAO de productos.
      *
@@ -34,29 +39,49 @@ abstract class ProductDatabase: RoomDatabase() {
      */
     abstract fun productDao(): ProductDao
 
+    /**
+     * Proporciona acceso al DAO de favoritos.
+     *
+     * @return Instancia de [FavoriteDao] para ejecutar operaciones CRUD sobre la base de datos.
+     */
+    abstract fun favoriteDao(): FavoriteDao
+
+    /**
+     * Proporciona acceso al DAO de usuarios.
+     *
+     * @return Instancia de [UserDao] para ejecutar operaciones CRUD sobre la base de datos.
+     */
+    abstract fun userDao(): UserDao
+
     companion object {
         /**
          * Instancia singleton de la base de datos, compartida a lo largo de toda la aplicación.
          * Marcada como `@Volatile` para asegurar la visibilidad entre hilos.
          */
         @Volatile
-        private var INSTANCE: ProductDatabase? = null
+        private var INSTANCE: ApplicationDatabase? = null
 
         /**
          * Devuelve la instancia existente de la base de datos o la crea si aún no ha sido inicializada.
          *
          * Utiliza el contexto de la aplicación para evitar fugas de memoria.
+         * Aplica `fallbackToDestructiveMigration()` para eliminar y recrear la base de datos
+         * en caso de que ocurra una incompatibilidad entre versiones de esquema.
+         *
+         * ⚠️ Este enfoque implica pérdida de datos ante cambios estructurales.
          *
          * @param context Contexto de la aplicación.
-         * @return Instancia única de [ProductDatabase].
+         * @return Instancia única de [ApplicationDatabase].
          */
-        fun getInstance(context: Context): ProductDatabase =
+        fun getInstance(context: Context): ApplicationDatabase =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: Room.databaseBuilder(
                     context.applicationContext,
-                    ProductDatabase::class.java,
+                    ApplicationDatabase::class.java,
                     "ProductDatabase"
-                ).build().also { INSTANCE = it }
+                )
+                    .fallbackToDestructiveMigration(true) // Borra la base de datos vieja en caso de que se modifique la estructura de la misma y se incremente la versión
+                    .build().also { INSTANCE = it }
             }
     }
 }
