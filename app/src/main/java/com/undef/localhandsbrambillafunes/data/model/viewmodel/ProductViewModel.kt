@@ -5,8 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.undef.localhandsbrambillafunes.data.model.Product
 import com.undef.localhandsbrambillafunes.data.model.ProductProviderMigration
-import com.undef.localhandsbrambillafunes.data.model.db.ProductDatabase
-import com.undef.localhandsbrambillafunes.data.model.dao.ProductRepository
+import com.undef.localhandsbrambillafunes.data.db.ProductDatabase
+import com.undef.localhandsbrambillafunes.data.dao.ProductRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first

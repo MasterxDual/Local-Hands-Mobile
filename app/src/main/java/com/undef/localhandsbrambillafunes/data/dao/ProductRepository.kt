@@ -1,7 +1,7 @@
-package com.undef.localhandsbrambillafunes.data.model.dao
+package com.undef.localhandsbrambillafunes.data.dao
 
 import com.undef.localhandsbrambillafunes.data.model.Product
-import com.undef.localhandsbrambillafunes.data.model.db.ProductDatabase
+import com.undef.localhandsbrambillafunes.data.db.ProductDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext

@@ -1,4 +1,4 @@
-package com.undef.localhandsbrambillafunes.data.model.dao
+package com.undef.localhandsbrambillafunes.data.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
