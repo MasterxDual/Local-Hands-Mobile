@@ -59,6 +59,7 @@ android {
         compose = true
     }
 
+    // Paquetes que deben ser ignorados
     packaging {
         resources {
             excludes += setOf(
