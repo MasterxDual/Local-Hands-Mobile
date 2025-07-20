@@ -24,18 +24,28 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.undef.localhandsbrambillafunes.data.model.ProductListItem
+import com.undef.localhandsbrambillafunes.data.local.model.ProductListItem
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
-import com.undef.localhandsbrambillafunes.data.model.FavoriteProducts
+import com.undef.localhandsbrambillafunes.ui.viewmodel.favorites.FavoriteViewModel
+import com.undef.localhandsbrambillafunes.ui.viewmodel.session.SessionViewModel
+import androidx.compose.runtime.getValue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FavoritesScreen(navController: NavController) {
+fun FavoritesScreen(
+    navController: NavController,
+    sessionViewModel: SessionViewModel,
+    favoriteViewModel: FavoriteViewModel
+) {
+    val userId = sessionViewModel.getUserId()
+    val favorites by favoriteViewModel.getFavoritesForUser(userId).collectAsState(initial = emptyList())
+
 
     Scaffold(
         // Barra Superior con título y acciones
@@ -141,7 +151,7 @@ fun FavoritesScreen(navController: NavController) {
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                 )
             }
-            items(FavoriteProducts.getFavorites()) { favoriteProduct ->
+            items(favorites) { favoriteProduct ->
                 ProductListItem(product = favoriteProduct, navController = navController)
             }
         }

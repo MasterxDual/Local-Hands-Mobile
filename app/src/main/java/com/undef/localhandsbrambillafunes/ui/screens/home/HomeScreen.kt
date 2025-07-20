@@ -27,7 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,9 +37,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.undef.localhandsbrambillafunes.R
-import com.undef.localhandsbrambillafunes.data.model.ProductListItem
-import com.undef.localhandsbrambillafunes.data.model.ProductProvider
+import com.undef.localhandsbrambillafunes.data.local.model.ProductListItem
+import com.undef.localhandsbrambillafunes.ui.viewmodel.products.ProductViewModel
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
+import androidx.compose.runtime.getValue
 
 /**
  * Pantalla principal de la aplicación que muestra una interfaz completa con barra superior,
@@ -49,7 +50,9 @@ import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, productViewModel: ProductViewModel) {
+    val products by productViewModel.products.collectAsState()
+
     /**
      * Scaffold es el componente base que proporciona la estructura básica de la pantalla
      * con áreas para barra superior, contenido principal y barra inferior.
@@ -179,11 +182,6 @@ fun HomeScreen(navController: NavController) {
             }
         }
     ) { paddingValues ->
-        /**
-         * Contenido principal de la pantalla usando LazyColumn para mejor rendimiento
-         */
-        val products = remember { ProductProvider.products }
-
         LazyColumn(
             state = rememberLazyListState(),
             modifier = Modifier

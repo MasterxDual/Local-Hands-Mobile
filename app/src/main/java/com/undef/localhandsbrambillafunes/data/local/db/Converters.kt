@@ -1,4 +1,4 @@
-package com.undef.localhandsbrambillafunes.data.model.db
+package com.undef.localhandsbrambillafunes.data.local.db
 
 import androidx.room.TypeConverter
 
@@ -18,10 +18,14 @@ import androidx.room.TypeConverter
  */
 class Converters {
     @TypeConverter
-    fun fromImageList(images: List<String>): String =
-        images.joinToString("|")
+    fun fromImageList(images: List<String>): String {
+        return images.joinToString("|")
+    }
+    /*images.joinToString("|")*/
 
     @TypeConverter
-    fun toImageList(data: String): List<String> =
-        if (data.isEmpty()) emptyList() else data.split("|")
+    fun toImageList(value: String): List<String> {
+        return if (value.isEmpty()) emptyList() else value.split("|")
+    }
+    /*if (data.isEmpty()) emptyList() else data.split("|")*/
 }
