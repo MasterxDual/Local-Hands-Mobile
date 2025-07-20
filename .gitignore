@@ -74,5 +74,8 @@ outputs/
 **/gradle-wrapper.jar
 **/gradle-wrapper.properties
 
+# Variables de entorno
+local.properties
+
 # Otros
 .cxx/
