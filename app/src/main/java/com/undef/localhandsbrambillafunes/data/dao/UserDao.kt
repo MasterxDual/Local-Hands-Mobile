@@ -100,6 +100,15 @@ interface UserDao {
     suspend fun isEmailExists(email: String): Int
 
     /**
+     * Obtiene un usuario por su ID.
+     *
+     * @param id ID del usuario.
+     * @return Instancia de [User], o `null` si no se encuentra.
+     */
+    @Query("SELECT * FROM users WHERE id = :id")
+    suspend fun getUserById(id: Int): User?
+
+    /**
      * Elimina todos los usuarios (SOLO PARA PRUEBAS)
      */
     @Query("DELETE FROM users")

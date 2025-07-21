@@ -11,6 +11,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.undef.localhandsbrambillafunes.data.db.AppDatabase
+import com.undef.localhandsbrambillafunes.data.repository.AuthRepository
 import com.undef.localhandsbrambillafunes.data.repository.FavoriteRepository
 import com.undef.localhandsbrambillafunes.ui.viewmodel.products.ProductViewModel
 import com.undef.localhandsbrambillafunes.ui.viewmodel.session.SessionViewModel
@@ -46,18 +48,28 @@ fun Navigation() {
     val context = LocalContext.current
     val userRepository = remember {
         UserRepository(
-            ApplicationDatabase.getInstance(context.applicationContext as Application).userDao()
+            AppDatabase.getDatabase(context.applicationContext as Application).userDao()
         )
     }
     val sessionViewModel: SessionViewModel = viewModel(
         factory = SessionViewModelFactory(LocalContext.current.applicationContext as Application, userRepository)
     )
 
-    val favoriteRepository = remember {
-        FavoriteRepository(
-            ApplicationDatabase.getInstance(context.applicationContext as Application).favoriteDao()
+    val authRepository = remember {
+        AuthRepository(
+            AppDatabase.getDatabase(context.applicationContext as Application).userDao(),
+            context
         )
     }
+
+    val favoriteRepository = remember {
+        FavoriteRepository(
+            AppDatabase.getDatabase(context.applicationContext as Application).favoriteDao(),
+            authRepository
+        )
+    }
+
+
     val favoriteViewModel: FavoriteViewModel = viewModel(
         factory = FavoriteViewModelFactory(LocalContext.current.applicationContext as Application, favoriteRepository)
     )
@@ -84,7 +96,7 @@ fun Navigation() {
          * Pantalla de inicio de sesión donde los usuarios pueden autenticarse.
          */
         composable(AppScreens.LoginScreen.route) {
-            LoginScreen(navController, sessionViewModel)
+            LoginScreen(navController)
         }
 
         /**
@@ -98,7 +110,7 @@ fun Navigation() {
          * Pantalla de registro para nuevos usuarios.
          */
         composable(AppScreens.RegisterScreen.route) {
-            RegisterScreen(navController, sessionViewModel)
+            RegisterScreen(navController)
         }
 
         /**

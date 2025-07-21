@@ -23,7 +23,7 @@ import androidx.room.Index
 )
 data class User(
     @PrimaryKey(autoGenerate = true) // Clave primaria que se auto-genera
-    val id: Int = 0,
+    val id: Int = 0, // Empieza en 1 automaticamente
     val name: String,
     val lastName: String,
     val email: String,

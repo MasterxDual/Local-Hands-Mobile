@@ -3,6 +3,7 @@ package com.undef.localhandsbrambillafunes.ui.viewmodel.products
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.undef.localhandsbrambillafunes.data.db.AppDatabase
 import com.undef.localhandsbrambillafunes.data.entity.Product
 import com.undef.localhandsbrambillafunes.data.model.ProductProviderMigration
 import com.undef.localhandsbrambillafunes.data.repository.ProductRepository
@@ -32,7 +33,7 @@ import kotlinx.coroutines.launch
  * - Hace que la UI sea más declarativa y reactiva.
  */
 class ProductViewModel(application: Application) : AndroidViewModel(application) {
-    private val db = ApplicationDatabase.Companion.getInstance(application)
+    private val db = AppDatabase.Companion.getDatabase(application)
     private val repository = ProductRepository(db)
 
     // Todos los productos disponibles

@@ -231,7 +231,7 @@ fun ProductDetailScreen(
                             FavoriteProducts.removeToFavorite(product.id)
                         } else {
                             FavoriteProducts.addToFavorite(product)
-                            favoriteViewModel.addFavorite(userId, product.id)
+                            favoriteViewModel.addFavorite(product.id)
                         }
                     },
                     modifier = Modifier

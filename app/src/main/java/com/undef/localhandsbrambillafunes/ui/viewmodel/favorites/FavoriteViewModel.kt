@@ -30,9 +30,9 @@ class FavoriteViewModel(
      * @param userId ID del usuario que desea agregar el producto a favoritos.
      * @param productId ID del producto que se desea marcar como favorito.
      */
-    fun addFavorite(userId: Int, productId: Int) {
+    fun addFavorite(productId: Int) {
         viewModelScope.launch {
-            favoriteRepository.addFavorite(Favorite(userId = userId, productId = productId))
+            favoriteRepository.addFavoriteForCurrentUser(productId = productId)
         }
     }
 

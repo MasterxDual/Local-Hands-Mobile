@@ -2,6 +2,7 @@ package com.undef.localhandsbrambillafunes.data.repository
 
 import com.undef.localhandsbrambillafunes.data.dao.FavoriteDao
 import com.undef.localhandsbrambillafunes.data.entity.Favorite
+import com.undef.localhandsbrambillafunes.data.exception.NotAuthenticatedException
 
 /**
  * Repositorio encargado de manejar las operaciones relacionadas con la entidad `Favorite`.
@@ -11,7 +12,10 @@ import com.undef.localhandsbrambillafunes.data.entity.Favorite
  *
  * @param favoriteDao Instancia de `FavoriteDao` utilizada para ejecutar las operaciones sobre la base de datos.
  */
-class FavoriteRepository(private val favoriteDao: FavoriteDao) {
+class FavoriteRepository(
+    private val favoriteDao: FavoriteDao,
+    private val authRepository: AuthRepository // Añadir dependencia
+) {
 
     /**
      * Agrega un nuevo favorito a la base de datos.
@@ -39,5 +43,21 @@ class FavoriteRepository(private val favoriteDao: FavoriteDao) {
      * @return Un `Flow` que emite la lista de objetos `Favorite` del usuario.
      */
     fun getFavoritesForUser(userId: Int) = favoriteDao.getFavoritesForUser(userId)
+
+    /**
+     * Agrega un producto a favoritos para el usuario actualmente autenticado.
+     * @throws NotAuthenticatedException si no hay usuario autenticado
+     */
+    suspend fun addFavoriteForCurrentUser(productId: Int) {
+        val currentUserId = authRepository.getCurrentUserId()
+            ?: throw NotAuthenticatedException("User not logged in")
+
+        val favorite = Favorite(
+            userId = currentUserId,
+            productId = productId
+        )
+        favoriteDao.addFavorite(favorite)
+    }
+
 
 }

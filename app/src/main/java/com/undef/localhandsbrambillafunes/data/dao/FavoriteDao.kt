@@ -30,7 +30,7 @@ interface FavoriteDao {
      *
      * @param favorite Objeto que representa la relación entre el usuario y el producto favorito.
      */
-    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addFavorite(favorite: Favorite)
 
     /**
