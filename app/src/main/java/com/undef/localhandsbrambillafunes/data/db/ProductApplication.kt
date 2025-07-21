@@ -5,13 +5,13 @@ import androidx.room.Room
 
 /**
  * Clase personalizada que extiende [Application] y se utiliza para inicializar recursos globales
- * al iniciar la aplicación, en este caso, la base de datos local `ProductDatabase` mediante Room.
+ * al iniciar la aplicación, en este caso, la base de datos local `ApplicationDatabase` mediante Room.
  *
  * Esta clase es registrada en el `AndroidManifest.xml` para que el sistema la utilice como punto
  * de entrada de la aplicación.
  *
  * ## Funcionalidad:
- * - Inicializa la instancia única de la base de datos `ProductDatabase` al iniciar la app.
+ * - Inicializa la instancia única de la base de datos `ApplicationDatabase` al iniciar la app.
  * - Proporciona acceso global a la base de datos mediante un `companion object`, lo cual permite
  *   su uso desde cualquier parte de la aplicación.
  *
@@ -25,7 +25,7 @@ class ProductApplication: Application() {
          * Instancia global y reutilizable de la base de datos de productos.
          * Debe accederse con precaución para evitar pérdidas de contexto.
          */
-        lateinit var database: ProductDatabase
+        lateinit var database: AppDatabase
     }
 
     /**
@@ -33,9 +33,9 @@ class ProductApplication: Application() {
      * Aquí se inicializa la base de datos local utilizando Room.
      */
     override fun onCreate() {
-         super.onCreate()
+        super.onCreate()
 
-        // Construcción e inicialización de la base de datos de productos
-        database = Room.databaseBuilder(this, ProductDatabase::class.java, "ProductDatabase").build()
+        // Construcción e inicialización de la base de datos de la aplicacion
+        database = Room.databaseBuilder(this, AppDatabase::class.java, "AppDatabase").build()
     }
 }

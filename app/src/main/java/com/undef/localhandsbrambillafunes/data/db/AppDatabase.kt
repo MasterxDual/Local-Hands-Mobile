@@ -5,12 +5,14 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import android.content.Context
 import androidx.room.TypeConverters
+import com.undef.localhandsbrambillafunes.data.dao.FavoriteDao
 import com.undef.localhandsbrambillafunes.data.dao.ProductDao
 
 // Importamos las Entidades
 import com.undef.localhandsbrambillafunes.data.entity.User
 import com.undef.localhandsbrambillafunes.data.dao.UserDao
-import com.undef.localhandsbrambillafunes.data.model.Product
+import com.undef.localhandsbrambillafunes.data.entity.Favorite
+import com.undef.localhandsbrambillafunes.data.entity.Product
 
 /**
  * Base de datos principal de la aplicación (Room Database)
@@ -22,9 +24,9 @@ import com.undef.localhandsbrambillafunes.data.model.Product
  * @method productDao Proporciona acceso al DAO de productos
  */
 @Database(
-    entities = [User::class, Product::class], // Entidades
-    version = 2, // Incrementar cuando se modifique el esquema
-    exportSchema = false // No exportar esquema para simplificar
+    entities = [User::class, Product::class, Favorite::class], // Entidades
+    version = 5, // Incrementar cuando se modifique el esquema
+//    exportSchema = false // No exportar esquema para simplificar
 )
 @TypeConverters(Converters::class) //Para cargar List<String> de Product
 abstract class AppDatabase: RoomDatabase() {
@@ -39,6 +41,13 @@ abstract class AppDatabase: RoomDatabase() {
      * @return Instancia de [ProductDao] para ejecutar operaciones CRUD sobre la BD.
      */
     abstract fun productDao(): ProductDao
+
+    /**
+     * Proporciona acceso al DAO de favoritos.
+     *
+     * @return Instancia de [FavoriteDao] para ejecutar operaciones CRUD sobre la base de datos.
+     */
+    abstract fun favoriteDao(): FavoriteDao
 
     companion object {
 
@@ -71,18 +80,26 @@ abstract class AppDatabase: RoomDatabase() {
         }
 
         /**
-         * Obtiene instancia existente o crea nueva
+         * Devuelve la instancia existente de la base de datos o la crea si aún no ha sido inicializada.
          *
-         * @param context Contexto de la aplicación
-         * @return Instancia única de AppDatabase
+         * Utiliza el contexto de la aplicación para evitar fugas de memoria.
+         * Aplica `fallbackToDestructiveMigration()` para eliminar y recrear la base de datos
+         * en caso de que ocurra una incompatibilidad entre versiones de esquema.
+         *
+         * ⚠️ Este enfoque implica pérdida de datos ante cambios estructurales.
+         *
+         * @param context Contexto de la aplicación.
+         * @return Instancia única de [AppDatabase].
          */
         fun getInstance(context: Context): AppDatabase =
-            INSTANCE ?: synchronized(this) {
-                INSTANCE ?: Room.databaseBuilder(
+            AppDatabase.Companion.INSTANCE ?: synchronized(this) {
+                AppDatabase.Companion.INSTANCE ?: Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "app_database"
-                ).build().also { INSTANCE = it }
+                    "ProductDatabase"
+                )
+                    .fallbackToDestructiveMigration(true) // Borra la base de datos vieja en caso de que se modifique la estructura de la misma y se incremente la versión
+                    .build().also { AppDatabase.Companion.INSTANCE = it }
             }
     }
 }

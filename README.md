@@ -100,13 +100,29 @@ app/
             └── com/
                 └── undef/
                     └── localhandsbrambillafunes/
-                        ├── data/                         # Gestión de datos y modelos
-                        ├── ui/                           # Componentes y pantallas
-                        │   ├── common/                   # Elementos reutilizables (botones, diálogos, etc.)
-                        │   ├── navigation/               # Configuración de la navegación
-                        │   ├── screens/                  # Pantallas individuales (Login, Registro, etc.)
-                        │   └── theme/                    # Configuración de temas y estilos
-                        └── MainActivity.kt               # Punto de entrada de la aplicación
+                        ├── data/                    # Gestión de datos: entidades, fuentes, DAOs, repositorios
+                        │   ├── local/               # Room, DAOs, entidades DB
+                        │   ├── remote/              # APIs, DTOs, Retrofit, etc.
+                        │   ├── repository/          # Implementación de repositorios
+                        │   └── model/               # Modelos de datos (entidades comunes)
+                        │
+                        ├── domain/                  # Lógica de negocio y casos de uso
+                        │   ├── model/               # Modelos del dominio (si quieres separar de data/model)
+                        │   └── usecase/             # Casos de uso (ej: GetProductsUseCase)
+                        │
+                        ├── ui/                      # Todo lo relacionado a la interfaz
+                        │   ├── common/              # Componentes reutilizables (botones, diálogos, etc.)
+                        │   ├── navigation/          # Configuración de la navegación y rutas
+                        │   ├── screens/             # Pantallas (una carpeta por pantalla, ej: home/, login/)
+                        │   │   ├── home/            # HomeScreen + componentes propios
+                        │   │   ├── login/
+                        │   │   └── ...
+                        │   └── theme/               # Temas y estilos
+                        │
+                        ├── di/                      # Inyección de dependencias (Hilt/Koin modules)
+                        │
+                        ├── MainActivity.kt          # Punto de entrada
+                        └── App.kt                   # (Opcional) Setup Compose y app theme
 ```
 
 ---

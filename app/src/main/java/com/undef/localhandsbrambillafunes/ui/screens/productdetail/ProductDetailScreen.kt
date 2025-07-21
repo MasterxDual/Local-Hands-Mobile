@@ -44,7 +44,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,10 +55,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import coil3.compose.AsyncImage
-import com.undef.localhandsbrambillafunes.data.model.Product
+import com.undef.localhandsbrambillafunes.data.entity.Product
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 import com.undef.localhandsbrambillafunes.data.model.FavoriteProducts
+import com.undef.localhandsbrambillafunes.ui.viewmodel.favorites.FavoriteViewModel
+import com.undef.localhandsbrambillafunes.ui.viewmodel.session.SessionViewModel
+import coil.compose.AsyncImage
+import androidx.compose.runtime.getValue
+
 
 /**
  * Pantalla de detalles del producto que muestra información completa del producto
@@ -66,7 +70,12 @@ import com.undef.localhandsbrambillafunes.data.model.FavoriteProducts
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductDetailScreen(navController: NavController, product: Product) {
+fun ProductDetailScreen(
+    navController: NavController,
+    product: Product,
+    sessionViewModel: SessionViewModel,
+    favoriteViewModel: FavoriteViewModel
+) {
 
     // Estado para manejar la lista de imágenes del producto
     val productImages = remember { product.images }
@@ -74,8 +83,14 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
     // Control del visor de imágenes
     val pagerState = rememberPagerState(pageCount = { productImages.size })
 
-    // Estado para el favorito (actualizado desde FavoriteProducts)
-    val isFavorite = remember { mutableStateOf(FavoriteProducts.isFavorite(product.id)) }
+    // Traemos el userId global  creado previamente en el registro del mismo
+    val userId = sessionViewModel.getUserId()
+
+    // Observa la lista de favoritos del usuario desde la base de datos
+    val favoritos by favoriteViewModel.getFavoritesForUser(userId).collectAsState(initial = emptyList())
+
+    // Estado para el favorito del producto de la base de datos
+    val isFavorite = favoritos.any { it.id == product.id }
 
     Scaffold(
         // Barra superior con botón de retroceso
@@ -209,13 +224,15 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                 // Botón flotante de favorito
                 IconButton(
                     onClick = {
-                        if (isFavorite.value) {
+                        if (isFavorite) {
+                            // Busca la instancia Favorite correcta en la lista
+                            val fav = favoritos.find { it.id == product.id }
+                            fav?.let { favoriteViewModel.removeFavoriteByProductId(userId, product.id) }
                             FavoriteProducts.removeToFavorite(product.id)
                         } else {
                             FavoriteProducts.addToFavorite(product)
+                            favoriteViewModel.addFavorite(userId, product.id)
                         }
-                        // Actualizar el estado para recomponer el Icono
-                        isFavorite.value = FavoriteProducts.isFavorite(product.id)
                     },
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -224,9 +241,9 @@ fun ProductDetailScreen(navController: NavController, product: Product) {
                         .background(Color.White.copy(alpha = 0.7f), CircleShape)
                 ) {
                     Icon(
-                        imageVector = if (isFavorite.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                        contentDescription = if (isFavorite.value) "Quitar de favoritos" else "Añadir a favoritos",
-                        tint = if (isFavorite.value) Color.Red else Color.Gray
+                        imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                        contentDescription = if (isFavorite) "Quitar de favoritos" else "Añadir a favoritos",
+                        tint = if (isFavorite) Color.Red else Color.Gray
 //                        if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
 //                        contentDescription = "Marcar como favorito",
 //                        modifier = Modifier

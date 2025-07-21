@@ -6,32 +6,31 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.undef.localhandsbrambillafunes.data.model.Product
+import com.undef.localhandsbrambillafunes.data.entity.Product
 import kotlinx.coroutines.flow.Flow
 
 /**
-* Data Access Object (DAO) para acceder y manipular los datos de productos en la base de datos local.
-* Proporciona métodos para realizar operaciones CRUD sobre la entidad [Product], incluyendo
-* filtrado por categoría, ciudad, nombre del vendedor, y funcionalidades para manejar favoritos.
-*/
+ * Data Access Object (DAO) para acceder y manipular los datos de productos en la base de datos local.
+ * Proporciona métodos para realizar operaciones CRUD sobre la entidad [Product], incluyendo
+ * filtrado por categoría, ciudad, nombre del vendedor, y funcionalidades para manejar favoritos.
+ */
 @Dao
 interface ProductDao {
 
     /**
-    * Consulta SQL para obtener todos los productos de la tabla de la base de datos
-    * Obtiene todos los productos almacenados en la base de datos como un flujo reactivo.
-    * @return [Flow] que emite una lista de todos los productos.
-    */
+     * Consulta SQL para obtener todos los productos de la tabla de la base de datos
+     * Obtiene todos los productos almacenados en la base de datos como un flujo reactivo.
+     * @return [Flow] que emite una lista de todos los productos.
+     */
     @Query("SELECT * FROM ProductEntity")
     fun getAllProducts(): Flow<List<Product>>
-
 
     /**
      * Consulta SQL para insertar un producto en la tabla de la base de datos
      * @param product Producto a insertar.
      * @return ID generado del producto insertado.
      */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun addProduct(product: Product): Long
 
     /**
@@ -51,6 +50,47 @@ interface ProductDao {
      */
     @Query("SELECT * FROM ProductEntity WHERE location = :location")
     suspend fun getProductsByCity(location: String): List<Product>
+
+
+    /**
+     * Recupera todos los productos asociados a un determinado usuario (vendedor).
+     *
+     * Esta consulta obtiene todos los registros de la tabla `ProductEntity` cuyo campo `ownerId`
+     * coincida con el identificador del usuario proporcionado. El resultado se devuelve como
+     * un `Flow`, lo que permite observar los cambios en tiempo real (por ejemplo, si se agregan,
+     * actualizan o eliminan productos del vendedor).
+     *
+     * ## Parámetros:
+     * @param userId ID del usuario (vendedor) del cual se desean recuperar los productos publicados.
+     *
+     * ## Retorno:
+     * @return Un `Flow` que emite listas actualizadas de productos pertenecientes al usuario indicado.
+     *
+     * ## Uso típico:
+     * Este método es útil para mostrar en pantalla los productos que un usuario ha creado, como
+     * en una sección de “Mis productos” o “Administrar publicaciones”.
+     *
+     * ## Ejemplo de consulta SQL generada:
+     * ```sql
+     * SELECT * FROM ProductEntity WHERE ownerId = :userId
+     * ```
+     */
+    @Query("SELECT * FROM ProductEntity WHERE ownerId = :userId")
+    fun getProductsByOwner(userId: Int): Flow<List<Product>>
+
+    /**
+     * Recupera un producto desde la base de datos en función de su identificador, como un flujo reactivo.
+     *
+     * Esta función retorna un [Flow] que emitirá el producto correspondiente al ID proporcionado, si existe.
+     * Si no se encuentra ningún producto con el ID especificado, el flujo emitirá `null`.
+     *
+     * El uso de [Flow] permite observar cambios en la base de datos y reaccionar ante ellos de forma automática.
+     *
+     * @param id El identificador único del producto que se desea consultar.
+     * @return Un [Flow] que emite una instancia de [Product] si se encuentra, o `null` en caso contrario.
+     */
+    @Query("SELECT * FROM ProductEntity WHERE id = :id LIMIT 1")
+    fun getProductById(id: Int): Flow<Product?>
 
     /**
      * Busca productos filtrando por nombre de vendedor.

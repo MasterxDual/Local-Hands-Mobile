@@ -1,5 +1,7 @@
 package com.undef.localhandsbrambillafunes.data.model
 
+import com.undef.localhandsbrambillafunes.data.entity.Product
+
 
 /**
  * Objeto encargado de realizar la migración de productos desde una fuente externa ([ProductProvider])
@@ -27,7 +29,8 @@ object ProductProviderMigration {
             category = prod.category,
             images = prod.images, // Simple serialización
             price = prod.price,
-            location = prod.location
+            location = prod.location,
+            ownerId = prod.ownerId
         )
     }
 }

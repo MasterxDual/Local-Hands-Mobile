@@ -1,4 +1,4 @@
-package com.undef.localhandsbrambillafunes.ui.common.components
+package com.undef.localhandsbrambillafunes.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
