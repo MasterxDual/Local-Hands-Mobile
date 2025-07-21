@@ -43,7 +43,8 @@ object DatabaseModule {
             AppDatabase::class.java,
             "app_database"
         )
-            //.addMigrations() // Agregar migraciones aquí cuando sea necesario
+            .fallbackToDestructiveMigration(true) // Habilitar migraciones destructivas
+            //.addMigrations(MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5) // Opción profesional
             //.addCallback()  // Callbacks para operaciones post-creación/popen
             .build()
     }

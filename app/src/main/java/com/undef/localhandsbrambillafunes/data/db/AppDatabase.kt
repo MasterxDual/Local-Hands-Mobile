@@ -26,7 +26,7 @@ import com.undef.localhandsbrambillafunes.data.entity.Product
 @Database(
     entities = [User::class, Product::class, Favorite::class], // Entidades
     version = 5, // Incrementar cuando se modifique el esquema
-//    exportSchema = false // No exportar esquema para simplificar
+    exportSchema = true // Exportar el esquema
 )
 @TypeConverters(Converters::class) //Para cargar List<String> de Product
 abstract class AppDatabase: RoomDatabase() {
@@ -91,15 +91,15 @@ abstract class AppDatabase: RoomDatabase() {
          * @param context Contexto de la aplicación.
          * @return Instancia única de [AppDatabase].
          */
-        fun getInstance(context: Context): AppDatabase =
-            AppDatabase.Companion.INSTANCE ?: synchronized(this) {
-                AppDatabase.Companion.INSTANCE ?: Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "ProductDatabase"
-                )
-                    .fallbackToDestructiveMigration(true) // Borra la base de datos vieja en caso de que se modifique la estructura de la misma y se incremente la versión
-                    .build().also { AppDatabase.Companion.INSTANCE = it }
-            }
+//        fun getInstance(context: Context): AppDatabase =
+//            AppDatabase.Companion.INSTANCE ?: synchronized(this) {
+//                AppDatabase.Companion.INSTANCE ?: Room.databaseBuilder(
+//                    context.applicationContext,
+//                    AppDatabase::class.java,
+//                    "ProductDatabase"
+//                )
+//                    .fallbackToDestructiveMigration(true) // Borra la base de datos vieja en caso de que se modifique la estructura de la misma y se incremente la versión
+//                    .build().also { AppDatabase.Companion.INSTANCE = it }
+//            }
     }
 }
