@@ -160,8 +160,8 @@ fun Navigation() {
                 ProductDetailScreen(
                     navController = navController,
                     product = it,
-                    sessionViewModel = hiltViewModel(),
-                    favoriteViewModel = hiltViewModel()
+                    sessionViewModel = hiltViewModel<SessionViewModel>(),
+                    favoriteViewModel = hiltViewModel<FavoriteViewModel>()
                 )
             }
         }
@@ -193,8 +193,8 @@ fun Navigation() {
         composable(AppScreens.SellScreen.route) {
             SellScreen(
                 navController,
-                sessionViewModel = hiltViewModel(),
-                productViewModel = hiltViewModel()
+                sessionViewModel = hiltViewModel<SessionViewModel>(),
+                productViewModel = hiltViewModel<ProductViewModel>()
             )
         }
 
@@ -209,8 +209,8 @@ fun Navigation() {
             EditProductScreen(
                 navController = navController,
                 productId = productId,
-                productViewModel = hiltViewModel(),
-                sessionViewModel = hiltViewModel()
+                productViewModel = hiltViewModel<ProductViewModel>(),
+                sessionViewModel = hiltViewModel<SessionViewModel>()
             )
         }
 

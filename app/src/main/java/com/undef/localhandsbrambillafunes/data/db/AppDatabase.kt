@@ -25,7 +25,7 @@ import com.undef.localhandsbrambillafunes.data.entity.Product
  */
 @Database(
     entities = [User::class, Product::class, Favorite::class], // Entidades
-    version = 5, // Incrementar cuando se modifique el esquema
+    version = 6, // Incrementar cuando se modifique el esquema
     exportSchema = true // Exportar el esquema
 )
 @TypeConverters(Converters::class) //Para cargar List<String> de Product
@@ -49,21 +49,21 @@ abstract class AppDatabase: RoomDatabase() {
      */
     abstract fun favoriteDao(): FavoriteDao
 
-    companion object {
+   /* companion object {
 
-        /**
+        *//**
          * Instancia singleton de la base de datos, compartida a lo largo de toda la aplicación.
          * Marcada como `@Volatile` para asegurar la visibilidad entre hilos.
-         */
+         *//*
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        /**
+        *//**
          * Obtiene instancia de la base de datos (Singleton)
          *
          * @param context Contexto de la aplicación
          * @return Instancia de AppDatabase
-         */
+         *//*
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 // Construye la base de datos si no existe
@@ -78,7 +78,7 @@ abstract class AppDatabase: RoomDatabase() {
                 instance
             }
         }
-
+*/
         /**
          * Devuelve la instancia existente de la base de datos o la crea si aún no ha sido inicializada.
          *
@@ -101,5 +101,4 @@ abstract class AppDatabase: RoomDatabase() {
 //                    .fallbackToDestructiveMigration(true) // Borra la base de datos vieja en caso de que se modifique la estructura de la misma y se incremente la versión
 //                    .build().also { AppDatabase.Companion.INSTANCE = it }
 //            }
-    }
 }
