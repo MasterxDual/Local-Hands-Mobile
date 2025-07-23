@@ -3,8 +3,8 @@ package com.undef.localhandsbrambillafunes.ui.viewmodel.session
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.undef.localhandsbrambillafunes.data.local.entities.User
-import com.undef.localhandsbrambillafunes.data.local.repository.UserRepository
+import com.undef.localhandsbrambillafunes.data.entity.User
+import com.undef.localhandsbrambillafunes.data.repository.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

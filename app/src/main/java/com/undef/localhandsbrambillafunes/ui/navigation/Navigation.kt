@@ -11,12 +11,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.undef.localhandsbrambillafunes.data.local.db.ApplicationDatabase
-import com.undef.localhandsbrambillafunes.data.local.repository.FavoriteRepository
+import com.undef.localhandsbrambillafunes.data.db.AppDatabase
+import com.undef.localhandsbrambillafunes.data.repository.AuthRepository
+import com.undef.localhandsbrambillafunes.data.repository.FavoriteRepository
 import com.undef.localhandsbrambillafunes.ui.viewmodel.products.ProductViewModel
 import com.undef.localhandsbrambillafunes.ui.viewmodel.session.SessionViewModel
 import com.undef.localhandsbrambillafunes.ui.viewmodel.session.SessionViewModelFactory
-import com.undef.localhandsbrambillafunes.data.local.repository.UserRepository
+import com.undef.localhandsbrambillafunes.data.repository.UserRepository
 import com.undef.localhandsbrambillafunes.ui.viewmodel.favorites.FavoriteViewModel
 import com.undef.localhandsbrambillafunes.ui.viewmodel.favorites.FavoriteViewModelFactory
 import com.undef.localhandsbrambillafunes.ui.screens.auth.ForgotPasswordScreen
@@ -47,18 +48,28 @@ fun Navigation() {
     val context = LocalContext.current
     val userRepository = remember {
         UserRepository(
-            ApplicationDatabase.getInstance(context.applicationContext as Application).userDao()
+            AppDatabase.getDatabase(context.applicationContext as Application).userDao()
         )
     }
     val sessionViewModel: SessionViewModel = viewModel(
         factory = SessionViewModelFactory(LocalContext.current.applicationContext as Application, userRepository)
     )
 
-    val favoriteRepository = remember {
-        FavoriteRepository(
-            ApplicationDatabase.getInstance(context.applicationContext as Application).favoriteDao()
+    val authRepository = remember {
+        AuthRepository(
+            AppDatabase.getDatabase(context.applicationContext as Application).userDao(),
+            context
         )
     }
+
+    val favoriteRepository = remember {
+        FavoriteRepository(
+            AppDatabase.getDatabase(context.applicationContext as Application).favoriteDao(),
+            authRepository
+        )
+    }
+
+
     val favoriteViewModel: FavoriteViewModel = viewModel(
         factory = FavoriteViewModelFactory(LocalContext.current.applicationContext as Application, favoriteRepository)
     )
@@ -85,7 +96,7 @@ fun Navigation() {
          * Pantalla de inicio de sesión donde los usuarios pueden autenticarse.
          */
         composable(AppScreens.LoginScreen.route) {
-            LoginScreen(navController, sessionViewModel)
+            LoginScreen(navController)
         }
 
         /**
@@ -99,7 +110,7 @@ fun Navigation() {
          * Pantalla de registro para nuevos usuarios.
          */
         composable(AppScreens.RegisterScreen.route) {
-            RegisterScreen(navController, sessionViewModel)
+            RegisterScreen(navController)
         }
 
         /**

@@ -55,9 +55,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.undef.localhandsbrambillafunes.data.local.entities.Product
+import com.undef.localhandsbrambillafunes.data.entity.Product
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
-import com.undef.localhandsbrambillafunes.data.local.model.FavoriteProducts
+import com.undef.localhandsbrambillafunes.data.model.FavoriteProducts
 import com.undef.localhandsbrambillafunes.ui.viewmodel.favorites.FavoriteViewModel
 import com.undef.localhandsbrambillafunes.ui.viewmodel.session.SessionViewModel
 import coil.compose.AsyncImage
@@ -231,7 +231,7 @@ fun ProductDetailScreen(
                             FavoriteProducts.removeToFavorite(product.id)
                         } else {
                             FavoriteProducts.addToFavorite(product)
-                            favoriteViewModel.addFavorite(userId, product.id)
+                            favoriteViewModel.addFavorite(product.id)
                         }
                     },
                     modifier = Modifier

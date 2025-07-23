@@ -3,7 +3,7 @@ package com.undef.localhandsbrambillafunes.ui.viewmodel.favorites
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.undef.localhandsbrambillafunes.data.local.repository.FavoriteRepository
+import com.undef.localhandsbrambillafunes.data.repository.FavoriteRepository
 
 /**
  * Fábrica personalizada para la creación de instancias de [FavoriteViewModel].
