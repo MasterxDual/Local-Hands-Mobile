@@ -35,13 +35,14 @@ import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 import com.undef.localhandsbrambillafunes.ui.viewmodel.favorites.FavoriteViewModel
 import com.undef.localhandsbrambillafunes.ui.viewmodel.session.SessionViewModel
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavoritesScreen(
     navController: NavController,
-    sessionViewModel: SessionViewModel,
-    favoriteViewModel: FavoriteViewModel
+    sessionViewModel: SessionViewModel = hiltViewModel<SessionViewModel>(),
+    favoriteViewModel: FavoriteViewModel = hiltViewModel<FavoriteViewModel>()
 ) {
     val userId = sessionViewModel.getUserId()
     val favorites by favoriteViewModel.getFavoritesForUser(userId).collectAsState(initial = emptyList())

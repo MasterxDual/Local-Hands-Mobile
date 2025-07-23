@@ -2,10 +2,17 @@ package com.undef.localhandsbrambillafunes.ui.viewmodel.favorites
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.undef.localhandsbrambillafunes.data.dao.FavoriteDao
+import com.undef.localhandsbrambillafunes.data.dao.FavoriteDao_Impl
 import com.undef.localhandsbrambillafunes.data.entity.Favorite
+import com.undef.localhandsbrambillafunes.data.entity.Product
 import com.undef.localhandsbrambillafunes.data.repository.FavoriteRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * ViewModel responsable de gestionar la lógica relacionada con los productos favoritos.
@@ -16,10 +23,12 @@ import kotlinx.coroutines.launch
  *
  * @param favoriteRepository Instancia del repositorio que proporciona acceso a los datos de favoritos.
  */
-class FavoriteViewModel(
-    application: Application,
+@HiltViewModel
+class FavoriteViewModel @Inject constructor(
     private val favoriteRepository: FavoriteRepository
-) : AndroidViewModel(application) {
+) : ViewModel() {
+
+
 
     /**
      * Agrega un producto a la lista de favoritos de un usuario específico.
@@ -27,7 +36,6 @@ class FavoriteViewModel(
      * Esta función lanza una corrutina en el `viewModelScope` para realizar la operación
      * de forma asincrónica, evitando bloquear el hilo principal.
      *
-     * @param userId ID del usuario que desea agregar el producto a favoritos.
      * @param productId ID del producto que se desea marcar como favorito.
      */
     fun addFavorite(productId: Int) {

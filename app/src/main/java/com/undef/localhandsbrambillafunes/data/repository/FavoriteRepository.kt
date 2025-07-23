@@ -3,6 +3,7 @@ package com.undef.localhandsbrambillafunes.data.repository
 import com.undef.localhandsbrambillafunes.data.dao.FavoriteDao
 import com.undef.localhandsbrambillafunes.data.entity.Favorite
 import com.undef.localhandsbrambillafunes.data.exception.NotAuthenticatedException
+import javax.inject.Inject
 
 /**
  * Repositorio encargado de manejar las operaciones relacionadas con la entidad `Favorite`.
@@ -12,7 +13,7 @@ import com.undef.localhandsbrambillafunes.data.exception.NotAuthenticatedExcepti
  *
  * @param favoriteDao Instancia de `FavoriteDao` utilizada para ejecutar las operaciones sobre la base de datos.
  */
-class FavoriteRepository(
+class FavoriteRepository @Inject constructor(
     private val favoriteDao: FavoriteDao,
     private val authRepository: AuthRepository // Añadir dependencia
 ) {

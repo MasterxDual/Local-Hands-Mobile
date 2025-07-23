@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -16,10 +17,8 @@ import com.undef.localhandsbrambillafunes.data.repository.AuthRepository
 import com.undef.localhandsbrambillafunes.data.repository.FavoriteRepository
 import com.undef.localhandsbrambillafunes.ui.viewmodel.products.ProductViewModel
 import com.undef.localhandsbrambillafunes.ui.viewmodel.session.SessionViewModel
-import com.undef.localhandsbrambillafunes.ui.viewmodel.session.SessionViewModelFactory
 import com.undef.localhandsbrambillafunes.data.repository.UserRepository
 import com.undef.localhandsbrambillafunes.ui.viewmodel.favorites.FavoriteViewModel
-import com.undef.localhandsbrambillafunes.ui.viewmodel.favorites.FavoriteViewModelFactory
 import com.undef.localhandsbrambillafunes.ui.screens.auth.ForgotPasswordScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.LoginScreen
 import com.undef.localhandsbrambillafunes.ui.screens.auth.RegisterScreen
@@ -46,38 +45,38 @@ fun Navigation() {
     val navController = rememberNavController()
 
     val context = LocalContext.current
-    val userRepository = remember {
-        UserRepository(
-            AppDatabase.getDatabase(context.applicationContext as Application).userDao()
-        )
-    }
-    val sessionViewModel: SessionViewModel = viewModel(
-        factory = SessionViewModelFactory(LocalContext.current.applicationContext as Application, userRepository)
-    )
-
-    val authRepository = remember {
-        AuthRepository(
-            AppDatabase.getDatabase(context.applicationContext as Application).userDao(),
-            context
-        )
-    }
-
-    val favoriteRepository = remember {
-        FavoriteRepository(
-            AppDatabase.getDatabase(context.applicationContext as Application).favoriteDao(),
-            authRepository
-        )
-    }
-
-
-    val favoriteViewModel: FavoriteViewModel = viewModel(
-        factory = FavoriteViewModelFactory(LocalContext.current.applicationContext as Application, favoriteRepository)
-    )
-
-    // Instancia compartida de ProductViewModel en el scope de Navigation
-    // Esto se hace con el fin de no tener que instanciar varias veces al productViewModel y así
-    // tengamos los mismos productos en todas las pantallas que lo utilicemos
-    val productViewModel: ProductViewModel = viewModel()
+//    val userRepository = remember {
+//        UserRepository(
+//            AppDatabase.getDatabase(context.applicationContext as Application).userDao()
+//        )
+//    }
+//    val sessionViewModel: SessionViewModel = viewModel(
+//        factory = SessionViewModelFactory(LocalContext.current.applicationContext as Application, userRepository)
+//    )
+//
+//    val authRepository = remember {
+//        AuthRepository(
+//            AppDatabase.getDatabase(context.applicationContext as Application).userDao(),
+//            context
+//        )
+//    }
+//
+//    val favoriteRepository = remember {
+//        FavoriteRepository(
+//            AppDatabase.getDatabase(context.applicationContext as Application).favoriteDao(),
+//            authRepository
+//        )
+//    }
+//
+//
+//    val favoriteViewModel: FavoriteViewModel = viewModel(
+//        factory = FavoriteViewModelFactory(LocalContext.current.applicationContext as Application, favoriteRepository)
+//    )
+//
+//    // Instancia compartida de ProductViewModel en el scope de Navigation
+//    // Esto se hace con el fin de no tener que instanciar varias veces al productViewModel y así
+//    // tengamos los mismos productos en todas las pantallas que lo utilicemos
+//    val productViewModel: ProductViewModel = viewModel()
 
     NavHost(
         navController = navController,
@@ -117,7 +116,7 @@ fun Navigation() {
          * Pantalla principal de la aplicación que se muestra después de la autenticación.
          */
         composable(AppScreens.HomeScreen.route) {
-            HomeScreen(navController, productViewModel)
+            HomeScreen(navController)
         }
 
         /**
@@ -150,6 +149,9 @@ fun Navigation() {
             // Extrae el argumento productId del backstack, si no existe retorna sin hacer nada
             val productId = navBackStackEntry.arguments?.getInt("productId") ?: return@composable
 
+            //Hilt se encarga de inicializar la BD
+            val productViewModel = hiltViewModel<ProductViewModel>()
+
             // Busca el producto correspondiente en la base de datos
             val product = productViewModel.products.collectAsState().value.find { it.id == productId }
 
@@ -158,8 +160,8 @@ fun Navigation() {
                 ProductDetailScreen(
                     navController = navController,
                     product = it,
-                    sessionViewModel,
-                    favoriteViewModel
+                    sessionViewModel = hiltViewModel(),
+                    favoriteViewModel = hiltViewModel()
                 )
             }
         }
@@ -168,7 +170,7 @@ fun Navigation() {
          * Pantalla que muestra los productos marcados como favoritos por el usuario.
          */
         composable(AppScreens.FavoritesScreen.route) {
-            FavoritesScreen(navController, sessionViewModel, favoriteViewModel)
+            FavoritesScreen(navController, sessionViewModel = hiltViewModel(), favoriteViewModel = hiltViewModel())
         }
 
         /**
@@ -191,8 +193,8 @@ fun Navigation() {
         composable(AppScreens.SellScreen.route) {
             SellScreen(
                 navController,
-                sessionViewModel,
-                productViewModel
+                sessionViewModel = hiltViewModel(),
+                productViewModel = hiltViewModel()
             )
         }
 
@@ -207,8 +209,8 @@ fun Navigation() {
             EditProductScreen(
                 navController = navController,
                 productId = productId,
-                productViewModel,
-                sessionViewModel
+                productViewModel = hiltViewModel(),
+                sessionViewModel = hiltViewModel()
             )
         }
 
@@ -220,7 +222,7 @@ fun Navigation() {
             arguments = listOf(navArgument("productId") { type = NavType.IntType })
         ) { backStackEntry ->
             val productId = backStackEntry.arguments?.getInt("productId") ?: 0
-            val productViewModel = productViewModel
+            val productViewModel = hiltViewModel<ProductViewModel>()
             val product = productViewModel.products.collectAsState().value.find { it.id == productId }
             product?.let {
                 ProductOwnerDetailScreen(

@@ -49,6 +49,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.undef.localhandsbrambillafunes.ui.viewmodel.session.SessionViewModel
 
@@ -68,8 +69,8 @@ import com.undef.localhandsbrambillafunes.ui.viewmodel.session.SessionViewModel
 @Composable
 fun SellScreen(
     navController: NavController,
-    sessionViewModel: SessionViewModel,
-    productViewModel: ProductViewModel
+    sessionViewModel: SessionViewModel = hiltViewModel<SessionViewModel>(),
+    productViewModel: ProductViewModel = hiltViewModel<ProductViewModel>()
 ) {
     val userId = sessionViewModel.getUserId()
 

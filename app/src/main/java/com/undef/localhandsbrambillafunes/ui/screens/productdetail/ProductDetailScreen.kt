@@ -62,6 +62,7 @@ import com.undef.localhandsbrambillafunes.ui.viewmodel.favorites.FavoriteViewMod
 import com.undef.localhandsbrambillafunes.ui.viewmodel.session.SessionViewModel
 import coil.compose.AsyncImage
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 
 
 /**
@@ -73,8 +74,8 @@ import androidx.compose.runtime.getValue
 fun ProductDetailScreen(
     navController: NavController,
     product: Product,
-    sessionViewModel: SessionViewModel,
-    favoriteViewModel: FavoriteViewModel
+    sessionViewModel: SessionViewModel = hiltViewModel<SessionViewModel>(),
+    favoriteViewModel: FavoriteViewModel = hiltViewModel<FavoriteViewModel>()
 ) {
 
     // Estado para manejar la lista de imágenes del producto

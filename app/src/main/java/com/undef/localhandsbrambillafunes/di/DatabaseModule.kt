@@ -2,6 +2,8 @@ package com.undef.localhandsbrambillafunes.di
 
 import android.content.Context
 import androidx.room.Room
+import com.undef.localhandsbrambillafunes.data.dao.FavoriteDao
+import com.undef.localhandsbrambillafunes.data.dao.ProductDao
 import com.undef.localhandsbrambillafunes.data.dao.UserDao
 import com.undef.localhandsbrambillafunes.data.db.AppDatabase
 import dagger.Module
@@ -64,4 +66,10 @@ object DatabaseModule {
     fun provideUserDao(database: AppDatabase): UserDao {
         return database.userDao()
     }
+
+    @Provides
+    fun provideProductDao(database: AppDatabase): ProductDao = database.productDao()
+
+    @Provides
+    fun provideFavoriteDao(database: AppDatabase): FavoriteDao = database.favoriteDao()
 }

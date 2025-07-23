@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.undef.localhandsbrambillafunes.data.entity.Product
 import com.undef.localhandsbrambillafunes.ui.viewmodel.products.ProductViewModel
 import com.undef.localhandsbrambillafunes.ui.viewmodel.session.SessionViewModel
@@ -52,8 +53,8 @@ import java.io.File
 fun EditProductScreen(
     navController: NavController,
     productId: Int,
-    productViewModel: ProductViewModel,
-    sessionViewModel: SessionViewModel
+    productViewModel: ProductViewModel = hiltViewModel<ProductViewModel>(),
+    sessionViewModel: SessionViewModel = hiltViewModel<SessionViewModel>()
 ) {
     // Obtenemos el usuario actual de la sesión
     val context = LocalContext.current
