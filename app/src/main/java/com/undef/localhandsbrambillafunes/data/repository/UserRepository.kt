@@ -2,6 +2,7 @@ package com.undef.localhandsbrambillafunes.data.repository
 
 import com.undef.localhandsbrambillafunes.data.dao.UserDao
 import com.undef.localhandsbrambillafunes.data.entity.User
+import javax.inject.Inject
 
 /**
  * Repositorio que actúa como intermediario entre la capa de datos (DAO) y la lógica de negocio.
@@ -11,7 +12,7 @@ import com.undef.localhandsbrambillafunes.data.entity.User
  *
  * @property userDao Objeto DAO que proporciona acceso a los métodos de la base de datos.
  */
-class UserRepository(private val userDao: UserDao) {
+class UserRepository @Inject constructor(private val userDao: UserDao) {
 
     /**
      * Inserta un nuevo usuario.

@@ -44,13 +44,19 @@ import androidx.navigation.NavController
 import com.undef.localhandsbrambillafunes.ui.viewmodel.products.ProductViewModel
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 import androidx.compose.runtime.getValue
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import com.undef.localhandsbrambillafunes.ui.viewmodel.favorites.FavoriteViewModel
 import com.undef.localhandsbrambillafunes.ui.viewmodel.session.SessionViewModel
+import androidx.compose.foundation.lazy.items
+
 
 
 /**
@@ -68,13 +74,25 @@ import com.undef.localhandsbrambillafunes.ui.viewmodel.session.SessionViewModel
 @Composable
 fun SellScreen(
     navController: NavController,
-    sessionViewModel: SessionViewModel,
-    productViewModel: ProductViewModel
+    productViewModel: ProductViewModel = hiltViewModel<ProductViewModel>(),
+    sessionViewModel: SessionViewModel = hiltViewModel<SessionViewModel>()
 ) {
-    val userId = sessionViewModel.getUserId()
+    val currentUserIdState = remember { mutableStateOf<Int?>(null) }
 
-    // Obtiene los productos del vendedor actual
-    val products by productViewModel.getMyProducts(userId).collectAsState(initial = emptyList())
+    /*Llamamos a una funcion suspend con corrutinas para obtener el currentUserId*/
+    LaunchedEffect(Unit) {
+        val currentUserId = sessionViewModel.getCurrentUserId()
+        currentUserIdState.value = currentUserId
+    }
+
+    // Se obtienen los productos del vendedor de la sesión actual
+    val productsOwner = currentUserIdState.value?.let {
+        productViewModel.getMyProducts(it)
+    }
+
+    val productsOwnerState by productsOwner?.collectAsState(initial = emptyList()) ?: remember {
+        mutableStateOf(emptyList())
+    }
 
     Scaffold(
         // Barra superior con acciones
@@ -156,7 +174,7 @@ fun SellScreen(
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(products) { product ->
+                items(productsOwnerState) { product ->
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()

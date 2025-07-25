@@ -41,6 +41,7 @@ import com.undef.localhandsbrambillafunes.data.model.ProductListItem
 import com.undef.localhandsbrambillafunes.ui.viewmodel.products.ProductViewModel
 import com.undef.localhandsbrambillafunes.ui.navigation.AppScreens
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 
 /**
  * Pantalla principal de la aplicación que muestra una interfaz completa con barra superior,
@@ -50,7 +51,7 @@ import androidx.compose.runtime.getValue
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController, productViewModel: ProductViewModel) {
+fun HomeScreen(navController: NavController, productViewModel: ProductViewModel = hiltViewModel<ProductViewModel>()) {
     val products by productViewModel.products.collectAsState()
 
     /**
