@@ -1,5 +1,6 @@
 package com.undef.localhandsbrambillafunes.data.repository
 
+import androidx.compose.runtime.MutableState
 import com.undef.localhandsbrambillafunes.data.dao.FavoriteDao
 import com.undef.localhandsbrambillafunes.data.dao.ProductDao
 import com.undef.localhandsbrambillafunes.data.entity.Product
@@ -33,7 +34,7 @@ import javax.inject.Inject
  * */
 class ProductRepository @Inject constructor(
     private val productDao: ProductDao,
-    private val favoriteDao: FavoriteDao
+    private val favoriteDao: FavoriteDao,
     ) {
 
     /**

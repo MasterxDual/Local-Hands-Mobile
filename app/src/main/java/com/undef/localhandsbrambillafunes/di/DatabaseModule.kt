@@ -67,9 +67,29 @@ object DatabaseModule {
         return database.userDao()
     }
 
+    /**
+     * Proporciona una instancia de [ProductDao] a partir de una instancia de [AppDatabase].
+     *
+     * Esta función es anotada con `@Provides`, lo que indica que es un proveedor en un módulo de Dagger/Hilt.
+     * Se utiliza para inyectar la dependencia de `ProductDao` donde sea necesario dentro del ciclo de vida
+     * de la aplicación.
+     *
+     * @param database Instancia de [AppDatabase] desde la cual se obtiene el DAO.
+     * @return Instancia de [ProductDao] proporcionada por la base de datos.
+     */
     @Provides
     fun provideProductDao(database: AppDatabase): ProductDao = database.productDao()
 
+    /**
+     * Proporciona una instancia de [FavoriteDao] a partir de la instancia de [AppDatabase].
+     *
+     * Esta función está anotada con `@Provides`, lo que indica que forma parte de un módulo de Dagger/Hilt.
+     * Se utiliza para inyectar la dependencia de `FavoriteDao`, la cual permite acceder a las operaciones
+     * relacionadas con la entidad de favoritos en la base de datos.
+     *
+     * @param database Instancia de [AppDatabase] que contiene el método de acceso al DAO.
+     * @return Instancia de [FavoriteDao] proporcionada por la base de datos.
+     */
     @Provides
     fun provideFavoriteDao(database: AppDatabase): FavoriteDao = database.favoriteDao()
 }

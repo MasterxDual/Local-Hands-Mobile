@@ -2,7 +2,9 @@ package com.undef.localhandsbrambillafunes.data.repository
 
 import com.undef.localhandsbrambillafunes.data.dao.FavoriteDao
 import com.undef.localhandsbrambillafunes.data.entity.Favorite
+import com.undef.localhandsbrambillafunes.data.entity.Product
 import com.undef.localhandsbrambillafunes.data.exception.NotAuthenticatedException
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
@@ -33,8 +35,11 @@ class FavoriteRepository @Inject constructor(
      * @param userId Identificador único del usuario.
      * @param productId Identificador único del producto.
      */
-    suspend fun removeFavorite(userId: Int, productId: Int) {
-        favoriteDao.removeFavoriteByUserAndProduct(userId, productId)
+    suspend fun removeFavorite(productId: Int) {
+        val currentUserId = authRepository.getCurrentUserId()
+            ?: throw NotAuthenticatedException("User not logged in")
+
+        favoriteDao.removeFavoriteByUserAndProduct(currentUserId, productId)
     }
 
     /**
@@ -43,7 +48,12 @@ class FavoriteRepository @Inject constructor(
      * @param userId Identificador único del usuario.
      * @return Un `Flow` que emite la lista de objetos `Favorite` del usuario.
      */
-    fun getFavoritesForUser(userId: Int) = favoriteDao.getFavoritesForUser(userId)
+    suspend fun getFavoritesForUser(): Flow<List<Product>> {
+        val currentUserId = authRepository.getCurrentUserId()
+            ?: throw NotAuthenticatedException("User not logged in")
+
+        return favoriteDao.getFavoritesForUser(currentUserId)
+    }
 
     /**
      * Agrega un producto a favoritos para el usuario actualmente autenticado.
