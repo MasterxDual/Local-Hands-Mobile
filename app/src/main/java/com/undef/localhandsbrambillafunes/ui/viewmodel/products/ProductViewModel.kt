@@ -1,18 +1,17 @@
 package com.undef.localhandsbrambillafunes.ui.viewmodel.products
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.undef.localhandsbrambillafunes.data.db.AppDatabase
 import com.undef.localhandsbrambillafunes.data.entity.Product
 import com.undef.localhandsbrambillafunes.data.model.ProductProviderMigration
 import com.undef.localhandsbrambillafunes.data.repository.ProductRepository
-import kotlinx.coroutines.flow.Flow
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * 🧠 ViewModel — Encargado de gestionar y exponer datos a la capa de UI.
@@ -32,13 +31,11 @@ import kotlinx.coroutines.launch
  * - Facilita la reutilización y testeo.
  * - Hace que la UI sea más declarativa y reactiva.
  */
-class ProductViewModel(application: Application) : AndroidViewModel(application) {
-    private val db = AppDatabase.Companion.getDatabase(application)
-    private val repository = ProductRepository(db)
-
+@HiltViewModel
+class ProductViewModel @Inject constructor(private val repository: ProductRepository) : ViewModel() {
     // Todos los productos disponibles
     val products: StateFlow<List<Product>> = repository.getAllProducts()
-        .stateIn(viewModelScope, SharingStarted.Companion.Lazily, emptyList())
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     //Inicializamos la BD con los productos migrados
     init {
@@ -89,7 +86,9 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         repository.deleteProduct(product)
     }
 
-    fun getProductById(id: Int): Flow<Product?> = repository.getProductById(id)
+    fun getProductById(productId: Int): StateFlow<Product?> =
+        repository.getProductById(productId)
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
     /**
      * Inserta una lista de productos en la base de datos, reemplazando los existentes si hay conflicto.
@@ -136,9 +135,9 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
      * @param ownerId ID del usuario del cual se desean obtener los productos.
      * @return Un [StateFlow] que contiene una lista de productos publicados por el usuario.
      */
-    fun getMyProducts(ownerId: Int): StateFlow<List<Product>> =
-        repository.getProductsByOwner(ownerId)
-            .stateIn(viewModelScope, SharingStarted.Companion.Lazily, emptyList())
+        fun getMyProducts(ownerId: Int): StateFlow<List<Product>> =
+            repository.getProductsByOwner(ownerId)
+                .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     /**
      * Obtiene la lista de productos marcados como favoritos por el usuario.
@@ -151,5 +150,5 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
      */
     fun getFavorites(userId: Int): StateFlow<List<Product>> =
         repository.getFavoritesForUser(userId)
-            .stateIn(viewModelScope, SharingStarted.Companion.Lazily, emptyList())
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 }
