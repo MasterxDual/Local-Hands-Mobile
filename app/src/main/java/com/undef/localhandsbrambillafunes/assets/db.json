@@ -1,6 +1,55 @@
 {
-  "vendors": [
+  "sellers": [
+    {
+      "id": 1,
+      "address": "asdasdasdas",
+      "email": "agustinbram@gmail.com",
+      "entrepreneurship": "Lo del Agus",
+      "lastname": "asdasdasdasdsa",
+      "name": "asdsadasdas",
+      "phone": "3541207081"
+    },
+    {
+      "id": 1,
+      "address": "asdasdasdas",
+      "email": "agustinbram@gmail.com",
+      "entrepreneurship": "Lo del Agus",
+      "lastname": "asdasdasdasdsa",
+      "name": "asdsadasdas",
+      "phone": "3541207081"
+    },
+    {
+      "id": 1,
+      "address": "asdasdasdas",
+      "email": "agustinbram@gmail.com",
+      "entrepreneurship": "Lo del Agus",
+      "lastname": "asdasdasdasdsa",
+      "name": "asdsadasdas",
+      "phone": "3541207081"
+    },
+    {
+      "id": 2,
+      "address": "asdasdasd",
+      "email": "abrambilla804@alumnos.iua.edu.ar",
+      "entrepreneurship": "LO DE AGUSTIN",
+      "lastname": "BRAMBILLOS",
+      "name": "AGUSTINUS",
+      "phone": "354120701"
+    }
   ],
   "products": [
+    {
+      "id": 0,
+      "category": "Textiles",
+      "description": "ASDSADASDSADSA",
+      "images": [
+        "/data/user/0/com.undef.localhandsbrambillafunes/files/1753588189838.jpg"
+      ],
+      "location": "La Cumbre",
+      "name": "AVERSADASDSADD",
+      "ownerId": 1,
+      "price": 1231,
+      "producer": "SADASDASDSADA"
+    }
   ]
 }

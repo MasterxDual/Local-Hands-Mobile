@@ -82,6 +82,17 @@ class UserRepository @Inject constructor(
     }
 
     /**
+     * Verifica si un usuario es un vendedor.
+     *
+     * @param email Correo electrónico del usuario.
+     * @return `true` si el usuario es un vendedor, `false` en caso contrario.
+     */
+    suspend fun isUserSeller(email: String): Boolean {
+        val sellers = api.getSellersByEmail(email) // Retrofit: @GET("sellers?email={email}")
+        return sellers.isNotEmpty()
+    }
+
+    /**
      * Obtiene todos los usuarios.
      *
      * @return Lista de usuarios.

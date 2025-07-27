@@ -33,6 +33,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -236,6 +237,7 @@ fun HomeScreen(navController: NavController,
 
 }
 
+
 @Composable
 fun HandleNavigationToSellScreen(
     navController: NavController,
@@ -243,10 +245,26 @@ fun HandleNavigationToSellScreen(
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
-    var showConfirmationDialog by remember { mutableStateOf(true) }
+    val coroutineScope = rememberCoroutineScope()
+
+    var showConfirmationDialog by remember { mutableStateOf(false) }
     var showEntrepreneurDialog by remember { mutableStateOf(false) }
     var entrepreneurshipName by remember { mutableStateOf("") }
-    val coroutineScope = rememberCoroutineScope()
+
+    // 🔹 Lógica para consultar si el usuario es vendedor al entrar al Composable
+    LaunchedEffect(Unit) {
+        val user = userViewModel.getUserById()
+        userViewModel.checkIfUserIsSeller(user.email) { isVendor ->
+            if (isVendor) {
+                // Ya es vendedor → navegamos directamente
+                navController.navigate(AppScreens.SellScreen.route)
+                onDismiss()
+            } else {
+                // No es vendedor → mostrar diálogos
+                showConfirmationDialog = true
+            }
+        }
+    }
 
     // 🔹 Paso 1: Confirmación
     if (showConfirmationDialog) {
@@ -309,8 +327,10 @@ fun HandleNavigationToSellScreen(
                             address = user.address,
                             entrepreneurship = entrepreneurshipName
                         )
+                        /*Crea el vendedor a través de la API en el backend
+                        y navega a la pantalla de venta de productos*/
                         userViewModel.createSeller(seller)
-                        navController.navigate(AppScreens.CategoryScreen.route)
+                        navController.navigate(AppScreens.SellScreen.route)
                         onDismiss()
                     }
                 }) {
@@ -328,5 +348,3 @@ fun HandleNavigationToSellScreen(
         )
     }
 }
-
-

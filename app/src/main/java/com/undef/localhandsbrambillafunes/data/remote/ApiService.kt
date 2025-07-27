@@ -56,7 +56,7 @@ interface ApiService {
     /**
      * Crea un nuevo vendedor en el servidor.
      *
-     * Esta función realiza una solicitud HTTP POST al endpoint `/vendors`, enviando
+     * Esta función realiza una solicitud HTTP POST al endpoint `/sellers`, enviando
      * un objeto [Seller] en el cuerpo de la petición. El servidor asigna un ID único
      * y retorna el vendedor creado.
      *
@@ -69,11 +69,25 @@ interface ApiService {
     /**
      * Obtiene la lista completa de vendedores registrados en el servidor.
      *
-     * Esta función realiza una solicitud HTTP GET al endpoint `/vendors`,
+     * Esta función realiza una solicitud HTTP GET al endpoint `/sellers`,
      * y devuelve una lista de todos los vendedores disponibles en formato JSON.
      *
      * @return Una lista de objetos [Seller] disponibles en el servidor.
      */
     @GET("sellers")
     suspend fun getSellers(): List<Seller>
+
+    /**
+     * Obtiene un vendedor por su dirección de correo electrónico.
+     *
+     * Esta función realiza una solicitud HTTP GET al endpoint `/sellers`,
+     * con el parámetro de consulta `email` para filtrar los vendedores por su dirección de correo electrónico.
+     *
+     * @GET("sellers?email={email}"
+     *
+     * @param email La dirección de correo electrónico del vendedor.
+     * @return Una lista de objetos [Seller] que coinciden con la dirección de correo electrónico especificada.
+     */
+    @GET("sellers")
+    suspend fun getSellersByEmail(@Query("email") email: String): List<Seller>
 }

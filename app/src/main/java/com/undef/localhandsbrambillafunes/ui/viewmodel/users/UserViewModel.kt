@@ -51,8 +51,29 @@ class UserViewModel @Inject constructor(private val repository: UserRepository):
         }
     }
 
+    /**
+     * Obtiene un usuario por su ID.
+     * @return Instancia de [User], se supone que siempre será distinto de null
+     */
     suspend fun getUserById(): User {
         return repository.getUserById()
+    }
+
+    /**
+     * Verifica si un usuario es un vendedor para poder validar si mostrar la confirmación de
+     * convertirse en emprendedor o no
+     *
+     * @param email Correo electrónico del usuario
+     * @param onResult Callback que se invoca con el resultado de la verificación
+     *
+     * @see repository.isUserSeller
+     * @see onResult
+     */
+    fun checkIfUserIsSeller(email: String, onResult: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            val isSeller = repository.isUserSeller(email)
+            onResult(isSeller)
+        }
     }
 
 
