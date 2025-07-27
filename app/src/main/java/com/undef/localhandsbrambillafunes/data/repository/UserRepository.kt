@@ -16,6 +16,7 @@ import javax.inject.Inject
  */
 class UserRepository @Inject constructor(
     private val userDao: UserDao,
+    private val authRepository: AuthRepository,
     private val api: ApiService
 ) {
 
@@ -74,9 +75,11 @@ class UserRepository @Inject constructor(
      * @param id ID del usuario.
      * @return Instancia de [User], o `null` si no se encuentra.
      */
-//    suspend fun getUserById(id: Int): User? {
-//        return userDao.getUserById(id)
-//    }
+    suspend fun getUserById(): User {
+        val currentUserId = authRepository.getCurrentUserId()!!
+
+        return userDao.getUserById(currentUserId)
+    }
 
     /**
      * Obtiene todos los usuarios.

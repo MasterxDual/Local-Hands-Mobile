@@ -3,6 +3,7 @@ package com.undef.localhandsbrambillafunes.ui.viewmodel.users
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.undef.localhandsbrambillafunes.data.entity.Seller
+import com.undef.localhandsbrambillafunes.data.entity.User
 import com.undef.localhandsbrambillafunes.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,6 +49,10 @@ class UserViewModel @Inject constructor(private val repository: UserRepository):
         viewModelScope.launch {
             _sellers.value = repository.getSellers()
         }
+    }
+
+    suspend fun getUserById(): User {
+        return repository.getUserById()
     }
 
 

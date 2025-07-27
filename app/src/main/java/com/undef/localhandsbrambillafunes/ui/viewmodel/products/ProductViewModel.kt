@@ -3,12 +3,11 @@ package com.undef.localhandsbrambillafunes.ui.viewmodel.products
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.undef.localhandsbrambillafunes.data.entity.Product
-import com.undef.localhandsbrambillafunes.data.model.ProductProviderMigration
 import com.undef.localhandsbrambillafunes.data.repository.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,7 +33,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductViewModel @Inject constructor(private val repository: ProductRepository) : ViewModel() {
     // Todos los productos disponibles
-    val products: StateFlow<List<Product>> = repository.getAllProducts()
+    /*val products: StateFlow<List<Product>> = repository.getAllProducts()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     //Inicializamos la BD con los productos migrados
@@ -47,6 +46,59 @@ class ProductViewModel @Inject constructor(private val repository: ProductReposi
                 val migratedProducts = ProductProviderMigration.getAllAsEntities()
                 repository.insertAll(migratedProducts)
             }
+        }
+    }*/
+
+    // Estado interno y externo que expone la lista de productos
+    private val _products = MutableStateFlow<List<Product>>(emptyList())
+
+    /**
+     * Estado observable de productos que expone una lista de productos a la UI.
+     *
+     * Se actualiza cuando se cargan productos desde la API.
+     */
+    val products: StateFlow<List<Product>> = _products
+
+    /**
+     * Carga todos los productos desde la API remota y actualiza el estado interno.
+     *
+     * Esta función lanza una corrutina en el `viewModelScope` para evitar
+     * bloquear el hilo principal. Los productos obtenidos se almacenan en `_products`.
+     *
+     * Ideal para pantallas que muestran todos los productos públicos o disponibles.
+     */
+    fun loadAllProducts() {
+        viewModelScope.launch {
+            _products.value = repository.getProducts()
+        }
+    }
+
+    /**
+     * Carga los productos asociados a un dueño específico utilizando su `ownerId`.
+     *
+     * Utilizado para mostrar únicamente los productos creados por un emprendedor o usuario.
+     * Los datos se obtienen desde la API remota y se actualiza el flujo interno `_products`.
+     *
+     * @param ownerId El ID del dueño (emprendedor) cuyos productos se desean obtener.
+     */
+    fun loadProductsByOwner(ownerId: Int?) {
+        viewModelScope.launch {
+            _products.value = repository.getProductsByOwnerId(ownerId)
+        }
+    }
+
+    /**
+     * Agrega un nuevo producto mediante la API remota y actualiza la lista del emprendedor.
+     *
+     * Esta función realiza un `POST` a través del repositorio y luego recarga los
+     * productos del mismo `ownerId` para reflejar los cambios inmediatamente en la UI.
+     *
+     * @param product El nuevo producto a ser creado en el servidor.
+     */
+    fun addProductByApi(product: Product) {
+        viewModelScope.launch {
+            repository.addProduct(product)
+            loadProductsByOwner(product.ownerId)
         }
     }
 
